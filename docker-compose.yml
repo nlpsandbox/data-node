@@ -13,5 +13,5 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      synapse_username: ""
-      synapse_apikey: ""
+      SYNAPSE_USERNAME: ${SYNAPSE_USERNAME}
+      SYNAPSE_APIKEY: ${SYNAPSE_APIKEY}

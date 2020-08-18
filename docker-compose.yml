@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:12.4
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+  api:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      synapse_username: ""
+      synapse_apikey: ""

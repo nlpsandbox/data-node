@@ -7,14 +7,17 @@
 Dockerized Postgres DB populated with data from the 2014 i2b2 NLP
 de-identification challenge.
 
-## Installation
+## Setup
 
-    pip install -r requirements.txt
+1. Install the dependencies
 
-Set the configuration values in `.env`, then export the configuration to
-environment values.
+        pip install -r requirements.txt
 
-    export $(grep -v '^#' .env | xargs -d '\n')
+2. Copy the file `.env.template` to `.env`
+3. Set the configuration values in `.env`
+4. Export the configuration to environment variables
+
+        export $(grep -v '^#' .env | xargs -d '\n')
 
 ## Usage
 
@@ -31,8 +34,10 @@ environment values.
     populate-db  Populate the DB with 2014 i2b2 NLP de-id data.
 
 
-### get-data
+### Command `get-data`
 
     $ python main.py get-data
     Downloading  [####################]100.00%   1.1MB/1.1MB (2.6MB/s) 2014-i2b2-nlp-evaluation-data-txt.zip Done...
     Downloading  [####################]100.00%   1.7MB/1.7MB (11.7MB/s) 2014-i2b2-nlp-training-data-txt.zip Done...
+
+### Command `populate-db`

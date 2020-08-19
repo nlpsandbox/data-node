@@ -4,8 +4,35 @@
 [![GitHub CI](https://img.shields.io/github/workflow/status/data2health/2014-i2b2-deid-db/ci.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 [![GitHub License](https://img.shields.io/github/license/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 
-Dockerized Postgres DB populated with data from the 2014 i2b2 NLP de-identification challenge.
+Dockerized Postgres DB populated with data from the 2014 i2b2 NLP
+de-identification challenge.
+
+## Installation
+
+    pip install -r requirements.txt
+
+Set the configuration values in `.env`, then export the configuration to
+environment values.
+
+    export $(grep -v '^#' .env | xargs -d '\n')
 
 ## Usage
 
-    pip install -r requirements.txt
+    $ python main.py
+    Usage: main.py [OPTIONS] COMMAND [ARGS]...
+
+    Initialize a DB with the 2014 i2b2 NLP de-id data.
+
+    Options:
+    --help  Show this message and exit.
+
+    Commands:
+    get-data     Get 2014 i2b2 NLP de-id data from Synapse.
+    populate-db  Populate the DB with 2014 i2b2 NLP de-id data.
+
+
+### get-data
+
+    $ python main.py get-data
+    Downloading  [####################]100.00%   1.1MB/1.1MB (2.6MB/s) 2014-i2b2-nlp-evaluation-data-txt.zip Done...
+    Downloading  [####################]100.00%   1.7MB/1.7MB (11.7MB/s) 2014-i2b2-nlp-training-data-txt.zip Done...

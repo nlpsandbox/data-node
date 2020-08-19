@@ -14,4 +14,4 @@ services:
       dockerfile: dockerfile
     environment:
       SYNAPSE_USERNAME: ${SYNAPSE_USERNAME}
-      SYNAPSE_APIKEY: ${SYNAPSE_APIKEY}
+      SYNAPSE_APIKEY: '${SYNAPSE_APIKEY}'

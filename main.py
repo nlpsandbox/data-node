@@ -23,13 +23,16 @@ def get_data(synapse_username, synapse_apikey):
     syn.login(email=synapse_username, apiKey=synapse_apikey, silent=True)
 
     # Download the evaluation and training set
-    eval_data_entity = syn.get('syn22314948')
+    eval_data_entity  = syn.get('syn22314948')
     train_data_entity = syn.get('syn22314947')
+    gold_data_entity  = syn.get('syn22277171')
 
     # Extract the data to ./data
     with zipfile.ZipFile(eval_data_entity.path,"r") as zip:
         zip.extractall("data")
     with zipfile.ZipFile(train_data_entity.path,"r") as zip:
+        zip.extractall("data")
+    with zipfile.ZipFile(gold_data_entity.path,"r") as zip:
         zip.extractall("data")
 
 
@@ -46,7 +49,7 @@ def populate_db():
     if ( not os.path.isdir("data/2014-i2b2-nlp-evaluation-data-txt") ):
         logging.exception("Data not downloaded, run the main.py get_data first  ")
         os.sys.exit(1)
-    db.import_data(conn, "data/2014-i2b2-nlp-evaluation-data-txt")
+    db.import_data(conn, "data/2014-i2b2-nlp-evaluation-data-txt", "data/testing-PHI-Gold-fixed")
 
 if __name__ == "__main__":
     cli()

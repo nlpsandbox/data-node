@@ -3,7 +3,7 @@
 import click
 import os
 import synapseclient
-import zipfile
+import zipfile, tarfile
 import db_connection as db
 import logging
 
@@ -32,8 +32,9 @@ def get_data(synapse_username, synapse_apikey):
         zip.extractall("data")
     with zipfile.ZipFile(train_data_entity.path,"r") as zip:
         zip.extractall("data")
-    with zipfile.ZipFile(gold_data_entity.path,"r") as zip:
-        zip.extractall("data")
+    with tarfile.TarFile.gzopen(gold_data_entity.path,"r" ) as tar:
+        tar.extractall("data")
+        tar.close()
 
 
 @cli.command()

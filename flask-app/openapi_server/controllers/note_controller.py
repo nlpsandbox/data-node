@@ -1,8 +1,11 @@
 import connexion
 import six
-
+import os
+import json
+from flask import jsonify
 from openapi_server.models.note import Note  # noqa: E501
 from openapi_server import util
+import openapi_server.db_connection as db
 
 
 def notes_read(id):  # noqa: E501
@@ -26,7 +29,21 @@ def notes_read_all():  # noqa: E501
 
     :rtype: List[Note]
     """
-    return 'do some magic!'
+    values = db.load_config()
+
+    conn = db.get_connection_local_pg(values)
+    cur = conn.cursor()
+    select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes '
+    cur.execute(select_notes)
+    all_rows = cur.fetchall()
+    res = [ ]
+    for row in all_rows:
+        id = row[0]
+        dict = { 'id': id , 'fileName' : row[1], 'text':row[2] }
+        res.append( dict )
+
+
+    return json.dumps(res)
 
 
 def notes_update(id, note):  # noqa: E501

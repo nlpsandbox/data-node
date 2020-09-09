@@ -61,3 +61,12 @@ Then run :
     2020-08-24 15:22:20,820 root - INFO - Inserted row 1 
     ...
 
+
+### Flask REST Front End
+
+Create the flask app from the https://github.com/data2health/nlp-sandbox-schemas CodeBase
+
+    cd ~project/nlp-sandbox-schemas
+    openapi/data-node/generate-flask.sh 
+
+

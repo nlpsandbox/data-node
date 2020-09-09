@@ -14,18 +14,17 @@ services:
     ports:
       - "6000:5432"
 
+  api:
+    build:
+      context: flask-app
+      dockerfile: Dockerfile
+    container_name: api
+    env_file:
+      - database.env
+    ports:
+      - "80:8080"
+    depends_on:
+      - database
 volumes:
     database-data:
 
-#  api:
-#    build:
-#      context: .
-#      dockerfile: dockerfile
-#    container_name: api
-#    environment:
-#      SYNAPSE_USERNAME: ${SYNAPSE_USERNAME}
-#      SYNAPSE_APIKEY: '${SYNAPSE_APIKEY}'
-#    ports:
-#      - "80:8080"
-#    depends_on:
-#      - db

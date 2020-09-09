@@ -1,11 +1,10 @@
-FROM python:3-alpine
-
+FROM python:3.7.9-slim-buster
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements.txt /usr/src/app/
+COPY requirements_3_7.txt /usr/src/app/
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r /usr/src/app/requirements_3_7.txt
 
 COPY . /usr/src/app
 

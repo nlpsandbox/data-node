@@ -26,13 +26,6 @@ paths:
     get:
       description: Returns the date annotations
       operationId: dates_read_all
-      requestBody:
-        content:
-          application/json:
-            schema:
-              items:
-                $ref: '#/components/schemas/Note'
-              type: array
       responses:
         "200":
           content:

@@ -5,6 +5,7 @@ from openapi_server.models.date_annotation import DateAnnotation  # noqa: E501
 from openapi_server.models.note import Note  # noqa: E501
 from openapi_server import util
 import openapi_server.db_connection as db
+from flask import jsonify
 import json
 
 def dates_read_all( ):  # noqa: E501
@@ -43,4 +44,4 @@ def dates_read_all( ):  # noqa: E501
         dict = {'id': id, 'noteId': row[1] , 'start': str(row[2]) ,  'length': str(row[3]) , 'text': str(row[4]),  'category': str(row[5]),  'type': str(row[6])}
         res.append(dict)
 
-    return json.dumps(res)
+    return jsonify(items=res)

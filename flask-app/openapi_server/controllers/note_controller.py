@@ -31,7 +31,7 @@ def notes_read(id_):  # noqa: E501
         dict = {'id': id, 'fileName': row[1], 'text': row[2]}
         res.append(dict)
 
-    return json.dumps(res)
+    return jsonify(items=res)
 
 
 
@@ -57,7 +57,7 @@ def notes_read_all():  # noqa: E501
         res.append( dict )
 
 
-    return json.dumps(res)
+    return jsonify(items=res)
 
 
 def notes_update(id, note):  # noqa: E501

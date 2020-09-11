@@ -7,8 +7,11 @@ services:
           dockerfile: Dockerfile_PG
     container_name: pg_db
     restart: always
-    env_file:
-      - database.env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
@@ -16,13 +19,19 @@ services:
 
   api:
     build:
-      context: flask-app
+      context: .
       dockerfile: Dockerfile
     container_name: api
-    env_file:
-      - database.env
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - SYNAPSE_USERNAME
+      - SYNAPSE_APIKEY
     ports:
-      - "80:8080"
+      - "8080:8080"
     depends_on:
       - database
 volumes:

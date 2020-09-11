@@ -23,7 +23,7 @@ def notes_read(id_):  # noqa: E501
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
     select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes where id = %s '
-    cur.execute(select_notes, id_)
+    cur.execute(select_notes, (id_,))
     all_rows = cur.fetchall()
     res = []
     for row in all_rows:

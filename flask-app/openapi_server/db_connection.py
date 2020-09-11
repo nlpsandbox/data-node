@@ -5,6 +5,7 @@ from pathlib import Path
 from configparser import ConfigParser
 import logging
 import os.path
+import os
 import xml.etree.ElementTree as ET
 
 
@@ -17,11 +18,12 @@ def load_config(config_file="database.ini"):
     :return:
     """
     db = {}
-    parser = ConfigParser()
-    parser.read(   config_file )
-    params = parser.items("POSTGRES")
-    for param in params:
-        db[param[0]] = param[1]
+    db['user'] = os.environ["POSTGRES_USER"]
+    db['password'] = os.environ["POSTGRES_PASSWORD"]
+    db['host'] = os.environ["POSTGRES_HOST"]
+    db['database'] = os.environ["POSTGRES_DB"]
+    db['port'] = os.environ["POSTGRES_PORT"]
+
     return db
 
 

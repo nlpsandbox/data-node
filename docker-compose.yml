@@ -7,25 +7,33 @@ services:
           dockerfile: Dockerfile_PG
     container_name: pg_db
     restart: always
-    env_file:
-      - database.env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
       - "6000:5432"
 
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    environment:
+      - POSTGRES_HOST
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - SYNAPSE_USERNAME
+      - SYNAPSE_APIKEY
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
 volumes:
     database-data:
 
-#  api:
-#    build:
-#      context: .
-#      dockerfile: dockerfile
-#    container_name: api
-#    environment:
-#      SYNAPSE_USERNAME: ${SYNAPSE_USERNAME}
-#      SYNAPSE_APIKEY: '${SYNAPSE_APIKEY}'
-#    ports:
-#      - "80:8080"
-#    depends_on:
-#      - db

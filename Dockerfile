@@ -4,12 +4,13 @@ RUN mkdir -p /usr/src/init
 
 COPY flask-app/ /usr/src/app
 COPY init /usr/src/init
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-WORKDIR /usr/src/app
+RUN apt-get update; apt-get install -y supervisor
+RUN pip3 install --no-cache-dir supervisor
 RUN pip3 install --no-cache-dir -r /usr/src/app/requirements.txt
 
+WORKDIR /usr/src/app
 EXPOSE 8080
 
-ENTRYPOINT ["python3"]
-
-CMD ["-m", "openapi_server"]
+CMD ["/usr/bin/supervisord"]

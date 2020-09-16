@@ -18,8 +18,8 @@ jobs:
       run: hadolint Dockerfile
     - name: Check that packages in requirements.txt files are in asc order
       run: |
-        sort --check flask-app/requirements.txt \
-          && sort --check flask-app/test-requirements.txt
+        sort --check flask-app/requirements.txt
+        sort --check flask-app/test-requirements.txt
 
   test:
     needs: [lint]

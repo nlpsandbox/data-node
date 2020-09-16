@@ -22,7 +22,7 @@ def notes_read(id_):  # noqa: E501
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes where id = %s '
+    select_notes = 'SELECT id, file_name, note from i2b2_data.public.pat_notes where id = %s'
     cur.execute(select_notes, (id_,))
     all_rows = cur.fetchall()
     res = []
@@ -32,7 +32,6 @@ def notes_read(id_):  # noqa: E501
         res.append(dict)
 
     return jsonify(items=res)
-
 
 
 def notes_read_all():  # noqa: E501
@@ -47,7 +46,7 @@ def notes_read_all():  # noqa: E501
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes '
+    select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes'
     cur.execute(select_notes)
     all_rows = cur.fetchall()
     res = [ ]

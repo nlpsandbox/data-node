@@ -9,8 +9,6 @@ import os
 import xml.etree.ElementTree as ET
 
 
-
-
 def load_config(config_file="database.ini"):
     """
     Load the configuration file

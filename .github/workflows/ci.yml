@@ -20,6 +20,7 @@ jobs:
         args: Dockerfile
     - name: Check that packages in requirements.txt files are in asc order
       run: |
+        sort flask-app/requirements.txt
         sort --check flask-app/requirements.txt
         sort --check flask-app/test-requirements.txt
 

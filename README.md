@@ -4,8 +4,8 @@
 [![GitHub CI](https://img.shields.io/github/workflow/status/data2health/2014-i2b2-deid-db/ci.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 [![GitHub License](https://img.shields.io/github/license/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 
-Dockerized Postgres DB populated with data from the 2014 i2b2 NLP
-de-identification challenge.
+This NLP Sandbox Data Node exposes the dataset of the [2014 i2b2 NLP
+De-identification Challenge] through a REST API.
 
 ## Setup
 
@@ -52,13 +52,13 @@ Then run :
  One should see :
 
     2020-08-24 15:22:20,800 root - INFO - {'host': 'localhost', 'user': 'postgres', 'password': 'postgres', 'database': 'i2b2_data', 'port': '6000'}
-    2020-08-24 15:22:20,800 root - INFO - Started import 
+    2020-08-24 15:22:20,800 root - INFO - Started import
     2020-08-24 15:22:20,800 root - INFO - Importing into DB: i2b2_data
     2020-08-24 15:22:20,809 root - INFO - PostgreSQL database version:
     2020-08-24 15:22:20,811 root - INFO - ('PostgreSQL 12.4 (Debian 12.4-1.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit',)
-    2020-08-24 15:22:20,811 root - INFO - Finished import 
+    2020-08-24 15:22:20,811 root - INFO - Finished import
     2020-08-24 15:22:20,817 root - INFO - Importing file 137-03.txt
-    2020-08-24 15:22:20,820 root - INFO - Inserted row 1 
+    2020-08-24 15:22:20,820 root - INFO - Inserted row 1
     ...
 
 
@@ -67,6 +67,8 @@ Then run :
 Create the flask app from the https://github.com/data2health/nlp-sandbox-schemas CodeBase
 
     cd ~project/nlp-sandbox-schemas
-    openapi/data-node/generate-flask.sh 
+    openapi/data-node/generate-flask.sh
 
+<!-- Definitions -->
 
+[2014 i2b2 NLP De-identification Challenge]: https://portal.dbmi.hms.harvard.edu/projects/n2c2-nlp/

@@ -11,11 +11,17 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    container: hadolint/hadolint:latest
     steps:
     - uses: actions/checkout@v2
     - name: Lint Dockerfiles
-      run: hadolint Dockerfile
+      uses: docker://hadolint/hadolint:latest
+      with:
+        entrypoint: hadolint
+        args: Dockerfile
+    - name: Check that packages in requirements.txt files are in asc order
+      run: |
+        sort -f --check flask-app/requirements.txt
+        sort -f --check flask-app/test-requirements.txt
 
   test:
     needs: [lint]

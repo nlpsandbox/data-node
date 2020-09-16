@@ -3,8 +3,8 @@ version: "3.8"
 services:
   database:
     build:
-          context: .
-          dockerfile: Dockerfile_PG
+      context: .
+      dockerfile: Dockerfile_PG
     container_name: pg_db
     restart: always
     environment:
@@ -34,6 +34,7 @@ services:
       - "8080:8080"
     depends_on:
       - database
+
 volumes:
     database-data:
 

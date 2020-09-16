@@ -21,6 +21,7 @@ def main():
         """
         return render_template('home.html')
 
+    # TODO: Read port from env vars
     app.run(port=8080)
 
 

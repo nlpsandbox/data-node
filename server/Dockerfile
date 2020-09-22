@@ -3,7 +3,7 @@ FROM python:3.7.9-slim-buster
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/init
 
-COPY flask-app/ /usr/src/app
+COPY server /usr/src/app
 COPY init /usr/src/init
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

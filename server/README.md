@@ -1,5 +1,23 @@
 # 2014 i2b2 NLP Sandbox Data Node
 
+
+    export SQL_USER=postgres
+    export SQL_PASSWORD=postgres
+    export SQL_DB=i2b2_data
+    export SQL_PORT=5432
+    export SQL_HOST=database
+    export SQL_DB_TYPE=postgres
+
+
+    export SYNAPSE_USERNAME=george.kowalski@gmail.com
+    export SYNAPSE_APIKEY=aieCjlhkQViK/uyNVimJAyoJxYOIo9iCLlCE/BAWWhNmrLtcgXoKrwuWrRpVCSxh/ySDy/lucTXaJFyyfqFa5w==
+
+
+
+
+
+
+
 This NLP Sandbox Data Node exposes the dataset of the [2014 i2b2 NLP
 De-identification Challenge] through a REST API.
 

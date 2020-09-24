@@ -5,7 +5,7 @@ services:
     build:
       context: db
       dockerfile: Dockerfile
-    container_name: data_node_db
+    container_name: data-node-db
     restart: always
     environment:
       - POSTGRES_USER
@@ -14,13 +14,13 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
-      - "8081:5432"
+      - "${POSTGRES_PORT}:5432"
 
   # api:
   #   build:
-  #     context: .
-  #     dockerfile: server/Dockerfile
-  #   container_name: api
+  #     context: server
+  #     dockerfile: Dockerfile
+  #   container_name: data-node-api
   #   environment:
   #     - POSTGRES_HOST
   #     - POSTGRES_USER
@@ -32,7 +32,7 @@ services:
   #   ports:
   #     - "8080:8080"
   #   depends_on:
-  #     - database
+  #     - db
 
 volumes:
     database-data:

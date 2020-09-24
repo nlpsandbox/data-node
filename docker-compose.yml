@@ -3,9 +3,9 @@ version: "3.8"
 services:
   database:
     build:
-      context: .
-      dockerfile: Dockerfile_PG
-    container_name: pg_db
+      context: db
+      dockerfile: Dockerfile
+    container_name: data_node_db
     restart: always
     environment:
       - POSTGRES_USER
@@ -17,23 +17,23 @@ services:
     ports:
       - "6000:5432"
 
-  api:
-    build:
-      context: .
-      dockerfile: server/Dockerfile
-    container_name: api
-    environment:
-      - POSTGRES_HOST
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_PORT
-      - SYNAPSE_USERNAME
-      - SYNAPSE_APIKEY
-    ports:
-      - "8080:8080"
-    depends_on:
-      - database
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: server/Dockerfile
+  #   container_name: api
+  #   environment:
+  #     - POSTGRES_HOST
+  #     - POSTGRES_USER
+  #     - POSTGRES_PASSWORD
+  #     - POSTGRES_DB
+  #     - POSTGRES_PORT
+  #     - SYNAPSE_USERNAME
+  #     - SYNAPSE_APIKEY
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - database
 
 volumes:
     database-data:

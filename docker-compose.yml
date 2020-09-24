@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  database:
+  db:
     build:
       context: db
       dockerfile: Dockerfile
@@ -11,11 +11,10 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
-      - POSTGRES_PORT
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
-      - "6000:5432"
+      - "8081:5432"
 
   # api:
   #   build:

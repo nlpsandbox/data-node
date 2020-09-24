@@ -16,23 +16,23 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
 
-  # api:
-  #   build:
-  #     context: server
-  #     dockerfile: Dockerfile
-  #   container_name: data-node-api
-  #   environment:
-  #     - POSTGRES_HOST
-  #     - POSTGRES_USER
-  #     - POSTGRES_PASSWORD
-  #     - POSTGRES_DB
-  #     - POSTGRES_PORT
-  #     - SYNAPSE_USERNAME
-  #     - SYNAPSE_APIKEY
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - db
+  api:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    container_name: data-node-api
+    environment:
+      # - POSTGRES_HOST
+      # - POSTGRES_USER
+      # - POSTGRES_PASSWORD
+      # - POSTGRES_DB
+      # - POSTGRES_PORT
+      - SYNAPSE_USERNAME
+      - SYNAPSE_APIKEY
+    ports:
+      - "${API_PORT}:8080"
+    depends_on:
+      - db
 
 volumes:
     database-data:

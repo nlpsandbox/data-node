@@ -27,10 +27,10 @@ RUN curl -fsSL https://github.com/just-containers/s6-overlay/releases/download/$
 COPY s6-scripts/get-dataset-files.sh /etc/cont-init.d/10-get-dataset-files
 
 # Copy server files
-COPY . /opt/app
+COPY . /opt/server
 
 # Install dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r /opt/server/requirements.txt
 
 EXPOSE 8080
 

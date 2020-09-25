@@ -22,13 +22,14 @@ services:
       dockerfile: Dockerfile
     container_name: data-node-api
     environment:
+      # - APP_USER
       # - POSTGRES_HOST
       # - POSTGRES_USER
       # - POSTGRES_PASSWORD
       # - POSTGRES_DB
       # - POSTGRES_PORT
       - SYNAPSE_USERNAME
-      - SYNAPSE_APIKEY
+      - SYNAPSE_API_KEY
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:

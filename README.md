@@ -38,6 +38,22 @@ TBA
    <http://localhost:8080/api/v1/ui/> to check that the web service of the Data
    Node started successfully.
 
+## Access logs
+
+The current logs are saved to `/var/log/app/current`.
+
+    $ docker exec data-node-api cat /var/log/app/current
+    2020-09-25 23:33:39.809826500  Starting data node server
+    2020-09-25 23:33:40.436453500   * Serving Flask app "__main__" (lazy loading)
+    2020-09-25 23:33:40.436461500   * Environment: production
+    2020-09-25 23:33:40.436462500     WARNING: This is a development server. Do not use it in a production deployment.
+    2020-09-25 23:33:40.436463500     Use a production WSGI server instead.
+    2020-09-25 23:33:40.436464500   * Debug mode: off
+
+Follow the logs using `docker logs`
+
+    docker logs --follow data-node-api
+
 <!-- ## Deploy using Python (for development)
 
 1. Install the dependencies

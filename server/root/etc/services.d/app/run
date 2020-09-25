@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+# s6-setuidgid $GO_DNSMASQ_RUNAS go-dnsmasq --default-resolver --ndots "1" --fwd-ndots "0" --hostsfile=/etc/hosts >> $GO_DNSMASQ_LOG_FILE 2>&1
+cd /opt/app
+
+echo "Starting data node server"
+s6-setuidgid app python -m openapi_server

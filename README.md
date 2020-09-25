@@ -7,6 +7,14 @@
 This NLP Sandbox Data Node exposes the dataset of the [2014 i2b2 NLP
 De-identification Challenge] through a REST API.
 
+## Introduction
+
+TBA
+
+## Specifications
+
+TBA
+
 ## Deploy using Docker
 
 1. Create the file that contains the future environment variables

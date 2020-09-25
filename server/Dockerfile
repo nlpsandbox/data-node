@@ -43,7 +43,7 @@ RUN chown -R app:app /opt/app
 # Install dependencies
 RUN pip install -r /opt/app/requirements.txt
 
-COPY root/etc/services.d/app/run /etc/services.d/app/run
+COPY root /
 
 # Add s6 scripts
 # COPY s6-scripts/configure-user.sh /etc/cont-init.d/10-configure-user

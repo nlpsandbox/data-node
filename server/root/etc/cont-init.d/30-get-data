@@ -14,7 +14,7 @@ if [ ! -d "/tmp/data" ]; then
 
     mkdir -p /tmp/data
 
-    echo "Download clinical notes from Synapse"
+   # Download clinical notes from Synapse
     synapse get ${DATA_SYNAPSE_ID} --downloadLocation /tmp/data \
         >/dev/null
     echo ${DATA_MD5} \
@@ -25,7 +25,7 @@ if [ ! -d "/tmp/data" ]; then
         >/dev/null
     rm -fr /tmp/data/2014-i2b2-nlp-evaluation-data-txt.zip
 
-    echo "Download goldstandard annotations from Synapse"
+    # Download goldstandard annotations from Synapse
     synapse get ${GOLDSTANDARD_SYNAPSE_ID} --downloadLocation /tmp/data \
         >/dev/null
     echo ${GOLDSTANDARD_MD5} \

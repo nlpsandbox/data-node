@@ -30,6 +30,10 @@ services:
       # - POSTGRES_PORT
       - SYNAPSE_USERNAME
       - SYNAPSE_API_KEY
+      - DATA_SYNAPSE_ID
+      - DATA_MD5
+      - GOLDSTANDARD_SYNAPSE_ID
+      - GOLDSTANDARD_MD5
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:

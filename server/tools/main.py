@@ -10,7 +10,6 @@ import logging
 @click.group()
 def cli():
     """Initialize a DB with the 2014 i2b2 NLP de-id data."""
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s - %(levelname)s - %(message)s')
 
 @cli.command()
 def populate_db():

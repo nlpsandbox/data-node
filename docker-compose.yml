@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  db:
+  database:
     build:
-      context: db
+      context: database
       dockerfile: Dockerfile
     container_name: data-node-db
     restart: always
@@ -22,12 +22,11 @@ services:
       dockerfile: Dockerfile
     container_name: data-node-api
     environment:
-      # - APP_USER
-      # - POSTGRES_HOST
-      # - POSTGRES_USER
-      # - POSTGRES_PASSWORD
-      # - POSTGRES_DB
-      # - POSTGRES_PORT
+      - SQL_USER
+      - SQL_PASSWORD
+      - SQL_HOST
+      - SQL_DB
+      - SQL_PORT
       - SYNAPSE_USERNAME
       - SYNAPSE_API_KEY
       - DATA_SYNAPSE_ID
@@ -37,7 +36,7 @@ services:
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:
-      - db
+      - database
 
 volumes:
     database-data:

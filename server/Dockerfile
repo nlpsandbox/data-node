@@ -28,23 +28,17 @@ RUN curl -fsSL https://github.com/just-containers/s6-overlay/releases/download/$
 RUN useradd -m -s /bin/bash app \
     && echo "app:app" | chpasswd
 
-# RUN mkdir -p /etc/services.d/app
-# COPY s6/app-run.sh /etc/services.d/app/run
-
 # Copy server files
 COPY requirements.txt /opt/app/
 COPY openapi_server /opt/app/openapi_server/
-
+COPY tools /opt/app/tools/
 RUN chown -R app:app /opt/app
 
 # Install dependencies
 RUN pip install -r /opt/app/requirements.txt
 
-COPY root /
-
 # Add s6 scripts
-# COPY s6-scripts/configure-user.sh /etc/cont-init.d/10-configure-user
-# COPY s6-scripts/get-dataset-files.sh /etc/cont-init.d/20-get-dataset-files
+COPY root /
 
 EXPOSE 8080
 

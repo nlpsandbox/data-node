@@ -27,10 +27,6 @@ RUN curl -fsSL https://github.com/just-containers/s6-overlay/releases/download/$
 RUN useradd -m -s /bin/bash app \
     && echo "app:app" | chpasswd
 
-
-
-
-
 # RUN mkdir -p /etc/services.d/app
 # COPY s6/app-run.sh /etc/services.d/app/run
 

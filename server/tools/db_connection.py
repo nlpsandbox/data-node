@@ -3,11 +3,8 @@ import psycopg2.extras
 import logging
 from pathlib import Path
 from configparser import ConfigParser
-import logging
 import os.path
 import xml.etree.ElementTree as ET
-
-
 
 
 def load_config(config_file="database.ini"):
@@ -40,10 +37,10 @@ def get_connection_local_pg(params):
     conn = psycopg2.connect(**params)
 
     cur = conn.cursor()
-    logging.info('PostgreSQL database version:')
+    # logging.info('PostgreSQL database version:')
     cur.execute('SELECT version()')
     db_version = cur.fetchone()
-    logging.info(db_version)
+    # logging.info(db_version)
     # print(cursor)
     # conn.cursor will return a cursor object, you can use this cursor to perform queries
 
@@ -55,17 +52,17 @@ def load_annotations(conn,pat_note_id, name, gold_path):
     file_path = gold_path + "/" + name.replace("txt", "xml")
     if os.path.isfile(file_path):
         f = open(file_path)
-        logging.info(f"Annotation file found for {file_path}")
+        # logging.info(f"Annotation file found for {file_path}")
         tree = ET.parse(file_path)
         root = tree.getroot()
         for tags in root.findall('TAGS'):
-            logging.info(f"TAGS {tags}"  )
+            # logging.info(f"TAGS {tags}"  )
             for tag in tags.iter():
                 if len( tag.keys() ) > 0 :
-                    logging.info(f"TAG  { tag.tag }  : { tag.attrib }" )
+                    # logging.info(f"TAG  { tag.tag }  : { tag.attrib }" )
                     insert_sql = 'INSERT INTO pat_annotations ( pat_note_id, category, type, pos_id, start, stop, text) VALUES ( %s,%s, %s, %s, %s, %s, %s)  RETURNING id'
                     keys = tag.attrib.keys();
-                    logging.info(f" KEYS for tag : {keys}")
+                    # logging.info(f" KEYS for tag : {keys}")
                     # os.sys.exit(1)
                     cur.execute(insert_sql, (pat_note_id, tag.attrib["TYPE"], tag.tag,tag.attrib['id'], tag.attrib['start'],tag.attrib['end'] ,tag.attrib['text']))
                     conn.commit()
@@ -90,13 +87,13 @@ def import_data(conn, path, gold_path):
     with os.scandir(path) as entries:
         for entry in entries:
             if entry.is_file():
-                logging.info(f"Importing file {entry.name}")
+                # logging.info(f"Importing file {entry.name}")
                 with open(entry, 'r') as f:
                     data = f.read()
                     insert_sql = 'insert into "i2b2_data"."public".pat_notes(file_name, note) values (%s, %s) RETURNING id'
                     cur.execute(insert_sql, (entry.name,data,))
                     row_id = cur.fetchone()[0]
-                    logging.info(f"Inserted row {row_id} ")
+                    # logging.info(f"Inserted row {row_id} ")
                     load_annotations(conn,row_id , entry.name, gold_path )
                     conn.commit()
 

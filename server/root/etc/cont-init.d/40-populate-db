@@ -2,5 +2,5 @@
 
 set -euo pipefail
 
-echo "Populate DB"
+# Populate DB
 python /opt/app/tools/main.py populate-db

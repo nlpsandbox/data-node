@@ -5,6 +5,8 @@ tox.ini
 git_push.sh
 test-requirements.txt
 setup.py
+.gitignore
+.openapi-generator
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

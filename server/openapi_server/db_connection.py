@@ -16,11 +16,11 @@ def load_config(config_file="database.ini"):
     :return:
     """
     db = {}
-    db['user'] = os.environ["POSTGRES_USER"]
-    db['password'] = os.environ["POSTGRES_PASSWORD"]
-    db['host'] = os.environ["POSTGRES_HOST"]
-    db['database'] = os.environ["POSTGRES_DB"]
-    db['port'] = os.environ["POSTGRES_PORT"]
+    db['user'] = os.environ["SQL_USER"]
+    db['password'] = os.environ["SQL_PASSWORD"]
+    db['host'] = os.environ["SQL_HOST"]
+    db['database'] = os.environ["SQL_DB"]
+    db['port'] = os.environ["SQL_PORT"]
 
     return db
 

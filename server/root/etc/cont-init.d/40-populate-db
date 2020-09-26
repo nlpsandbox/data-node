@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+set -euo pipefail
+
+echo "Populate DB"
+python /opt/app/tools/main.py populate-db

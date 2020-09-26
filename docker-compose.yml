@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  database:
+  db:
     build:
-      context: database
+      context: db
       dockerfile: Dockerfile
     container_name: data-node-db
     restart: always
@@ -13,8 +13,6 @@ services:
       - POSTGRES_DB=${SQL_DB}
     volumes:
       - database-data:/var/lib/postgresql/data/
-    ports:
-      - "${SQL_PORT}:5432"
 
   api:
     build:
@@ -36,7 +34,7 @@ services:
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:
-      - database
+      - db
 
 volumes:
     database-data:

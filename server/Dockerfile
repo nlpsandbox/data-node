@@ -13,6 +13,7 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 RUN apt-get update -qq -y \
     && apt-get install --no-install-recommends -qq -y \
         curl \
+        unzip \
     && apt-get -y autoclean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -47,4 +48,4 @@ COPY root /
 
 EXPOSE 8080
 
-CMD ["/init"]
+ENTRYPOINT ["/init"]

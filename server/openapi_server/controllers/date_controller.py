@@ -41,7 +41,7 @@ def dates_read_all( ):  # noqa: E501
     res = []
     for row in all_rows:
         id = row[0]
-        dict = {'id': id, 'noteId': row[1] , 'start': str(row[2]) ,  'length': str(row[3]) , 'text': str(row[4]),  'category': str(row[5]),  'type': str(row[6])}
+        dict = {'id': id, 'noteId': row[1] , 'start':  row[2] ,  'length':  row[3] , 'text': str(row[4]),  'category': str(row[5]),  'type': str(row[6])}
         res.append(dict)
 
-    return jsonify(items=res)
+    return jsonify(res)

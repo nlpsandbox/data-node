@@ -2,8 +2,6 @@
 
 import click
 import os
-import synapseclient
-import zipfile, tarfile
 import db_connection as db
 import logging
 
@@ -15,10 +13,6 @@ def cli():
 def populate_db():
     """Populate the DB with 2014 i2b2 NLP de-id data."""
     values = db.load_config()
-    # logging.info(values)
-    # logging.info("Started import ")
-    # logging.info(f'Importing into DB: {values["database"]}')
-    # host, db, user, password
     conn = db.get_connection_local_pg( values)
     # logging.info("Finished import ")
     if ( not os.path.isdir("/tmp/data/2014-i2b2-nlp-evaluation-data-txt") ):

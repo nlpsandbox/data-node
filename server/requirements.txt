@@ -28,4 +28,3 @@ synapseclient==2.2.0
 urllib3==1.25.10
 Werkzeug==1.0.1
 wrapt==1.12.1
-zipp==3.2.0

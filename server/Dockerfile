@@ -1,4 +1,4 @@
-FROM python:3.7.9-slim-buster
+FROM python:3.8.6-slim-buster
 
 LABEL version="1.0"
 LABEL description="REST API server for the 2014 i2b2 dataset"

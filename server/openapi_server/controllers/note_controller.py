@@ -49,6 +49,7 @@ def notes_read_all():  # noqa: E501
     select_notes = 'SELECT id, file_name, note from  i2b2_data.public.pat_notes'
     cur.execute(select_notes)
     all_rows = cur.fetchall()
+    counter= len(all_rows)
     res = [ ]
     for row in all_rows:
         id = row[0]
@@ -56,7 +57,7 @@ def notes_read_all():  # noqa: E501
         res.append( dict )
 
 
-    return jsonify(items=res)
+    return jsonify(count=counter, items=res)
 
 
 def notes_update(id, note):  # noqa: E501

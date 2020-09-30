@@ -1,15 +1,14 @@
-# 2014-i2b2-deid-db
+# 2014 i2b2 NLP Sandbox Data Node
 
 [![GitHub Stars](https://img.shields.io/github/stars/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 [![GitHub CI](https://img.shields.io/github/workflow/status/data2health/2014-i2b2-deid-db/ci.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 [![GitHub License](https://img.shields.io/github/license/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
 
-This NLP Sandbox Data Node exposes the dataset of the [2014 i2b2 NLP
-De-identification Challenge] through a REST API.
+This NLP Sandbox Data Node contains the data from the [2014 i2b2 NLP De-identification Challenge].
 
 ## Introduction
 
-TBA
+
 
 ## Specifications
 
@@ -69,3 +68,7 @@ Follow the logs using `docker logs`
 4. Export the variables defined in *.env* to environment variables
 
         export $(grep -v '^#' .env | xargs -d '\n') -->
+
+<!-- Definitions -->
+
+[2014 i2b2 NLP De-identification Challenge]: https://www.i2b2.org/NLP/HeartDisease/

@@ -12,7 +12,7 @@ def main():
                 pythonic_params=True)
 
     # TODO: Read port from env vars
-    app.run(port=8080)
+    app.run(port=8080, ssl_context=('server.crt', 'server.key'))
 
 
 if __name__ == '__main__':

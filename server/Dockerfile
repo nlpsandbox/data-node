@@ -19,10 +19,19 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 RUN apt-get update -qq -y \
     && apt-get install --no-install-recommends -qq -y \
         curl \
+        vim \
         unzip \
+        openssl \
     && apt-get -y autoclean \
     && apt-get -y autoremove \
     && rm -rf /var/lib/apt/lists/*
+# Set up SSL cert
+RUN  openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out server.pass.key
+RUN  openssl rsa -passin pass:x -in server.pass.key -out server.key
+RUN openssl req -new -key server.key -out server.csr \
+        -subj "/C=US/ST=Wisconsin/L=Milwaukee/O=OrgName/OU=CTSI/CN=localhost" && \
+    openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
 
 # Set up S6 init system
 RUN curl -fsSL https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-amd64.tar.gz \

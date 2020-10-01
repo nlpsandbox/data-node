@@ -4,3 +4,5 @@ data/
 /.idea/
 __pycache__/
 conda.gpg
+server/server.crt
+server/server.key

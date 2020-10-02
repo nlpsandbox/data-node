@@ -1,41 +1,40 @@
-import psycopg2
-import psycopg2.extras
 import logging
-from pathlib import Path
-from configparser import ConfigParser
-import logging
-import os.path
 import os
+import os.path
 import xml.etree.ElementTree as ET
 
+import psycopg2
+import psycopg2.extras
 
-def load_config(config_file="database.ini"):
+from openapi_server.util.configuration import Config as config
+
+
+def load_config():
     """
-    Load the configuration file
-    :param config_file:
-    :return:
+    Load the configuration file needed by the database from the config class
+    :return: None
     """
     db = {}
-    db['user'] = os.environ["SQL_USER"]
-    db['password'] = os.environ["SQL_PASSWORD"]
-    db['host'] = os.environ["SQL_HOST"]
-    db['database'] = os.environ["SQL_DB"]
-    db['port'] = os.environ["SQL_PORT"]
+    db['user'] = config().sql_user
+    db['password'] = config().sql_password
+    db['host'] = config().sql_host
+    db['database'] = config().sql_db
+    db['port'] = config().sql_port
 
     return db
 
 
 def get_connection_local_pg(params):
     """
-    Return the Postgres db Connection
+    Return a Postgres db Connection
 
     :param db:
     :param config:
     :return:
     """
-    #conn_string_no_passwd =  params
+    # conn_string_no_passwd =  params
 
-    #logging.info(conn_string_no_passwd)
+    # logging.info(conn_string_no_passwd)
     conn = psycopg2.connect(**params)
 
     cur = conn.cursor()
@@ -49,7 +48,10 @@ def get_connection_local_pg(params):
     return conn
 
 
-def load_annotations(conn,pat_note_id, name, gold_path):
+def load_annotations(conn, pat_note_id, name, gold_path):
+    """
+    Load Annotations into the database frm text files.
+    """
     cur = conn.cursor()
     file_path = gold_path + "/" + name.replace("txt", "xml")
     if os.path.isfile(file_path):
@@ -58,24 +60,31 @@ def load_annotations(conn,pat_note_id, name, gold_path):
         tree = ET.parse(file_path)
         root = tree.getroot()
         for tags in root.findall('TAGS'):
-            logging.info(f"TAGS {tags}"  )
+            logging.info(f"TAGS {tags}")
             for tag in tags.iter():
-                if len( tag.keys() ) > 0 :
-                    logging.info(f"TAG  { tag.tag }  : { tag.attrib }" )
+                if len(tag.keys()) > 0:
+                    logging.info(f"TAG  {tag.tag}  : {tag.attrib}")
                     insert_sql = 'INSERT INTO pat_annotations ( pat_note_id, category, type, pos_id, start, stop, text) VALUES ( %s,%s, %s, %s, %s, %s, %s)  RETURNING id'
                     keys = tag.attrib.keys();
                     logging.info(f" KEYS for tag : {keys}")
                     # os.sys.exit(1)
-                    cur.execute(insert_sql, (pat_note_id, tag.attrib["TYPE"], tag.tag,tag.attrib['id'], tag.attrib['start'],tag.attrib['end'] ,tag.attrib['text']))
+                    cur.execute(insert_sql, (
+                    pat_note_id, tag.attrib["TYPE"], tag.tag, tag.attrib['id'], tag.attrib['start'], tag.attrib['end'],
+                    tag.attrib['text']))
                     conn.commit()
     else:
         logging.error(f"Annotation file not found for {file_path}")
         os.sys.exit(1)
 
+
 def import_data(conn, path, gold_path):
+    """
+    Create pat_notes and pat_annotation tables in the database if they don't exist and truncates them if they have data.
+
+    """
     cur = conn.cursor()
     create_sql_pat_notes = 'CREATE TABLE IF NOT EXISTS "i2b2_data"."public".pat_notes ( id SERIAL NOT NULL, file_name VARCHAR, note VARCHAR, PRIMARY KEY (id) )'
-    create_anno =          'CREATE TABLE IF NOT EXISTS "i2b2_data"."public".pat_annotations   ( id SERIAL NOT NULL, pat_note_id INTEGER, category CHARACTER VARYING,  type CHARACTER VARYING, pos_id  CHARACTER VARYING, START  NUMERIC,  STOP  NUMERIC, TEXT CHARACTER VARYING, CONSTRAINT patannotations_fk1 FOREIGN KEY (pat_note_id) REFERENCES "i2b2_data"."public"."pat_notes" ("id") )'
+    create_anno = 'CREATE TABLE IF NOT EXISTS "i2b2_data"."public".pat_annotations   ( id SERIAL NOT NULL, pat_note_id INTEGER, category CHARACTER VARYING,  type CHARACTER VARYING, pos_id  CHARACTER VARYING, START  NUMERIC,  STOP  NUMERIC, TEXT CHARACTER VARYING, CONSTRAINT patannotations_fk1 FOREIGN KEY (pat_note_id) REFERENCES "i2b2_data"."public"."pat_notes" ("id") )'
     res = cur.execute(create_sql_pat_notes)
     res = cur.execute(create_anno)
     conn.commit()
@@ -93,10 +102,10 @@ def import_data(conn, path, gold_path):
                 with open(entry, 'r') as f:
                     data = f.read()
                     insert_sql = 'insert into "i2b2_data"."public".pat_notes(file_name, note) values (%s, %s) RETURNING id'
-                    cur.execute(insert_sql, (entry.name,data,))
+                    cur.execute(insert_sql, (entry.name, data,))
                     row_id = cur.fetchone()[0]
                     logging.info(f"Inserted row {row_id} ")
-                    load_annotations(conn,row_id , entry.name, gold_path )
+                    load_annotations(conn, row_id, entry.name, gold_path)
                     conn.commit()
 
     cur.close()

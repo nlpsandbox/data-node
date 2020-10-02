@@ -1,4 +1,5 @@
 import os
+from abc import abstractmethod
 
 defaultValues = {
     "SQL_USER": "postgres",
@@ -10,7 +11,7 @@ defaultValues = {
 }
 
 
-class Config(object):
+class AbstractConfig(object):
     """
     Parent Class containing get_property to return the ENV variable of default value if not
     found.
@@ -28,7 +29,7 @@ class Config(object):
 
 
 
-class CD2HConfig(Config):
+class Config(AbstractConfig):
     """
     THis Class is ued to provide hard coded values to the application, first using environment variables
     and if not found,  defaulting to those values provided in the defaultValues dictionary above.

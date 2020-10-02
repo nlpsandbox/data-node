@@ -2,7 +2,7 @@
 
 import connexion
 from openapi_server import encoder
-from openapi_server.util.configuration import CD2HConfig as config
+from openapi_server.util.configuration import Config as config
 
 
 def main():

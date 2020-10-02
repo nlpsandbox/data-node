@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import psycopg2
 import psycopg2.extras
 
-from openapi_server.util.configuration import CD2HConfig as config
+from openapi_server.util.configuration import Config as config
 
 
 def load_config():

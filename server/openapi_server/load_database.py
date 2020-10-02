@@ -16,7 +16,7 @@ def populate_db():
     conn = db.get_connection_local_pg( values)
     # logging.info("Finished import ")
     if ( not os.path.isdir("/tmp/data/2014-i2b2-nlp-evaluation-data-txt") ):
-        logging.exception("Data not downloaded, run the main.py get_data first  ")
+        logging.exception("Data not downloaded, run the command : load_database.py get_data first  ")
         os.sys.exit(1)
     db.import_data(conn, "/tmp/data/2014-i2b2-nlp-evaluation-data-txt", "/tmp/data/testing-PHI-Gold-fixed")
 

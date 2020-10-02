@@ -7,20 +7,22 @@ import logging
 import os.path
 import os
 import xml.etree.ElementTree as ET
+from openapi_server.util.configuration import CD2HConfig as config
 
 
-def load_config(config_file="database.ini"):
+
+def load_config():
     """
-    Load the configuration file
+    Load the configuration file needed by the database from the config class
     :param config_file:
     :return:
     """
     db = {}
-    db['user'] = os.environ["SQL_USER"]
-    db['password'] = os.environ["SQL_PASSWORD"]
-    db['host'] = os.environ["SQL_HOST"]
-    db['database'] = os.environ["SQL_DB"]
-    db['port'] = os.environ["SQL_PORT"]
+    db['user'] = config().sql_user
+    db['password'] = config().sql_password
+    db['host'] = config().sql_host
+    db['database'] = config().sql_db
+    db['port'] = config().sql_port
 
     return db
 

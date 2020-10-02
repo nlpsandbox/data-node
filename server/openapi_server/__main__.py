@@ -2,6 +2,7 @@
 
 import connexion
 from openapi_server import encoder
+from openapi_server.util.configuration import CD2HConfig as config
 
 
 def main():
@@ -11,8 +12,9 @@ def main():
                 arguments={'title': '2014 i2b2 NLP Sandbox Data Node'},
                 pythonic_params=True)
 
-    # TODO: Read port from env vars
-    app.run(port=8080)
+    flask_port = config().flask_port
+    print(f"Starting on port  {flask_port}")
+    app.run(port=flask_port)
 
 
 if __name__ == '__main__':

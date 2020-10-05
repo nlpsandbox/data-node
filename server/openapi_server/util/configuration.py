@@ -7,7 +7,7 @@ defaultValues = {
     "SQL_DB": "i2b2_data",
     "SQL_HOST": "db",
     "SQL_PORT": 5432,
-    "FLASK_PORT":"8081"
+    "FLASK_PORT":"8080"
 }
 
 

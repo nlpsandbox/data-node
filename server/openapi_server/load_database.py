@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import click
-import os
+import o
 import db_connection as db
 import logging
 
@@ -21,4 +21,5 @@ def populate_db():
     db.import_data(conn, "/tmp/data/2014-i2b2-nlp-evaluation-data-txt", "/tmp/data/testing-PHI-Gold-fixed")
 
 if __name__ == "__main__":
+
     cli()

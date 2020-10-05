@@ -35,7 +35,7 @@ def dates_read_all( ):  # noqa: E501
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_anno = 'SELECT id, pat_note_id , start ,  stop - start as len, text, category, type from  i2b2_data.public.pat_annotations where category = \'DATE\' '
+    select_anno = 'SELECT id, noteid , start ,  stop - start as len, text, category, type from  i2b2_data.public.pat_annotations where category = \'DATE\' '
     cur.execute(select_anno  )
     all_rows = cur.fetchall()
     res = []

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-
 import click
-import o
-import db_connection as db
+import openapi_server.db_connection as db
 import logging
+import os
 
 @click.group()
 def cli():

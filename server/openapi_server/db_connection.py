@@ -9,6 +9,7 @@ import psycopg2.extras
 from openapi_server.util.configuration import Config
 
 
+
 def load_config():
     """
     Load the configuration file needed by the database from the config class

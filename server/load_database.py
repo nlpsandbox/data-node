@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-
 import click
-import os
-import db_connection as db
+import openapi_server.db_connection as db
 import logging
+import os
 
 @click.group()
 def cli():
@@ -21,4 +20,5 @@ def populate_db():
     db.import_data(conn, "/tmp/data/2014-i2b2-nlp-evaluation-data-txt", "/tmp/data/testing-PHI-Gold-fixed")
 
 if __name__ == "__main__":
+
     cli()

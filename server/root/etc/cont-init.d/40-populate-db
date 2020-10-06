@@ -3,4 +3,4 @@
 set -euo pipefail
 
 # Populate DB
-python /opt/app/openapi_server/load_database.py populate-db
+python /opt/app/load_database.py populate-db

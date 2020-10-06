@@ -89,8 +89,8 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: Dockerfile
+        context: server
+        file: server/Dockerfile
         platforms: linux/amd64
         push: ${{ steps.prep.outputs.push }}
         tags: ${{ steps.prep.outputs.tags }}

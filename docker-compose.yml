@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
   db:
-    build:
-      context: db
-      dockerfile: Dockerfile
+    image: nlpsandbox/postgres:1.0.0
     container_name: data-node-db
     restart: always
     environment:
@@ -17,6 +15,7 @@ services:
     - ${SQL_PORT}:5432
 
   api:
+    image: nlpsandbox/data-node-i2b2-2014:0.1.0
     build:
       context: server
       dockerfile: Dockerfile
@@ -40,4 +39,3 @@ services:
 
 volumes:
     database-data:
-

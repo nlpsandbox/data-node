@@ -1,5 +1,5 @@
 from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.date_annotation import DateAnnotation  # noqa: E501
+# from openapi_server.models.date_annotation import DateAnnotation  # noqa: E501
 # from openapi_server.models.page_response import PageResponse  # noqa: E501
 # from openapi_server.models.user import User
 import openapi_server.db_connection as db

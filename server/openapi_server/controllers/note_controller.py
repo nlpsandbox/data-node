@@ -6,7 +6,6 @@ from openapi_server.models.note import Note  # noqa: E501
 from openapi_server.models.page_response import PageResponse  # noqa: E501
 from openapi_server import util
 import openapi_server.db_connection as db
-import logging
 import os
 import json
 from flask import jsonify, make_response
@@ -51,7 +50,6 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
     """
     counter = 0
     res = []
-    logging.info(f"notes_read_all")
     #if connexion.request.is_json:
     # limit =  AnyType.from_dict(connexion.request.get_json())
     values = db.load_config()
@@ -59,7 +57,6 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
     select_notes = 'SELECT id, text from  i2b2_data.public.pat_notes'
-    logging.info(f"query of {select_notes} with a limit of {limit}")
     cur.execute(select_notes)
     all_rows = cur.fetchall()
     counter= len(all_rows)

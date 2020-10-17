@@ -24,10 +24,17 @@ def notes_read(id_):  # noqa: E501
     values = db.load_config()
 
     conn = db.get_connection_local_pg(values)
-    cur = conn.cursor()
+    cursor = conn.cursor()
     select_notes = 'SELECT id, text from i2b2_data.public.pat_notes where id = %s'
-    cur.execute(select_notes, (id_,))
-    row = cur.fetchone()
+
+    cursor.execute(select_notes, (id_,))
+    row = cursor.fetchone()
+
+    if row == None:
+        return jsonify({
+            'title': "The specified resource was not found",
+            'status': 404
+        })
 
     return jsonify({'id': row[0], 'text': row[1]})
 

@@ -1,11 +1,9 @@
-import connexion
-import six
-import os
-import json
-from flask import jsonify
-from openapi_server.models.note import Note  # noqa: E501
-from openapi_server import util
+from openapi_server.models.error import Error  # noqa: E501
+# from openapi_server.models.note import Note  # noqa: E501
+# from openapi_server.models.page_response import PageResponse  # noqa: E501
 import openapi_server.db_connection as db
+from flask import jsonify
+from openapi_server.util.configuration import Config
 
 
 def notes_read(id_):  # noqa: E501
@@ -18,60 +16,72 @@ def notes_read(id_):  # noqa: E501
 
     :rtype: Note
     """
-    values = db.load_config()
+    res = None
+    try:
+        values = db.load_config()
 
-    conn = db.get_connection_local_pg(values)
-    cur = conn.cursor()
-    select_notes = 'SELECT id, filename, text from i2b2_data.public.pat_notes where id = %s'
-    cur.execute(select_notes, (id_,))
-    all_rows = cur.fetchall()
-    res = []
-    for row in all_rows:
-        id = row[0]
-        dict = {'id': id, 'fileName': row[1], 'text': row[2]}
-        res.append(dict)
+        conn = db.get_connection_local_pg(values)
+        cursor = conn.cursor()
+        select_notes = "SELECT id, text from i2b2_data.public.pat_notes " \
+            "where id = %s"
 
-    return jsonify(items=res)
+        cursor.execute(select_notes, (id_,))
+        row = cursor.fetchone()
+
+        if row is None:
+            res = Error(None, "The specified resource was not found", 404)
+        else:
+            res = {'id': row[0], 'text': row[1]}
+    except Exception as error:
+        res = Error(None, "Internal error", 500, str(error))
+    finally:
+        cursor.close()
+        conn.close()
+
+    return jsonify(res)
 
 
-def notes_read_all():  # noqa: E501
+def notes_read_all(limit=None, offset=None):  # noqa: E501
     """Get all clinical notes
 
     Returns the clinical notes # noqa: E501
 
+    :param limit: Maximum number of results returned
+    :type limit: int
+    :param offset: Index of the first result that must be returned
+    :type offset: int
 
-    :rtype: List[Note]
+    :rtype: PageResponse
     """
-    values = db.load_config()
+    res = None
+    try:
+        items = []
+        values = db.load_config()
 
-    conn = db.get_connection_local_pg(values)
-    cur = conn.cursor()
-    select_notes = 'SELECT id, filename, text from  i2b2_data.public.pat_notes'
-    cur.execute(select_notes)
-    all_rows = cur.fetchall()
-    counter= len(all_rows)
-    res = [ ]
-    for row in all_rows:
-        id = row[0]
-        dict = { 'id': id , 'fileName' : row[1], 'text':row[2] }
-        res.append( dict )
+        conn = db.get_connection_local_pg(values)
+        cursor = conn.cursor()
+        select_notes = "SELECT id, text from i2b2_data.public.pat_notes " \
+            " LIMIT %s OFFSET %s"
+        cursor.execute(select_notes, (limit, offset))
+        all_rows = cursor.fetchall()
+        # counter= len(all_rows)
 
+        for row in all_rows:
+            id = row[0]
+            dict = {'id': id, 'text': row[1]}
+            items.append(dict)
 
-    return jsonify(count=counter, items=res)
+        # Set next url to empty if this is the last page
+        next = ""
+        if len(all_rows) == limit:
+            next = "%s/notes?limit=%s&offset=%s" % \
+                (Config().server_api_url, limit, offset + limit)
 
+        res = {'links': next, 'items': items}
+    except Exception as error:
+        res = Error(None, "Internal error", 500, str(error))
+    finally:
+        cursor.close()
+        conn.close()
 
-def notes_update(id, note):  # noqa: E501
-    """Update a clinical note by ID
-
-    This can only be done by the logged in user. # noqa: E501
-
-    :param id: Updates the clinical note for a given ID
-    :type id: str
-    :param note: Updated clinical note
-    :type note: dict | bytes
-
-    :rtype: None
-    """
-    if connexion.request.is_json:
-        note = Note.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    return jsonify(res)

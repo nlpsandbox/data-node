@@ -2,7 +2,8 @@ openapi: 3.0.2
 info:
   contact:
     email: thomas.schaffter@sagebionetworks.org
-    url: https://data2health.github.io/nlp-sandbox-data-node-schemas
+    name: The NLP Sandbox Team
+    url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas
   description: |
     The OpenAPI specification implemented by NLP Sandbox Data Nodes.
     # Overview
@@ -10,11 +11,11 @@ info:
     For the sake of benchmarking NLP Tool, a Data Node can also give access to the gold standard that the NLP Tool is expected to infer (e.g. annotations).
   license:
     name: Apache 2.0
-    url: https://github.com/data2health/nlp-sandbox/blob/master/LICENSE
-  title: NLP Sandbox Data Node Schemas
-  version: 1.0.0
+    url: https://github.com/Sage-Bionetworks/nlp-sandbox/blob/main/LICENSE
+  title: NLP Sandbox Data Node API
+  version: 0.1.4
   x-logo:
-    url: https://data2health.github.io/nlp-sandbox-data-node-schemas/docs/logo.png
+    url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas/logo.png
 servers:
 - url: http://example.com/api/v1
 - url: https://example.com/api/v1
@@ -26,17 +27,53 @@ paths:
     get:
       description: Returns the date annotations
       operationId: dates_read_all
+      parameters:
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/DateAnnotation'
-                type: array
+                allOf:
+                - $ref: '#/components/schemas/PageResponse'
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/DateAnnotation'
+                    type: array
+                type: object
           description: Success
         "403":
-          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
       summary: Get all date annotations
       tags:
       - Date
@@ -53,9 +90,17 @@ paths:
                 $ref: '#/components/schemas/Health'
           description: Success
         "403":
-          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
         "404":
-          description: Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
       summary: Get Health
       tags:
       - Health
@@ -64,19 +109,53 @@ paths:
     get:
       description: Returns the clinical notes
       operationId: notes_read_all
+      parameters:
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Note'
-                type: array
+                allOf:
+                - $ref: '#/components/schemas/PageResponse'
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/Note'
+                    type: array
+                type: object
           description: Success
         "403":
-          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
         "404":
-          description: Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
       summary: Get all clinical notes
       tags:
       - Note
@@ -102,45 +181,42 @@ paths:
                 $ref: '#/components/schemas/Note'
           description: Success
         "403":
-          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
         "404":
-          description: Note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
       summary: Get a clinical note by ID
       tags:
       - Note
       x-openapi-router-controller: openapi_server.controllers.note_controller
-    put:
-      description: This can only be done by the logged in user.
-      operationId: notes_update
-      parameters:
-      - description: Updates the clinical note for a given ID
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Note'
-        description: Updated clinical note
-        required: true
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Invalid note supplied
-        "404":
-          description: Note not found
-      summary: Update a clinical note by ID
-      tags:
-      - Note
-      x-openapi-router-controller: openapi_server.controllers.note_controller
 components:
+  responses:
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Unauthorized
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: The specified resource was not found
   schemas:
+    PageResponse:
+      description: A page of results
+      properties:
+        links:
+          $ref: '#/components/schemas/PageResponse_links'
+      type: object
     Email:
       description: User email address
       example: john.smith@example.com
@@ -189,32 +265,6 @@ components:
       required:
       - id
       type: object
-    Note:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      description: A clinical note
-      example:
-        fileName: 260-01.xml
-        text: October 3, Ms Chloe Price met with...
-        type: pathology
-      properties:
-        text:
-          description: The content of the note
-          example: October 3, Ms Chloe Price met with...
-          type: string
-        fileName:
-          description: The filename of the source note
-          example: 260-01.xml
-          type: string
-        type:
-          description: The note type
-          enum:
-          - pathology
-          - phone_call
-          type: string
-      required:
-      - text
-      type: object
     Annotation:
       allOf:
       - $ref: '#/components/schemas/Entity'
@@ -241,12 +291,29 @@ components:
       allOf:
       - $ref: '#/components/schemas/Annotation'
       description: A date annotation in a text
-      example:
-        dateFormat: dateFormat
       properties:
-        dateFormat:
+        format:
           description: Date format (ISO 8601)
           type: string
+      type: object
+    Error:
+      properties:
+        type:
+          description: An absolute URI that identifies the problem type
+          type: string
+        title:
+          description: A human readable documentation for the problem type
+          type: string
+        status:
+          description: The HTTP status code
+          type: integer
+        detail:
+          description: A human readable explanation specific to this occurrence of
+            the problem
+          type: string
+      required:
+      - status
+      - title
       type: object
     Health:
       example:
@@ -259,3 +326,40 @@ components:
           - warn
           type: string
       type: object
+    PatientPublicId:
+      description: The patient public ID
+      example: 4f6cf35x-2c4y-483z-a0a9-158621f77a21
+      maxLength: 50
+      type: string
+    Note:
+      allOf:
+      - $ref: '#/components/schemas/Entity'
+      description: A clinical note
+      example:
+        text: On March 11, Ms Chloe Price met with her family.
+        type: pathology
+        patientPublicId: ""
+      properties:
+        text:
+          description: The content of the note
+          example: On March 11, Ms Chloe Price met with her family.
+          type: string
+        patientPublicId:
+          allOf:
+          - $ref: '#/components/schemas/PatientPublicId'
+        type:
+          description: The note type
+          enum:
+          - pathology
+          - phone_call
+          type: string
+      required:
+      - text
+      type: object
+    PageResponse_links:
+      description: Links to navigate to different pages of results
+      properties:
+        next:
+          description: Link to the enxt page of results
+          format: uri
+          type: string

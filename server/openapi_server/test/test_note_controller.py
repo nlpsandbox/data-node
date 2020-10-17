@@ -4,9 +4,9 @@ from __future__ import absolute_import
 import unittest
 
 from flask import json
-from six import BytesIO
+# from six import BytesIO
 
-from openapi_server.models.note import Note  # noqa: E501
+# from openapi_server.models.note import Note  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
@@ -18,7 +18,7 @@ class TestNoteController(BaseTestCase):
 
         Get a clinical note by ID
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -33,7 +33,7 @@ class TestNoteController(BaseTestCase):
 
         Get all clinical notes
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -49,11 +49,11 @@ class TestNoteController(BaseTestCase):
         Update a clinical note by ID
         """
         note = {
-  "fileName" : "260-01.xml",
-  "text" : "October 3, Ms Chloe Price met with...",
-  "type" : "pathology"
-}
-        headers = { 
+            "fileName": "260-01.xml",
+            "text": "October 3, Ms Chloe Price met with...",
+            "type": "pathology"
+        }
+        headers = {
             'Content-Type': 'application/json',
         }
         response = self.client.open(

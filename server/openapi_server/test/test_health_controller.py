@@ -3,10 +3,10 @@
 from __future__ import absolute_import
 import unittest
 
-from flask import json
-from six import BytesIO
+# from flask import json
+# from six import BytesIO
 
-from openapi_server.models.health import Health  # noqa: E501
+# from openapi_server.models.health import Health  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
@@ -18,7 +18,7 @@ class TestHealthController(BaseTestCase):
 
         Get Health
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

@@ -27,13 +27,9 @@ def notes_read(id_):  # noqa: E501
     cur = conn.cursor()
     select_notes = 'SELECT id, text from i2b2_data.public.pat_notes where id = %s'
     cur.execute(select_notes, (id_,))
-    all_rows = cur.fetchall()
-    res = []
-    for row in all_rows:
-        dict = {'id': row[0], 'text': row[1]}
-        res.append(dict)
+    row = cur.fetchone()
 
-    return jsonify(items=res)
+    return jsonify({'id': row[0], 'text': row[1]})
 
 
 def notes_read_all(limit=None, offset=None):  # noqa: E501

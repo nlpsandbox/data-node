@@ -31,9 +31,9 @@ def main():
                 arguments={'title': '2014 i2b2 NLP Sandbox Data Node'},
                 pythonic_params=True)
 
-    flask_port = config().flask_port
-    print(f"Starting on port  {flask_port}")
-    app.run(port=flask_port)
+    server_port = config().server_port
+    print(f"Starting on port  {server_port}")
+    app.run(port=server_port)
     app.app.logger.warning("Stopping of Server...")
 
 

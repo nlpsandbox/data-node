@@ -7,7 +7,7 @@ defaultValues = {
     "SQL_DB": "i2b2_data",
     "SQL_HOST": "db",
     "SQL_PORT": 5432,
-    "FLASK_PORT": "8080"
+    "SERVER_PORT": "8080"
 }
 
 
@@ -37,8 +37,8 @@ class Config(AbstractConfig):
     """
 
     @property
-    def flask_port(self):
-        return self.get_property('FLASK_PORT')
+    def server_port(self):
+        return self.get_property('SERVER_PORT')
 
     @property
     def sql_user(self):

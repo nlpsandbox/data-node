@@ -63,42 +63,35 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
 
     :rtype: PageResponse
     """
-    counter = 0
-    res = []
-    #if connexion.request.is_json:
-    # limit =  AnyType.from_dict(connexion.request.get_json())
-    values = db.load_config()
+    res = None
+    try:
+        counter = 0
+        items = []
+        #if connexion.request.is_json:
+        # limit =  AnyType.from_dict(connexion.request.get_json())
+        values = db.load_config()
 
-    conn = db.get_connection_local_pg(values)
-    cur = conn.cursor()
-    select_notes = 'SELECT id, text from i2b2_data.public.pat_notes LIMIT %s OFFSET %s'
-    cur.execute(select_notes, (limit, offset))
-    all_rows = cur.fetchall()
-    counter= len(all_rows)
+        conn = db.get_connection_local_pg(values)
+        cursor = conn.cursor()
+        select_notes = 'SELECT id, text from i2b2_data.public.pat_notes LIMIT %s OFFSET %s'
+        cursor.execute(select_notes, (limit, offset))
+        all_rows = cursor.fetchall()
+        counter= len(all_rows)
 
-    for row in all_rows:
-        id = row[0]
-        dict = { 'id': id , 'text':row[1] }
-        res.append( dict )
+        for row in all_rows:
+            id = row[0]
+            dict = { 'id': id , 'text':row[1] }
+            items.append( dict )
 
-    next = {"next" : "/api/v1/ui/#/Note/notes_read_all?limit=10" }
-    data = {'links': next, 'items': res}
-    # return jsonify(  data)
-    return make_response(json.dumps(data, indent=4) )
+        next = {"next" : "/api/v1/ui/#/Note/notes_read_all?limit=10" }
+        res = {'links': next, 'items': items}
+    except Exception as error:
+        res = {
+            'title': "Internal error",
+            'status': 500
+        }
+    finally:
+        cursor.close()
+        conn.close()
 
-
-def notes_update(id, note):  # noqa: E501
-    """Update a clinical note by ID
-
-    This can only be done by the logged in user. # noqa: E501
-
-    :param id: Updates the clinical note for a given ID
-    :type id: str
-    :param note: Updated clinical note
-    :type note: dict | bytes
-
-    :rtype: None
-    """
-    if connexion.request.is_json:
-        note = Note.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    return jsonify(res)

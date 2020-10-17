@@ -126,7 +126,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 10
+          default: 0
           minimum: 0
           type: integer
         style: form

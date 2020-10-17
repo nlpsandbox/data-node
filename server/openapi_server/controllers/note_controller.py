@@ -1,12 +1,15 @@
 import connexion
+import six
+
+from openapi_server.models.error import Error  # noqa: E501
+from openapi_server.models.note import Note  # noqa: E501
+from openapi_server.models.page_response import PageResponse  # noqa: E501
+from openapi_server import util
+import openapi_server.db_connection as db
+import logging
 import os
 import json
 from flask import jsonify, make_response
-from openapi_server.models.note import Note  # noqa: E501
-from openapi_server import util
-from openapi_server.models.page_response import PageResponse
-import openapi_server.db_connection as db
-import logging
 
 
 def notes_read(id_):  # noqa: E501
@@ -23,36 +26,39 @@ def notes_read(id_):  # noqa: E501
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_notes = 'SELECT id, filename, text from i2b2_data.public.pat_notes where id = %s'
+    select_notes = 'SELECT id, text from i2b2_data.public.pat_notes where id = %s'
     cur.execute(select_notes, (id_,))
     all_rows = cur.fetchall()
     res = []
     for row in all_rows:
-        id = row[0]
-        dict = {'id': id, 'fileName': row[1], 'text': row[2]}
+        dict = {'id': row[0], 'text': row[1]}
         res.append(dict)
 
     return jsonify(items=res)
 
 
-def notes_read_all(limit=None):  # noqa: E501
-    """Get all clinical notes , if limit not included in request it assumes the min count which is 10
+def notes_read_all(limit=None, offset=None):  # noqa: E501
+    """Get all clinical notes
 
     Returns the clinical notes # noqa: E501
 
-    :rtype: List[Note]
-    """
+    :param limit: Maximum number of results returned
+    :type limit: int
+    :param offset: Index of the first result that must be returned
+    :type offset: int
 
+    :rtype: PageResponse
+    """
     counter = 0
     res = []
-    logging.info(f"notes_read_all  ")
+    logging.info(f"notes_read_all")
     #if connexion.request.is_json:
     # limit =  AnyType.from_dict(connexion.request.get_json())
     values = db.load_config()
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_notes = 'SELECT id, filename, text from  i2b2_data.public.pat_notes'
+    select_notes = 'SELECT id, text from  i2b2_data.public.pat_notes'
     logging.info(f"query of {select_notes} with a limit of {limit}")
     cur.execute(select_notes)
     all_rows = cur.fetchall()
@@ -60,7 +66,7 @@ def notes_read_all(limit=None):  # noqa: E501
 
     for row in all_rows:
         id = row[0]
-        dict = { 'id': id , 'fileName' : row[1], 'text':row[2] }
+        dict = { 'id': id , 'text':row[1] }
         res.append( dict )
 
     next = {"next" : "/api/v1/ui/#/Note/notes_read_all?limit=10" }

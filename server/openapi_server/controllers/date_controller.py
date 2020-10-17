@@ -1,8 +1,8 @@
 import connexion
 import six
 
-from openapi_server.models.date_annotation import DateAnnotation  # noqa: E501
-from openapi_server.models.note import Note  # noqa: E501
+from openapi_server.models.error import Error  # noqa: E501
+from openapi_server.models.page_response import PageResponse  # noqa: E501
 from openapi_server import util
 from openapi_server.models.user import User
 import openapi_server.db_connection as db
@@ -11,29 +11,18 @@ import json
 import logging
 
 
-def dates_read_all():  # noqa: E501
+def dates_read_all(limit=None, offset=None):  # noqa: E501
     """Get all date annotations
 
     Returns the date annotations # noqa: E501
 
-    :param note: 
-    :type note: list | bytes
+    :param limit: Maximum number of results returned
+    :type limit: int
+    :param offset: Index of the first result that must be returned
+    :type offset: int
 
-    :rtype: List[DateAnnotation]
+    :rtype: PageResponse
     """
-    # if connexion.request.is_json:
-    #     note = [Note.from_dict(d) for d in connexion.request.get_json()]  # noqa: E501
-    # return 'do some magic!'
-
-    """Get a clinical note by ID
-
-     Returns the clinical note for a given ID # noqa: E501
-
-     :param id: The ID of the clinical note to fetch
-     :type id: str
-
-     :rtype: Note
-     """
     values = db.load_config()
 
     conn = db.get_connection_local_pg(values)

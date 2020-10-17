@@ -21,22 +21,34 @@ def notes_read(id_):  # noqa: E501
 
     :rtype: Note
     """
-    values = db.load_config()
+    res = None
+    try:
+        values = db.load_config()
 
-    conn = db.get_connection_local_pg(values)
-    cursor = conn.cursor()
-    select_notes = 'SELECT id, text from i2b2_data.public.pat_notes where id = %s'
+        conn = db.get_connection_local_pg(values)
+        cursor = conn.cursor()
+        select_notes = 'SELECT id, text from i2b2_data.public.pat_notes where id = %s'
 
-    cursor.execute(select_notes, (id_,))
-    row = cursor.fetchone()
+        cursor.execute(select_notes, (id_,))
+        row = cursor.fetchone()
 
-    if row == None:
-        return jsonify({
-            'title': "The specified resource was not found",
-            'status': 404
-        })
+        if row == None:
+            res = {
+                'title': "The specified resource was not found",
+                'status': 404
+            }
+        else:
+            res = {'id': row[0], 'text': row[1]}
+    except Exception as error:
+        res = {
+            'title': "Internal error",
+            'status': 500
+        }
+    finally:
+        cursor.close()
+        conn.close()
 
-    return jsonify({'id': row[0], 'text': row[1]})
+    return jsonify(res)
 
 
 def notes_read_all(limit=None, offset=None):  # noqa: E501

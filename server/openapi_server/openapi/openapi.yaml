@@ -44,6 +44,7 @@ paths:
         name: offset
         required: false
         schema:
+          default: 0
           minimum: 0
           type: integer
         style: form
@@ -125,6 +126,7 @@ paths:
         name: offset
         required: false
         schema:
+          default: 0
           minimum: 0
           type: integer
         style: form

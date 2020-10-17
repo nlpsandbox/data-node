@@ -7,6 +7,8 @@ defaultValues = {
     "SQL_DB": "i2b2_data",
     "SQL_HOST": "db",
     "SQL_PORT": 5432,
+    "SERVER_PROTOCOL": "http://",
+    "SERVER_DOMAIN": "localhost",
     "SERVER_PORT": "8080"
 }
 
@@ -37,8 +39,26 @@ class Config(AbstractConfig):
     """
 
     @property
+    def server_protocol(self):
+        return self.get_property('SERVER_PROTOCOL')
+
+    @property
+    def server_domain(self):
+        return self.get_property('SERVER_DOMAIN')
+
+    @property
     def server_port(self):
         return self.get_property('SERVER_PORT')
+
+    @property
+    def server_url(self):
+        return "%s%s:%s" % (self.server_protocol, self.server_domain,
+                            self.server_port)
+
+    @property
+    def server_api_url(self):
+        return "%s%s:%s%s" % (self.server_protocol, self.server_domain,
+                              self.server_port, "/api/v1")
 
     @property
     def sql_user(self):

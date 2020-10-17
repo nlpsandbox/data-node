@@ -3,6 +3,7 @@ from openapi_server.models.error import Error  # noqa: E501
 # from openapi_server.models.page_response import PageResponse  # noqa: E501
 import openapi_server.db_connection as db
 from flask import jsonify
+from openapi_server.util.configuration import Config
 
 
 def notes_read(id_):  # noqa: E501
@@ -70,7 +71,12 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
             dict = {'id': id, 'text': row[1]}
             items.append(dict)
 
-        next = {'next': "/api/v1/ui/#/Note/notes_read_all?limit=10"}
+        # Set next url to empty if this is the last page
+        next = ""
+        if len(all_rows) == limit:
+            next = "%s/notes?limit=%s&offset=%s" % \
+                (Config().server_api_url, limit, offset + limit)
+
         res = {'links': next, 'items': items}
     except Exception as error:
         res = Error(None, "Internal error", 500, str(error))

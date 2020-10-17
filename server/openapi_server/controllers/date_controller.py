@@ -4,6 +4,7 @@ from openapi_server.models.error import Error  # noqa: E501
 # from openapi_server.models.user import User
 import openapi_server.db_connection as db
 from flask import jsonify
+from openapi_server.util.configuration import Config
 
 
 def dates_read_all(limit=None, offset=None):  # noqa: E501
@@ -43,7 +44,12 @@ def dates_read_all(limit=None, offset=None):  # noqa: E501
             # items.append(DateAnnotation(id, row[1], row[2], row[3], row[4],
             #                             ''))
 
-        next = {"next": "/api/v1/ui/#/Date/dates_read_all?limit=10"}
+        # Set next url to empty if this is the last page
+        next = ""
+        if len(all_rows) == limit:
+            next = "%s/annotations/dates?limit=%s&offset=%s" % \
+                (Config().server_api_url, limit, offset + limit)
+
         res = {'links': next, 'items': items}
     except Exception as error:
         res = Error(None, "Internal error", 500, str(error))

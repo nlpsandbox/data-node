@@ -100,6 +100,8 @@ class Error(Model):
         :param title: The title of this Error.
         :type title: str
         """
+        if title is None:
+            raise ValueError("Invalid value for `title`, must not be `None`")  # noqa: E501
 
         self._title = title
 
@@ -123,6 +125,8 @@ class Error(Model):
         :param status: The status of this Error.
         :type status: int
         """
+        if status is None:
+            raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
 
         self._status = status
 

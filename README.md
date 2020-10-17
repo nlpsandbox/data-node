@@ -1,8 +1,9 @@
 # 2014 i2b2 NLP Sandbox Data Node
 
-[![GitHub Stars](https://img.shields.io/github/stars/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
-[![GitHub CI](https://img.shields.io/github/workflow/status/data2health/2014-i2b2-deid-db/ci.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
-[![GitHub License](https://img.shields.io/github/license/data2health/2014-i2b2-deid-db.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/data2health/2014-i2b2-deid-db)
+[![GitHub CI](https://img.shields.io/github/workflow/status/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014/ci.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014)
+[![GitHub Release](https://img.shields.io/github/release/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014.svg?include_prereleases&color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014/releases)
+[![Docker Pulls](https://img.shields.io/docker/pulls/nlpsandbox/data-node-i2b2-2014.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/nlpsandbox/data-node-i2b2-2014)
+[![GitHub License](https://img.shields.io/github/license/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/Sage-Bionetworks/nlp-sandbox-data-node-i2b2-2014)
 
 This NLP Sandbox Data Node contains the data from the [2014 i2b2 NLP De-identification Challenge].
 

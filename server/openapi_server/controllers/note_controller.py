@@ -56,8 +56,8 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
 
     conn = db.get_connection_local_pg(values)
     cur = conn.cursor()
-    select_notes = 'SELECT id, text from  i2b2_data.public.pat_notes'
-    cur.execute(select_notes)
+    select_notes = 'SELECT id, text from i2b2_data.public.pat_notes LIMIT %s OFFSET %s'
+    cur.execute(select_notes, (limit, offset))
     all_rows = cur.fetchall()
     counter= len(all_rows)
 

@@ -15,26 +15,36 @@ class Error(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, code=None, message=None):  # noqa: E501
+    def __init__(self, type=None, title=None, status=None, detail=None):  # noqa: E501
         """Error - a model defined in OpenAPI
 
-        :param code: The code of this Error.  # noqa: E501
-        :type code: str
-        :param message: The message of this Error.  # noqa: E501
-        :type message: str
+        :param type: The type of this Error.  # noqa: E501
+        :type type: str
+        :param title: The title of this Error.  # noqa: E501
+        :type title: str
+        :param status: The status of this Error.  # noqa: E501
+        :type status: int
+        :param detail: The detail of this Error.  # noqa: E501
+        :type detail: str
         """
         self.openapi_types = {
-            'code': str,
-            'message': str
+            'type': str,
+            'title': str,
+            'status': int,
+            'detail': str
         }
 
         self.attribute_map = {
-            'code': 'code',
-            'message': 'message'
+            'type': 'type',
+            'title': 'title',
+            'status': 'status',
+            'detail': 'detail'
         }
 
-        self._code = code
-        self._message = message
+        self._type = type
+        self._title = title
+        self._status = status
+        self._detail = detail
 
     @classmethod
     def from_dict(cls, dikt) -> 'Error':
@@ -48,47 +58,93 @@ class Error(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def code(self):
-        """Gets the code of this Error.
+    def type(self):
+        """Gets the type of this Error.
 
+        An absolute URI that identifies the problem type  # noqa: E501
 
-        :return: The code of this Error.
+        :return: The type of this Error.
         :rtype: str
         """
-        return self._code
+        return self._type
 
-    @code.setter
-    def code(self, code):
-        """Sets the code of this Error.
+    @type.setter
+    def type(self, type):
+        """Sets the type of this Error.
 
+        An absolute URI that identifies the problem type  # noqa: E501
 
-        :param code: The code of this Error.
-        :type code: str
+        :param type: The type of this Error.
+        :type type: str
         """
-        if code is None:
-            raise ValueError("Invalid value for `code`, must not be `None`")  # noqa: E501
 
-        self._code = code
+        self._type = type
 
     @property
-    def message(self):
-        """Gets the message of this Error.
+    def title(self):
+        """Gets the title of this Error.
 
+        A human readable documentation for the problem type  # noqa: E501
 
-        :return: The message of this Error.
+        :return: The title of this Error.
         :rtype: str
         """
-        return self._message
+        return self._title
 
-    @message.setter
-    def message(self, message):
-        """Sets the message of this Error.
+    @title.setter
+    def title(self, title):
+        """Sets the title of this Error.
 
+        A human readable documentation for the problem type  # noqa: E501
 
-        :param message: The message of this Error.
-        :type message: str
+        :param title: The title of this Error.
+        :type title: str
         """
-        if message is None:
-            raise ValueError("Invalid value for `message`, must not be `None`")  # noqa: E501
 
-        self._message = message
+        self._title = title
+
+    @property
+    def status(self):
+        """Gets the status of this Error.
+
+        The HTTP status code  # noqa: E501
+
+        :return: The status of this Error.
+        :rtype: int
+        """
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        """Sets the status of this Error.
+
+        The HTTP status code  # noqa: E501
+
+        :param status: The status of this Error.
+        :type status: int
+        """
+
+        self._status = status
+
+    @property
+    def detail(self):
+        """Gets the detail of this Error.
+
+        A human readable explanation specific to this occurrence of the problem  # noqa: E501
+
+        :return: The detail of this Error.
+        :rtype: str
+        """
+        return self._detail
+
+    @detail.setter
+    def detail(self, detail):
+        """Sets the detail of this Error.
+
+        A human readable explanation specific to this occurrence of the problem  # noqa: E501
+
+        :param detail: The detail of this Error.
+        :type detail: str
+        """
+
+        self._detail = detail

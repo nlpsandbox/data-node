@@ -21,6 +21,9 @@ services:
       dockerfile: Dockerfile
     container_name: data-node-api
     environment:
+      - SERVER_PROTOCOL
+      - SERVER_DOMAIN
+      - SERVER_PORT
       - SQL_USER
       - SQL_PASSWORD
       - SQL_HOST

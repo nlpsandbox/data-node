@@ -22,6 +22,8 @@ servers:
 tags:
 - description: Operations about clinical notes
   name: Note
+- description: Operations about API health
+  name: Health
 paths:
   /annotations/dates:
     get:

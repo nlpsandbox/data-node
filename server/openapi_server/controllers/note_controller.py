@@ -30,13 +30,13 @@ def notes_read(id_):  # noqa: E501
         row = cursor.fetchone()
 
         if row is None:
-            res = Error(None, "The specified resource was not found", 404)
             status = 404
+            res = Error(None, "The specified resource was not found", status)
         else:
             res = {'id': row[0], 'text': row[1]}
     except Exception as error:
-        res = Error(None, "Internal error", 500, str(error))
         status = 500
+        res = Error(None, "Internal error", status, str(error))
     finally:
         cursor.close()
         conn.close()
@@ -84,8 +84,8 @@ def notes_read_all(limit=None, offset=None):  # noqa: E501
 
         res = {'links': next, 'items': items}
     except Exception as error:
-        res = Error(None, "Internal error", 500, str(error))
         status = 500
+        res = Error(None, "Internal error", status, str(error))
     finally:
         cursor.close()
         conn.close()

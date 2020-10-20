@@ -20,6 +20,7 @@ def dates_read_all(limit=None, offset=None):  # noqa: E501
     :rtype: PageResponse
     """
     res = None
+    status = None
     try:
         values = db.load_config()
 
@@ -53,8 +54,9 @@ def dates_read_all(limit=None, offset=None):  # noqa: E501
         res = {'links': next, 'items': items}
     except Exception as error:
         res = Error(None, "Internal error", 500, str(error))
+        status = 500
     finally:
         cursor.close()
         conn.close()
 
-    return jsonify(res)
+    return jsonify(res), status

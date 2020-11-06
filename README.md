@@ -19,7 +19,7 @@ TBA
 
 1. Create the file that contains the future environment variables
 
-        cp .env.sample .env
+       cp .env.sample .env
 
 2. In *.env*, set the values of `SYNAPSE_USERNAME` and `SYNAPSE_APIKEY` with the
    credentials of a Synapse account. This information is required to enable the
@@ -28,11 +28,11 @@ TBA
 
 3. Export the variables defined in *.env* to environment variables
 
-        export $(grep -v '^#' .env | xargs -d '\n')
+       export $(grep -v '^#' .env | xargs -d '\n')
 
 4. Start the Data Node web service (RESP API)
 
-        docker-compose up
+       docker-compose up
 
 5. In your browser, go to the web service documentation page
    <http://localhost:8080/api/v1/ui/> to check that the web service of the Data

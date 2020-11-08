@@ -2,17 +2,19 @@ version: "3.8"
 
 services:
   db:
-    image: nlpsandbox/postgres:1.0.0
+    image: nlpsandbox/mongo:0.1.0
     container_name: data-node-db
     restart: always
     environment:
-      - POSTGRES_USER=${SQL_USER}
-      - POSTGRES_PASSWORD=${SQL_PASSWORD}
-      - POSTGRES_DB=${SQL_DB}
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_USERNAME
+      - MONGO_PASSWORD
     volumes:
-      - database-data:/var/lib/postgresql/data/
+      - database-data:/data/db
     ports:
-    - ${SQL_PORT}:5432
+      - "${MONGO_PORT}:27017"
 
   api:
     image: nlpsandbox/data-node-i2b2-2014:0.1.0
@@ -22,19 +24,14 @@ services:
     container_name: data-node-api
     environment:
       - SERVER_PROTOCOL
-      - SERVER_DOMAIN
+      - SERVER_HOST
       - SERVER_PORT
-      - SQL_USER
-      - SQL_PASSWORD
-      - SQL_HOST
-      - SQL_DB
-      - SQL_PORT
-      - SYNAPSE_USERNAME
-      - SYNAPSE_API_KEY
-      - DATA_SYNAPSE_ID
-      - DATA_MD5
-      - GOLDSTANDARD_SYNAPSE_ID
-      - GOLDSTANDARD_MD5
+      - DB_PROTOCOL
+      - DB_HOST
+      - DB_PORT
+      - DB_PATH
+      - DB_USER
+      - DB_PASSWORD
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:

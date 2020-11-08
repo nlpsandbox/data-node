@@ -1,11 +1,11 @@
-import connexion
-import six
+# import connexion
+# import six
 
-from openapi_server.models.error import Error  # noqa: E501
+# from openapi_server.models.error import Error  # noqa: E501
 # from openapi_server.models.one_of_stored_annotation_stored_date_annotation import OneOfStoredAnnotationStoredDateAnnotation  # noqa: E501
-from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
+# from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
 # from openapi_server.models.unknownbasetype import UNKNOWN_BASE_TYPE  # noqa: E501
-from openapi_server import util
+# from openapi_server import util
 
 
 def create_annotation(dataset_id, store_id, unknown_base_type=None):  # noqa: E501
@@ -22,8 +22,8 @@ def create_annotation(dataset_id, store_id, unknown_base_type=None):  # noqa: E5
 
     :rtype: OneOfStoredAnnotationStoredDateAnnotation
     """
-    if connexion.request.is_json:
-        unknown_base_type = UNKNOWN_BASE_TYPE.from_dict(connexion.request.get_json())  # noqa: E501
+    # if connexion.request.is_json:
+    #     unknown_base_type = UNKNOWN_BASE_TYPE.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

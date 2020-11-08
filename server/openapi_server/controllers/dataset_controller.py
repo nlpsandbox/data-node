@@ -1,10 +1,10 @@
-import connexion
-import six
+# import connexion
+# import six
 
-from openapi_server.models.dataset import Dataset  # noqa: E501
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-from openapi_server import util
+# from openapi_server.models.dataset import Dataset  # noqa: E501
+# from openapi_server.models.error import Error  # noqa: E501
+# from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
+# from openapi_server import util
 
 
 def create_dataset(dataset=None):  # noqa: E501
@@ -12,13 +12,13 @@ def create_dataset(dataset=None):  # noqa: E501
 
     Create a dataset with the name specified # noqa: E501
 
-    :param dataset: 
+    :param dataset:
     :type dataset: dict | bytes
 
     :rtype: Dataset
     """
-    if connexion.request.is_json:
-        dataset = Dataset.from_dict(connexion.request.get_json())  # noqa: E501
+    # if connexion.request.is_json:
+    #     dataset = Dataset.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

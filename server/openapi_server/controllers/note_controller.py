@@ -1,10 +1,10 @@
-import connexion
-import six
+# import connexion
+# import six
 
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.note import Note  # noqa: E501
-from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
-from openapi_server import util
+# from openapi_server.models.error import Error  # noqa: E501
+# from openapi_server.models.note import Note  # noqa: E501
+# from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
+# from openapi_server import util
 
 
 def create_note(dataset_id, store_id, note=None):  # noqa: E501
@@ -16,13 +16,13 @@ def create_note(dataset_id, store_id, note=None):  # noqa: E501
     :type dataset_id: str
     :param store_id: The ID of the store
     :type store_id: str
-    :param note: 
+    :param note:
     :type note: dict | bytes
 
     :rtype: Note
     """
-    if connexion.request.is_json:
-        note = Note.from_dict(connexion.request.get_json())  # noqa: E501
+    # if connexion.request.is_json:
+    #     note = Note.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

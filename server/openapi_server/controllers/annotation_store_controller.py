@@ -1,10 +1,10 @@
-import connexion
-import six
+# import connexion
+# import six
 
-from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
-from openapi_server import util
+# from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
+# from openapi_server.models.error import Error  # noqa: E501
+# from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
+# from openapi_server import util
 
 
 def create_annotation_store(dataset_id, annotation_store=None):  # noqa: E501
@@ -14,13 +14,13 @@ def create_annotation_store(dataset_id, annotation_store=None):  # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
-    :param annotation_store: 
+    :param annotation_store:
     :type annotation_store: dict | bytes
 
     :rtype: AnnotationStore
     """
-    if connexion.request.is_json:
-        annotation_store = AnnotationStore.from_dict(connexion.request.get_json())  # noqa: E501
+    # if connexion.request.is_json:
+    #     annotation_store = AnnotationStore.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

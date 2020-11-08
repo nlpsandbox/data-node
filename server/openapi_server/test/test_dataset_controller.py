@@ -6,68 +6,70 @@ import unittest
 from flask import json
 from six import BytesIO
 
+from openapi_server.models.dataset import Dataset  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.note import Note  # noqa: E501
-from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
+from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
-class TestNoteController(BaseTestCase):
-    """NoteController integration test stubs"""
+class TestDatasetController(BaseTestCase):
+    """DatasetController integration test stubs"""
 
-    def test_create_note(self):
-        """Test case for create_note
+    def test_create_dataset(self):
+        """Test case for create_dataset
 
-        Create a note linked to a dataset ID and store ID
+        Create a dataset
         """
-        note = null
+        dataset = {
+  "name" : "awesome-dataset"
+}
         headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets',
             method='POST',
             headers=headers,
-            data=json.dumps(note),
+            data=json.dumps(dataset),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_delete_note(self):
-        """Test case for delete_note
+    def test_delete_dataset(self):
+        """Test case for delete_dataset
 
-        Delete an note by ID
+        Delete a dataset by ID
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{id}'.format(id='id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_get_note(self):
-        """Test case for get_note
+    def test_get_dataset(self):
+        """Test case for get_dataset
 
-        Get a note by ID
+        Get a dataset by ID
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{id}'.format(id='id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_list_notes(self):
-        """Test case for list_notes
+    def test_list_datasets(self):
+        """Test case for list_datasets
 
-        Get all notes linked to a dataset ID and store ID
+        Get all datasets
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
@@ -75,7 +77,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets',
             method='GET',
             headers=headers,
             query_string=query_string)

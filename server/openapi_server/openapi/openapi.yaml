@@ -13,22 +13,32 @@ info:
     name: Apache 2.0
     url: https://github.com/Sage-Bionetworks/nlp-sandbox/blob/main/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.1.4
+  version: 0.1.6
   x-logo:
     url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas/logo.png
 servers:
 - url: http://example.com/api/v1
 - url: https://example.com/api/v1
 tags:
-- description: Operations about clinical notes
-  name: Note
-- description: Operations about API health
+- description: Operations about annotations
+  name: Annotation
+- description: Operations about annotation stores
+  name: AnnotationStore
+- description: Operations about datasets
+  name: Dataset
+- description: Operations about service health
   name: Health
+- description: Operations about note stores
+  name: NoteStore
+- description: Operations about notes
+  name: Note
+- description: Operations about NLP services
+  name: Service
 paths:
-  /annotations/dates:
+  /datasets:
     get:
-      description: Returns the date annotations
-      operationId: dates_read_all
+      description: Returns the datasets
+      operationId: list_datasets
       parameters:
       - description: Maximum number of results returned
         explode: true
@@ -37,6 +47,7 @@ paths:
         required: false
         schema:
           default: 10
+          maximum: 100
           minimum: 10
           type: integer
         style: form
@@ -55,14 +66,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: '#/components/schemas/PageResponse'
-                properties:
-                  items:
-                    items:
-                      $ref: '#/components/schemas/DateAnnotation'
-                    type: array
-                type: object
+                $ref: '#/components/schemas/PageOfDatasets'
           description: Success
         "403":
           content:
@@ -76,10 +80,920 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get all date annotations
+      summary: Get all datasets
       tags:
-      - Date
-      x-openapi-router-controller: openapi_server.controllers.date_controller
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+    post:
+      description: Create a dataset with the name specified
+      operationId: create_dataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a dataset
+      tags:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+  /datasets/{datasetId}/annotationStore:
+    get:
+      description: Returns the annotation stores for a given dataset ID
+      operationId: list_annotation_stores
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfAnnotationStores'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get all annotation stores by dataset ID
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+    post:
+      description: Create an annotation store with the name specified
+      operationId: create_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnotationStore'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create an annotation store linked to a dataset ID
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+  /datasets/{datasetId}/annotationStore/{id}:
+    delete:
+      description: Deletes the annotation store for a given ID
+      operationId: delete_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete an annotation store by ID
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+    get:
+      description: Returns the annotation store for a given ID
+      operationId: get_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get an annotation store by ID
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+  /datasets/{datasetId}/annotationStore/{storeId}/annotations:
+    get:
+      description: Returns the annotations for a given dataset ID and store ID
+      operationId: list_annotations
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfAnnotations'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get all annotations linked to a dataset ID and store ID
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+    post:
+      description: Create an annotation
+      operationId: create_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/StoredAnnotation'
+              - $ref: '#/components/schemas/StoredDateAnnotation'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/StoredAnnotation'
+                - $ref: '#/components/schemas/StoredDateAnnotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create an annotation linked to a dataset ID and store ID
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+  /datasets/{datasetId}/annotationStore/{storeId}/annotations/{id}:
+    delete:
+      description: Deletes the annotation for a given ID
+      operationId: delete_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the dataset to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/StoredAnnotation'
+                - $ref: '#/components/schemas/StoredDateAnnotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete an annotation by ID
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+    get:
+      description: Returns the annotation for a given ID
+      operationId: get_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation to fetch
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/StoredAnnotation'
+                - $ref: '#/components/schemas/StoredDateAnnotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get an annotation by ID
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+  /datasets/{datasetId}/noteStore:
+    get:
+      description: Returns the note stores for a given dataset ID
+      operationId: list_note_stores
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfNoteStores'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get all note stores by dataset ID
+      tags:
+      - NoteStore
+      x-openapi-router-controller: openapi_server.controllers.note_store_controller
+    post:
+      description: Create a note store with the name specified
+      operationId: create_note_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteStore'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a note store linked to a dataset ID
+      tags:
+      - NoteStore
+      x-openapi-router-controller: openapi_server.controllers.note_store_controller
+  /datasets/{datasetId}/noteStore/{id}:
+    delete:
+      description: Deletes the note store for a given ID
+      operationId: delete_note_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note store
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete a note store by ID
+      tags:
+      - NoteStore
+      x-openapi-router-controller: openapi_server.controllers.note_store_controller
+    get:
+      description: Returns the note store for a given ID
+      operationId: get_note_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note store
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a note store by ID
+      tags:
+      - NoteStore
+      x-openapi-router-controller: openapi_server.controllers.note_store_controller
+  /datasets/{datasetId}/noteStore/{storeId}/notes:
+    get:
+      description: Returns the notes for a given dataset ID and store ID
+      operationId: list_notes
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfNotes'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get all notes linked to a dataset ID and store ID
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+    post:
+      description: Create a note
+      operationId: create_note
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a note linked to a dataset ID and store ID
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+  /datasets/{datasetId}/noteStore/{storeId}/notes/{id}:
+    delete:
+      description: Deletes the note for a given ID
+      operationId: delete_note
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete an note by ID
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+    get:
+      description: Returns the note for a given ID
+      operationId: get_note
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the store
+        explode: false
+        in: path
+        name: storeId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a note by ID
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+  /datasets/{id}:
+    delete:
+      description: Deletes the dataset for a given ID
+      operationId: delete_dataset
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete a dataset by ID
+      tags:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+    get:
+      description: Returns the dataset for a given ID
+      operationId: get_dataset
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a dataset by ID
+      tags:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
   /health:
     get:
       description: Get the health of the API
@@ -107,44 +1021,16 @@ paths:
       tags:
       - Health
       x-openapi-router-controller: openapi_server.controllers.health_controller
-  /notes:
+  /service:
     get:
-      description: Returns the clinical notes
-      operationId: notes_read_all
-      parameters:
-      - description: Maximum number of results returned
-        explode: true
-        in: query
-        name: limit
-        required: false
-        schema:
-          default: 10
-          minimum: 10
-          type: integer
-        style: form
-      - description: Index of the first result that must be returned
-        explode: true
-        in: query
-        name: offset
-        required: false
-        schema:
-          default: 0
-          minimum: 0
-          type: integer
-        style: form
+      description: Get information about the service
+      operationId: service
       responses:
         "200":
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: '#/components/schemas/PageResponse'
-                properties:
-                  items:
-                    items:
-                      $ref: '#/components/schemas/Note'
-                    type: array
-                type: object
+                $ref: '#/components/schemas/Service'
           description: Success
         "403":
           content:
@@ -158,46 +1044,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get all clinical notes
+      summary: Get service information
       tags:
-      - Note
-      x-openapi-router-controller: openapi_server.controllers.note_controller
-  /notes/{id}:
-    get:
-      description: Returns the clinical note for a given ID
-      operationId: notes_read
-      parameters:
-      - description: The ID of the clinical note to fetch
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Note'
-          description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
-      summary: Get a clinical note by ID
-      tags:
-      - Note
-      x-openapi-router-controller: openapi_server.controllers.note_controller
+      - Service
+      x-openapi-router-controller: openapi_server.controllers.service_controller
 components:
   responses:
     Unauthorized:
@@ -216,65 +1066,84 @@ components:
     PageResponse:
       description: A page of results
       properties:
+        offset:
+          description: Index of the first result that must be returned
+          type: integer
+        limit:
+          description: Maximum number of results returned
+          type: integer
         links:
           $ref: '#/components/schemas/PageResponse_links'
-      type: object
-    Email:
-      description: User email address
-      example: john.smith@example.com
-      format: test
-      type: string
-    User:
-      properties:
-        username:
-          example: John78
-          minLength: 4
-          type: string
-        firstName:
-          example: John
-          type: string
-        lastName:
-          example: Smith
-          type: string
-        email:
-          description: User email address
-          example: john.smith@example.com
-          format: test
-          type: string
       required:
-      - email
-      - firstName
-      - lastName
-      - username
+      - limit
+      - links
+      - offset
       type: object
-    Entity:
+    Dataset:
+      description: A dataset
+      example:
+        name: awesome-dataset
       properties:
-        id:
-          description: ID
+        name:
+          description: The name of the dataset
+          example: awesome-dataset
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+      type: object
+    PageOfDatasets:
+      allOf:
+      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/PageOfDatasets_allOf'
+      description: A page of datasets
+      type: object
+    Error:
+      description: Problem details (tools.ietf.org/html/rfc7807)
+      properties:
+        title:
+          description: A human readable documentation for the problem type
+          type: string
+        status:
+          description: The HTTP status code
           type: integer
-        createdBy:
-          $ref: '#/components/schemas/User'
-        createdAt:
-          description: When the entity has been created
-          format: date-time
+        detail:
+          description: A human readable explanation specific to this occurrence of
+            the problem
           type: string
-        updatedBy:
-          $ref: '#/components/schemas/User'
-        updatedAt:
-          description: When the entity has been updated
-          format: date-time
+        type:
+          description: An absolute URI that identifies the problem type
           type: string
       required:
-      - id
+      - status
+      - title
+      type: object
+    AnnotationStore:
+      description: An annotation store
+      example:
+        name: awesome-annotation-store
+        datasetId: datasetId
+      properties:
+        name:
+          description: The name of the store
+          example: awesome-annotation-store
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        datasetId:
+          description: The ID of the dataset
+          type: string
+      type: object
+    PageOfAnnotationStores:
+      allOf:
+      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
+      description: A page of annotation stores
       type: object
     Annotation:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
       description: An annotation in a text
       properties:
-        noteId:
-          description: The note ID
-          type: integer
         start:
           description: The position of the first character
           type: integer
@@ -286,38 +1155,85 @@ components:
           type: string
       required:
       - length
-      - noteId
       - start
+      type: object
+    StoredAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/Annotation'
+      - $ref: '#/components/schemas/StoredAnnotation_allOf'
+      description: A annotation in a text
+      # required:
+      # - noteId
       type: object
     DateAnnotation:
       allOf:
       - $ref: '#/components/schemas/Annotation'
+      - $ref: '#/components/schemas/DateAnnotation_allOf'
       description: A date annotation in a text
+      type: object
+    StoredDateAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/DateAnnotation'
+      - $ref: '#/components/schemas/StoredAnnotation_allOf'
+      description: A date annotation in a text
+      # required:
+      # - noteId
+      type: object
+    PageOfAnnotations:
+      allOf:
+      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/PageOfAnnotations_allOf'
+      description: A page of annotations
+      type: object
+    NoteStore:
+      description: A note store
+      example:
+        name: awesome-note-store
+        datasetId: datasetId
       properties:
-        format:
-          description: Date format (ISO 8601)
+        name:
+          description: The name of the store
+          example: awesome-note-store
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        datasetId:
+          description: The ID of the dataset
           type: string
       type: object
-    Error:
+    PageOfNoteStores:
+      allOf:
+      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/PageOfNoteStores_allOf'
+      description: A page of note stores
+      type: object
+    Text:
+      description: A text
       properties:
-        type:
-          description: An absolute URI that identifies the problem type
-          type: string
-        title:
-          description: A human readable documentation for the problem type
-          type: string
-        status:
-          description: The HTTP status code
-          type: integer
-        detail:
-          description: A human readable explanation specific to this occurrence of
-            the problem
+        text:
+          description: A text
+          example: This is a text.
           type: string
       required:
-      - status
-      - title
+      - text
+      type: object
+    Note:
+      allOf:
+      - $ref: '#/components/schemas/Text'
+      - $ref: '#/components/schemas/Note_allOf'
+      description: A clinical note
+      # required:
+      # - name
+      type: object
+    PageOfNotes:
+      allOf:
+      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/PageOfNotes_allOf'
+      description: A page of notes
       type: object
     Health:
+      description: Information about the health of the service
       example:
         status: pass
       properties:
@@ -328,40 +1244,122 @@ components:
           - warn
           type: string
       type: object
-    PatientPublicId:
-      description: The patient public ID
-      example: 4f6cf35x-2c4y-483z-a0a9-158621f77a21
-      maxLength: 50
-      type: string
-    Note:
-      allOf:
-      - $ref: '#/components/schemas/Entity'
-      description: A clinical note
+    Service:
+      description: Information about an NLP service
       example:
-        text: On March 11, Ms Chloe Price met with her family.
-        type: pathology
-        patientPublicId: ""
+        license: Apache-2.0
+        authorEmail: author@example.com
+        author: Example Author
+        name: awesome-date-annotator
+        description: An awesome Date Annotator based on regex patterns
+        repository: github:awesome-org/awesome-date-annotator
+        version: 1.0.0
+        url: https://openapi-generator.tech
       properties:
-        text:
-          description: The content of the note
-          example: On March 11, Ms Chloe Price met with her family.
+        name:
+          description: The service name
+          example: awesome-date-annotator
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
-        patientPublicId:
-          allOf:
-          - $ref: '#/components/schemas/PatientPublicId'
-        type:
-          description: The note type
-          enum:
-          - pathology
-          - phone_call
+        version:
+          description: The version of the service (SemVer string)
+          example: 1.0.0
+          minLength: 1
+          pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
           type: string
-      required:
-      - text
+        license:
+          description: The license of this service (spdx.org/licenses Identifier)
+          example: Apache-2.0
+          type: string
+        repository:
+          description: The place where the code lives
+          example: github:awesome-org/awesome-date-annotator
+          type: string
+        description:
+          description: A short, one-sentence summary of the service
+          example: An awesome Date Annotator based on regex patterns
+          maxLength: 100
+          type: string
+        author:
+          description: The author of the service
+          example: Example Author
+          type: string
+        authorEmail:
+          description: The email address of the author
+          example: author@example.com
+          format: email
+          type: string
+        url:
+          description: The URL to the homepage of the service
+          format: uri
+          type: string
       type: object
     PageResponse_links:
       description: Links to navigate to different pages of results
       properties:
         next:
-          description: Link to the enxt page of results
+          description: Link to the next page of results
           format: uri
           type: string
+    PageOfDatasets_allOf:
+      properties:
+        items:
+          description: An array of datasets
+          items:
+            $ref: '#/components/schemas/Dataset'
+          type: array
+    PageOfAnnotationStores_allOf:
+      properties:
+        items:
+          description: An array of annotation stores
+          items:
+            $ref: '#/components/schemas/AnnotationStore'
+          type: array
+    StoredAnnotation_allOf:
+      properties:
+        noteId:
+          description: The ID of the note the annotation is from
+          type: string
+    DateAnnotation_allOf:
+      properties:
+        format:
+          description: Date format (ISO 8601)
+          type: string
+    PageOfAnnotations_allOf:
+      properties:
+        items:
+          description: An array of annotations
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/StoredAnnotation'
+            - $ref: '#/components/schemas/StoredDateAnnotation'
+          type: array
+    PageOfNoteStores_allOf:
+      properties:
+        items:
+          description: An array of note stores
+          items:
+            $ref: '#/components/schemas/NoteStore'
+          type: array
+    Note_allOf:
+      properties:
+        name:
+          description: The name of the note
+          example: awesome-note
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        type:
+          description: The note type (LOINC concept)
+          example: loinc:LP29684-5
+          type: string
+    PageOfNotes_allOf:
+      properties:
+        items:
+          description: An array of notes
+          items:
+            $ref: '#/components/schemas/Note'
+          type: array

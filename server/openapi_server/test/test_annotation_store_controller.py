@@ -6,68 +6,71 @@ import unittest
 from flask import json
 from six import BytesIO
 
+from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.note import Note  # noqa: E501
-from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
+from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
-class TestNoteController(BaseTestCase):
-    """NoteController integration test stubs"""
+class TestAnnotationStoreController(BaseTestCase):
+    """AnnotationStoreController integration test stubs"""
 
-    def test_create_note(self):
-        """Test case for create_note
+    def test_create_annotation_store(self):
+        """Test case for create_annotation_store
 
-        Create a note linked to a dataset ID and store ID
+        Create an annotation store linked to a dataset ID
         """
-        note = null
+        annotation_store = {
+  "name" : "awesome-annotation-store",
+  "datasetId" : "datasetId"
+}
         headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStore'.format(dataset_id='dataset_id_example'),
             method='POST',
             headers=headers,
-            data=json.dumps(note),
+            data=json.dumps(annotation_store),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_delete_note(self):
-        """Test case for delete_note
+    def test_delete_annotation_store(self):
+        """Test case for delete_annotation_store
 
-        Delete an note by ID
+        Delete an annotation store by ID
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStore/{id}'.format(dataset_id='dataset_id_example', id='id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_get_note(self):
-        """Test case for get_note
+    def test_get_annotation_store(self):
+        """Test case for get_annotation_store
 
-        Get a note by ID
+        Get an annotation store by ID
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStore/{id}'.format(dataset_id='dataset_id_example', id='id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_list_notes(self):
-        """Test case for list_notes
+    def test_list_annotation_stores(self):
+        """Test case for list_annotation_stores
 
-        Get all notes linked to a dataset ID and store ID
+        Get all annotation stores by dataset ID
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
@@ -75,7 +78,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStore'.format(dataset_id='dataset_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

@@ -1,7 +1,7 @@
-# import connexion
+import connexion
 # import six
 
-# from openapi_server.models.dataset import Dataset  # noqa: E501
+from openapi_server.models.dataset import Dataset  # noqa: E501
 # from openapi_server.models.error import Error  # noqa: E501
 # from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
 # from openapi_server import util
@@ -17,9 +17,14 @@ def create_dataset(dataset=None):  # noqa: E501
 
     :rtype: Dataset
     """
-    # if connexion.request.is_json:
-    #     dataset = Dataset.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+    # print(f"Dataset: {dataset}")
+    if connexion.request.is_json:
+        dataset = Dataset.from_dict(connexion.request.get_json())  # noqa: E501
+        print(f"Dataset: {dataset}")
+
+        # TODO: Create dataset object in DB
+
+    return dataset, 200
 
 
 def delete_dataset(id):  # noqa: E501

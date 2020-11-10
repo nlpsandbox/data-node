@@ -1,12 +1,13 @@
 import connexion
-import six
+from mongoengine.errors import DoesNotExist
 
 from openapi_server.models.dataset import Dataset  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.new_dataset import NewDataset  # noqa: E501
 from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-from openapi_server import util
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
+from openapi_server.config import Config
+
 
 def create_dataset(new_dataset=None):  # noqa: E501
     """Create a dataset
@@ -18,16 +19,21 @@ def create_dataset(new_dataset=None):  # noqa: E501
 
     :rtype: Dataset
     """
+    res = None
+    status = None
     if connexion.request.is_json:
-        new_dataset = NewDataset.from_dict(connexion.request.get_json())  # noqa: E501
-        print(f"new_dataset: {new_dataset}")
-        dataset = DbDataset(name=new_dataset.name).save()
-        print(f"db dataset: {dataset.to_mongo().to_dict()}")
+        try:
+            new_dataset = NewDataset.from_dict(connexion.request.get_json())
+            dbDataset = DbDataset(name=new_dataset.name).save()
+            res = Dataset.from_dict(dbDataset.to_dict())
+        except Exception as error:
+            status = 500
+            res = Error("Internal error", status, str(error))
 
-    return 'do some magic!'
+    return res, status
 
 
-def delete_dataset(id):  # noqa: E501
+def delete_dataset(id_):  # noqa: E501
     """Delete a dataset by ID
 
     Deletes the dataset for a given ID # noqa: E501
@@ -37,10 +43,23 @@ def delete_dataset(id):  # noqa: E501
 
     :rtype: Dataset
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        dbDataset = DbDataset.objects.get(id=id_)
+        res = Dataset.from_dict(dbDataset.to_dict())
+        dbDataset.delete()
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status
 
 
-def get_dataset(id):  # noqa: E501
+def get_dataset(id_):  # noqa: E501
     """Get a dataset by ID
 
     Returns the dataset for a given ID # noqa: E501
@@ -50,7 +69,19 @@ def get_dataset(id):  # noqa: E501
 
     :rtype: Dataset
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        dbDataset = DbDataset.objects.get(id=id_)
+        res = Dataset.from_dict(dbDataset.to_dict())
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status
 
 
 def list_datasets(limit=None, offset=None):  # noqa: E501
@@ -65,4 +96,25 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
 
     :rtype: PageOfDatasets
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        dbDatasets = DbDataset.objects.skip(offset).limit(limit)
+        datasets = [Dataset.from_dict(d.to_dict()) for d in dbDatasets]
+        nextLink = "%s/datasets?limit=%s&offset=%s" % \
+            (Config().server_api_url, limit, offset + limit)
+        res = PageOfDatasets(
+            offset=offset,
+            limit=limit,
+            links={
+                "next": nextLink
+            },
+            items=datasets)
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status

@@ -1,35 +1,30 @@
 import connexion
-# import six
+import six
 
 from openapi_server.models.dataset import Dataset  # noqa: E501
-from openapi_server.db_models.dataset import Dataset as DbDataset
+from openapi_server.models.error import Error  # noqa: E501
+from openapi_server.models.new_dataset import NewDataset  # noqa: E501
+from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
+from openapi_server import util
+from openapi_server.dbmodels.dataset import Dataset as DbDataset
 
-
-# from openapi_server.models.error import Error  # noqa: E501
-# from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-# from openapi_server import util
-
-
-def create_dataset(dataset=None):  # noqa: E501
+def create_dataset(new_dataset=None):  # noqa: E501
     """Create a dataset
 
     Create a dataset with the name specified # noqa: E501
 
-    :param dataset:
-    :type dataset: dict | bytes
+    :param new_dataset:
+    :type new_dataset: dict | bytes
 
     :rtype: Dataset
     """
-    # print(f"Dataset: {dataset}")
     if connexion.request.is_json:
-        dataset = Dataset.from_dict(connexion.request.get_json())  # noqa: E501
-        print(f"Dataset: {dataset}")
+        new_dataset = NewDataset.from_dict(connexion.request.get_json())  # noqa: E501
+        print(f"new_dataset: {new_dataset}")
+        dataset = DbDataset(name=new_dataset.name).save()
+        print(f"db dataset: {dataset.to_mongo().to_dict()}")
 
-        DbDataset(name=dataset.name).save()
-
-        # TODO: Create dataset object in DB
-
-    return dataset, 200
+    return 'do some magic!'
 
 
 def delete_dataset(id):  # noqa: E501

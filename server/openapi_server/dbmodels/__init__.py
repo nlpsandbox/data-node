@@ -3,4 +3,4 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
-from openapi_server.db_models.dataset import Dataset
+from openapi_server.dbmodels.dataset import Dataset

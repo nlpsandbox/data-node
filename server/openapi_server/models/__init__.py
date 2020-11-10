@@ -6,10 +6,12 @@ from __future__ import absolute_import
 from openapi_server.models.annotation import Annotation
 from openapi_server.models.annotation_store import AnnotationStore
 from openapi_server.models.dataset import Dataset
+from openapi_server.models.dataset_all_of import DatasetAllOf
 from openapi_server.models.date_annotation import DateAnnotation
 from openapi_server.models.date_annotation_all_of import DateAnnotationAllOf
 from openapi_server.models.error import Error
 from openapi_server.models.health import Health
+from openapi_server.models.new_dataset import NewDataset
 from openapi_server.models.note import Note
 from openapi_server.models.note_all_of import NoteAllOf
 from openapi_server.models.note_store import NoteStore

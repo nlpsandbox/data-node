@@ -91,7 +91,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Dataset'
+              $ref: '#/components/schemas/NewDataset'
       responses:
         "200":
           content:
@@ -1079,8 +1079,8 @@ components:
       - links
       - offset
       type: object
-    Dataset:
-      description: A dataset
+    NewDataset:
+      description: A new dataset
       example:
         name: awesome-dataset
       properties:
@@ -1091,6 +1091,12 @@ components:
           minLength: 3
           pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      type: object
+    Dataset:
+      allOf:
+      - $ref: '#/components/schemas/NewDataset'
+      - $ref: '#/components/schemas/Dataset_allOf'
+      description: A dataset
       type: object
     PageOfDatasets:
       allOf:
@@ -1153,9 +1159,9 @@ components:
         text:
           description: The string annotated
           type: string
-      required:
-      - length
-      - start
+      # required:
+      # - length
+      # - start
       type: object
     StoredAnnotation:
       allOf:
@@ -1215,8 +1221,8 @@ components:
           description: A text
           example: This is a text.
           type: string
-      required:
-      - text
+      # required:
+      # - text
       type: object
     Note:
       allOf:
@@ -1302,6 +1308,11 @@ components:
         next:
           description: Link to the next page of results
           format: uri
+          type: string
+    Dataset_allOf:
+      properties:
+        id:
+          description: The ID of the dataset
           type: string
     PageOfDatasets_allOf:
       properties:

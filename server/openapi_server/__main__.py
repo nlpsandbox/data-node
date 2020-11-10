@@ -18,7 +18,8 @@ client = connect(
     db='nlpsandbox',
     username='nlpmongo',
     password='nlpmongo',
-    host='mongodb://nlpmongo:nlpmongo@localhost/nlpsandbox'
+    host='mongodb://nlpmongo:nlpmongo@localhost/nlpsandbox',
+    uuidRepresentation='standard'
 )
 print(f"server info: {client.server_info()}")
 

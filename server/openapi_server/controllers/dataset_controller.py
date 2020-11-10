@@ -101,13 +101,13 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
     try:
         dbDatasets = DbDataset.objects.skip(offset).limit(limit)
         datasets = [Dataset.from_dict(d.to_dict()) for d in dbDatasets]
-        nextLink = "%s/datasets?limit=%s&offset=%s" % \
+        next_ = "%s/datasets?limit=%s&offset=%s" % \
             (Config().server_api_url, limit, offset + limit)
         res = PageOfDatasets(
             offset=offset,
             limit=limit,
             links={
-                "next": nextLink
+                "next": next_
             },
             items=datasets)
     except DoesNotExist:

@@ -18,15 +18,20 @@ class TestNoteController(BaseTestCase):
     def test_create_note(self):
         """Test case for create_note
 
-        Create a note linked to a dataset ID and store ID
+        Create a note
         """
-        note = null
+        note = {
+  "patientId" : "patientId",
+  "id" : "id",
+  "text" : "This is a text.",
+  "type" : "loinc:LP29684-5"
+}
         headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
             method='POST',
             headers=headers,
             data=json.dumps(note),
@@ -37,13 +42,13 @@ class TestNoteController(BaseTestCase):
     def test_delete_note(self):
         """Test case for delete_note
 
-        Delete an note by ID
+        Delete a note
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -52,13 +57,13 @@ class TestNoteController(BaseTestCase):
     def test_get_note(self):
         """Test case for get_note
 
-        Get a note by ID
+        Get a note
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes/{id}'.format(dataset_id='dataset_id_example', store_id='store_id_example', id='id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -67,7 +72,7 @@ class TestNoteController(BaseTestCase):
     def test_list_notes(self):
         """Test case for list_notes
 
-        Get all notes linked to a dataset ID and store ID
+        List notes
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
@@ -75,7 +80,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/noteStore/{store_id}/notes'.format(dataset_id='dataset_id_example', store_id='store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

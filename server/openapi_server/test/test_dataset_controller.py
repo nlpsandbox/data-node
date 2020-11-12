@@ -21,8 +21,9 @@ class TestDatasetController(BaseTestCase):
         Create a dataset
         """
         dataset = {
-  "name" : "awesome-dataset"
+  "name" : "name"
 }
+        query_string = [('datasetId', awesome-dataset)]
         headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -32,7 +33,8 @@ class TestDatasetController(BaseTestCase):
             method='POST',
             headers=headers,
             data=json.dumps(dataset),
-            content_type='application/json')
+            content_type='application/json',
+            query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
@@ -45,7 +47,7 @@ class TestDatasetController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{id}'.format(id='id_example'),
+            '/api/v1/datasets/{dataset_id}'.format(dataset_id='dataset_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -60,7 +62,7 @@ class TestDatasetController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{id}'.format(id='id_example'),
+            '/api/v1/datasets/{dataset_id}'.format(dataset_id='dataset_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,

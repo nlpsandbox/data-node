@@ -6,13 +6,13 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
-# from openapi_server.models.any_of_stored_annotation_stored_date_annotation import AnyOfStoredAnnotationStoredDateAnnotation
+# from openapi_server.models.any_of_text_date_annotation_text_person_name_annotation_text_physical_address_annotation import AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation
 from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf
 from openapi_server.models.page_response import PageResponse
 from openapi_server.models.page_response_links import PageResponseLinks
 from openapi_server import util
 
-# from openapi_server.models.any_of_stored_annotation_stored_date_annotation import AnyOfStoredAnnotationStoredDateAnnotation  # noqa: E501
+# from openapi_server.models.any_of_text_date_annotation_text_person_name_annotation_text_physical_address_annotation import AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation  # noqa: E501
 from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf  # noqa: E501
 from openapi_server.models.page_response import PageResponse  # noqa: E501
 from openapi_server.models.page_response_links import PageResponseLinks  # noqa: E501
@@ -33,13 +33,13 @@ class PageOfAnnotations(Model):
         :param links: The links of this PageOfAnnotations.  # noqa: E501
         :type links: PageResponseLinks
         :param items: The items of this PageOfAnnotations.  # noqa: E501
-        :type items: List[AnyOfStoredAnnotationStoredDateAnnotation]
+        :type items: List[AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': PageResponseLinks,
-            'items': List[AnyOfStoredAnnotationStoredDateAnnotation]
+            'items': List[AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation]
         }
 
         self.attribute_map = {
@@ -145,7 +145,7 @@ class PageOfAnnotations(Model):
         An array of annotations  # noqa: E501
 
         :return: The items of this PageOfAnnotations.
-        :rtype: List[AnyOfStoredAnnotationStoredDateAnnotation]
+        :rtype: List[AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation]
         """
         return self._items
 
@@ -156,7 +156,7 @@ class PageOfAnnotations(Model):
         An array of annotations  # noqa: E501
 
         :param items: The items of this PageOfAnnotations.
-        :type items: List[AnyOfStoredAnnotationStoredDateAnnotation]
+        :type items: List[AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation]
         """
 
         self._items = items

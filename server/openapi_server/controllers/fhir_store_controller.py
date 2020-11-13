@@ -76,8 +76,8 @@ def delete_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
         db_fhir_store = DbFhirStore.objects.get(name=store_name)
-        db_fhir_store.delete()
         res = FhirStore.from_dict(db_fhir_store.to_dict())
+        db_fhir_store.delete()
         status = 200
     except DoesNotExist:
         status = 404

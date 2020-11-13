@@ -11,6 +11,8 @@ class Patient(BaseDocument):
     def to_dict(self):
         doc = self.to_mongo().to_dict()
         doc["id"] = str(self.pk)
+
         # remove internal properties
         del doc['fhir_store_name']
+
         return doc

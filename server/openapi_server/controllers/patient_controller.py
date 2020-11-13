@@ -137,16 +137,16 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
     status = None
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        print(f"store name: {store_name}")
         db_patients = DbPatient.objects(
             fhir_store_name__startswith=store_name).skip(offset).limit(limit)
-        print(f"patient: {db_patients}")
         patients = [Patient.from_dict(p.to_dict()) for p in db_patients]
-        next_ = (
-            "%s/datasets/%s/fhirStores/%s/fhir/Patient"
-            "?limit=%s&offset=%s") % \
-            (Config().server_api_url, dataset_id, fhir_store_id, limit,
-                offset + limit)
+        next_ = ""
+        if len(patients) == limit:
+            next_ = (
+                "%s/datasets/%s/fhirStores/%s/fhir/Patient"
+                "?limit=%s&offset=%s") % \
+                (Config().server_api_url, dataset_id, fhir_store_id, limit,
+                    offset + limit)
         res = PageOfPatients(
             offset=offset,
             limit=limit,

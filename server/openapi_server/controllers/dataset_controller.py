@@ -112,8 +112,10 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
     try:
         db_datasets = DbDataset.objects.skip(offset).limit(limit)
         datasets = [Dataset.from_dict(d.to_dict()) for d in db_datasets]
-        next_ = "%s/datasets?limit=%s&offset=%s" % \
-            (Config().server_api_url, limit, offset + limit)
+        next_ = ""
+        if len(datasets) == limit:
+            next_ = "%s/datasets?limit=%s&offset=%s" % \
+                (Config().server_api_url, limit, offset + limit)
         res = PageOfDatasets(
             offset=offset,
             limit=limit,

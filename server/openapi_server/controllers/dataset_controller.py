@@ -22,17 +22,17 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
     """
     dataset = None
     if dataset_id is not None:
-        datasetName = "datasets/%s" % (dataset_id,)
-        dataset = Dataset(name=datasetName)
+        dataset_name = "datasets/%s" % (dataset_id,)
+        dataset = Dataset(name=dataset_name)
     elif connexion.request.is_json:
         dataset = Dataset.from_dict(connexion.request.get_json())
 
     res = None
     status = None
     try:
-        dbDataset = DbDataset(name=dataset.name).save()
+        db_dataset = DbDataset(name=dataset.name).save()
+        res = Dataset.from_dict(db_dataset.to_dict())
         status = 201
-        res = Dataset.from_dict(dbDataset.to_dict())
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
@@ -53,10 +53,10 @@ def delete_dataset(dataset_id):  # noqa: E501
     res = None
     status = None
     try:
-        datasetName = "datasets/%s" % (dataset_id,)
-        dbDataset = DbDataset.objects.get(name=datasetName)
-        res = Dataset.from_dict(dbDataset.to_dict())
-        dbDataset.delete()
+        dataset_name = "datasets/%s" % (dataset_id,)
+        db_dataset = DbDataset.objects.get(name=dataset_name)
+        res = Dataset.from_dict(db_dataset.to_dict())
+        db_dataset.delete()
         status = 200
     except DoesNotExist:
         status = 404
@@ -81,10 +81,10 @@ def get_dataset(dataset_id):  # noqa: E501
     res = None
     status = None
     try:
-        datasetName = "datasets/%s" % (dataset_id,)
-        dbDataset = DbDataset.objects.get(name=datasetName)
+        dataset_name = "datasets/%s" % (dataset_id,)
+        db_dataset = DbDataset.objects.get(name=dataset_name)
+        res = Dataset.from_dict(db_dataset.to_dict())
         status = 200
-        res = Dataset.from_dict(dbDataset.to_dict())
     except DoesNotExist:
         status = 404
         res = Error("The specified resource was not found", status)
@@ -110,11 +110,10 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
     res = None
     status = None
     try:
-        dbDatasets = DbDataset.objects.skip(offset).limit(limit)
-        datasets = [Dataset.from_dict(d.to_dict()) for d in dbDatasets]
+        db_datasets = DbDataset.objects.skip(offset).limit(limit)
+        datasets = [Dataset.from_dict(d.to_dict()) for d in db_datasets]
         next_ = "%s/datasets?limit=%s&offset=%s" % \
             (Config().server_api_url, limit, offset + limit)
-        status = 200
         res = PageOfDatasets(
             offset=offset,
             limit=limit,
@@ -122,6 +121,7 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
                 "next": next_
             },
             items=datasets)
+        status = 200
     except DoesNotExist:
         status = 404
         res = Error("The specified resource was not found", status)

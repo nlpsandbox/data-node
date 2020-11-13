@@ -27,6 +27,7 @@ def create_patient(dataset_id, fhir_store_id, patient=None):  # noqa: E501
     status = None
 
     # check if the FHIR store exists
+    store_name = None
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
         DbFhirStore.objects.get(name=store_name)
@@ -42,6 +43,7 @@ def create_patient(dataset_id, fhir_store_id, patient=None):  # noqa: E501
         try:
             patient = Patient.from_dict(connexion.request.get_json())
             db_patient = DbPatient(
+                fhir_store_name=store_name,
                 identifier=patient.identifier,
                 gender=patient.gender
             ).save()
@@ -131,26 +133,33 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
 
     :rtype: PageOfPatients
     """
-    # res = None
-    # status = None
-    # try:
-    #     db_datasets = DbDataset.objects.skip(offset).limit(limit)
-    #     datasets = [Dataset.from_dict(d.to_dict()) for d in db_datasets]
-    #     next_ = "%s/datasets?limit=%s&offset=%s" % \
-    #         (Config().server_api_url, limit, offset + limit)
-    #     res = PageOfDatasets(
-    #         offset=offset,
-    #         limit=limit,
-    #         links={
-    #             "next": next_
-    #         },
-    #         items=datasets)
-    #     status = 200
-    # except DoesNotExist:
-    #     status = 404
-    #     res = Error("The specified resource was not found", status)
-    # except Exception as error:
-    #     status = 500
-    #     res = Error("Internal error", status, str(error))
+    res = None
+    status = None
+    try:
+        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
+        print(f"store name: {store_name}")
+        db_patients = DbPatient.objects(
+            fhir_store_name__startswith=store_name).skip(offset).limit(limit)
+        print(f"patient: {db_patients}")
+        patients = [Patient.from_dict(p.to_dict()) for p in db_patients]
+        next_ = (
+            "%s/datasets/%s/fhirStores/%s/fhir/Patient"
+            "?limit=%s&offset=%s") % \
+            (Config().server_api_url, dataset_id, fhir_store_id, limit,
+                offset + limit)
+        res = PageOfPatients(
+            offset=offset,
+            limit=limit,
+            links={
+                "next": next_
+            },
+            items=patients)
+        status = 200
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
 
-    # return res, status
+    return res, status

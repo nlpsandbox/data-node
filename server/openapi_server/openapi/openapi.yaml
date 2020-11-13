@@ -108,7 +108,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Dataset'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -267,7 +267,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AnnotationStore'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -470,7 +470,7 @@ paths:
               - $ref: '#/components/schemas/TextPersonNameAnnotation'
               - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -670,7 +670,7 @@ paths:
             schema:
               $ref: '#/components/schemas/FhirStore'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -870,7 +870,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Patient'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -1086,7 +1086,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Note'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
@@ -1476,12 +1476,12 @@ components:
           type: string
       type: object
     Note:
-      description: A new clinical note
+      description: A clinical note
       example:
+        noteType: loinc:LP29684-5
         patientId: patientId
         id: id
         text: This is a text.
-        type: loinc:LP29684-5
       properties:
         id:
           description: The ID of the note
@@ -1491,7 +1491,7 @@ components:
           description: A text
           example: This is a text.
           type: string
-        type:
+        noteType:
           description: The note type (LOINC concept)
           example: loinc:LP29684-5
           type: string
@@ -1578,7 +1578,7 @@ components:
           type: string
     PageOfDatasets_allOf:
       properties:
-        items:
+        datasets:
           description: An array of datasets
           items:
             $ref: '#/components/schemas/Dataset'
@@ -1645,14 +1645,14 @@ components:
           type: array
     PageOfPatients_allOf:
       properties:
-        items:
+        patients:
           description: An array of FHIR Patients
           items:
             $ref: '#/components/schemas/Patient'
           type: array
     PageOfNotes_allOf:
       properties:
-        items:
+        notes:
           description: An array of notes
           items:
             $ref: '#/components/schemas/Note'

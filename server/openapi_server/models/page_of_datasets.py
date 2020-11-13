@@ -23,7 +23,7 @@ class PageOfDatasets(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, items=None):  # noqa: E501
+    def __init__(self, offset=None, limit=None, links=None, datasets=None):  # noqa: E501
         """PageOfDatasets - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfDatasets.  # noqa: E501
@@ -32,27 +32,27 @@ class PageOfDatasets(Model):
         :type limit: int
         :param links: The links of this PageOfDatasets.  # noqa: E501
         :type links: PageResponseLinks
-        :param items: The items of this PageOfDatasets.  # noqa: E501
-        :type items: List[Dataset]
+        :param datasets: The datasets of this PageOfDatasets.  # noqa: E501
+        :type datasets: List[Dataset]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': PageResponseLinks,
-            'items': List[Dataset]
+            'datasets': List[Dataset]
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
-            'items': 'items'
+            'datasets': 'datasets'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
-        self._items = items
+        self._datasets = datasets
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfDatasets':
@@ -139,24 +139,24 @@ class PageOfDatasets(Model):
         self._links = links
 
     @property
-    def items(self):
-        """Gets the items of this PageOfDatasets.
+    def datasets(self):
+        """Gets the datasets of this PageOfDatasets.
 
         An array of datasets  # noqa: E501
 
-        :return: The items of this PageOfDatasets.
+        :return: The datasets of this PageOfDatasets.
         :rtype: List[Dataset]
         """
-        return self._items
+        return self._datasets
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfDatasets.
+    @datasets.setter
+    def datasets(self, datasets):
+        """Sets the datasets of this PageOfDatasets.
 
         An array of datasets  # noqa: E501
 
-        :param items: The items of this PageOfDatasets.
-        :type items: List[Dataset]
+        :param datasets: The datasets of this PageOfDatasets.
+        :type datasets: List[Dataset]
         """
 
-        self._items = items
+        self._datasets = datasets

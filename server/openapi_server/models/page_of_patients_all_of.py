@@ -17,21 +17,21 @@ class PageOfPatientsAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, items=None):  # noqa: E501
+    def __init__(self, patients=None):  # noqa: E501
         """PageOfPatientsAllOf - a model defined in OpenAPI
 
-        :param items: The items of this PageOfPatientsAllOf.  # noqa: E501
-        :type items: List[Patient]
+        :param patients: The patients of this PageOfPatientsAllOf.  # noqa: E501
+        :type patients: List[Patient]
         """
         self.openapi_types = {
-            'items': List[Patient]
+            'patients': List[Patient]
         }
 
         self.attribute_map = {
-            'items': 'items'
+            'patients': 'patients'
         }
 
-        self._items = items
+        self._patients = patients
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfPatientsAllOf':
@@ -45,24 +45,24 @@ class PageOfPatientsAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def items(self):
-        """Gets the items of this PageOfPatientsAllOf.
+    def patients(self):
+        """Gets the patients of this PageOfPatientsAllOf.
 
         An array of FHIR Patients  # noqa: E501
 
-        :return: The items of this PageOfPatientsAllOf.
+        :return: The patients of this PageOfPatientsAllOf.
         :rtype: List[Patient]
         """
-        return self._items
+        return self._patients
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfPatientsAllOf.
+    @patients.setter
+    def patients(self, patients):
+        """Sets the patients of this PageOfPatientsAllOf.
 
         An array of FHIR Patients  # noqa: E501
 
-        :param items: The items of this PageOfPatientsAllOf.
-        :type items: List[Patient]
+        :param patients: The patients of this PageOfPatientsAllOf.
+        :type patients: List[Patient]
         """
 
-        self._items = items
+        self._patients = patients

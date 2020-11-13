@@ -23,7 +23,7 @@ class PageOfNotes(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, items=None):  # noqa: E501
+    def __init__(self, offset=None, limit=None, links=None, notes=None):  # noqa: E501
         """PageOfNotes - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfNotes.  # noqa: E501
@@ -32,27 +32,27 @@ class PageOfNotes(Model):
         :type limit: int
         :param links: The links of this PageOfNotes.  # noqa: E501
         :type links: PageResponseLinks
-        :param items: The items of this PageOfNotes.  # noqa: E501
-        :type items: List[Note]
+        :param notes: The notes of this PageOfNotes.  # noqa: E501
+        :type notes: List[Note]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': PageResponseLinks,
-            'items': List[Note]
+            'notes': List[Note]
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
-            'items': 'items'
+            'notes': 'notes'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
-        self._items = items
+        self._notes = notes
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfNotes':
@@ -139,24 +139,24 @@ class PageOfNotes(Model):
         self._links = links
 
     @property
-    def items(self):
-        """Gets the items of this PageOfNotes.
+    def notes(self):
+        """Gets the notes of this PageOfNotes.
 
         An array of notes  # noqa: E501
 
-        :return: The items of this PageOfNotes.
+        :return: The notes of this PageOfNotes.
         :rtype: List[Note]
         """
-        return self._items
+        return self._notes
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfNotes.
+    @notes.setter
+    def notes(self, notes):
+        """Sets the notes of this PageOfNotes.
 
         An array of notes  # noqa: E501
 
-        :param items: The items of this PageOfNotes.
-        :type items: List[Note]
+        :param notes: The notes of this PageOfNotes.
+        :type notes: List[Note]
         """
 
-        self._items = items
+        self._notes = notes

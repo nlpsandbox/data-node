@@ -23,7 +23,7 @@ class PageOfPatients(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, items=None):  # noqa: E501
+    def __init__(self, offset=None, limit=None, links=None, patients=None):  # noqa: E501
         """PageOfPatients - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfPatients.  # noqa: E501
@@ -32,27 +32,27 @@ class PageOfPatients(Model):
         :type limit: int
         :param links: The links of this PageOfPatients.  # noqa: E501
         :type links: PageResponseLinks
-        :param items: The items of this PageOfPatients.  # noqa: E501
-        :type items: List[Patient]
+        :param patients: The patients of this PageOfPatients.  # noqa: E501
+        :type patients: List[Patient]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': PageResponseLinks,
-            'items': List[Patient]
+            'patients': List[Patient]
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
-            'items': 'items'
+            'patients': 'patients'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
-        self._items = items
+        self._patients = patients
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfPatients':
@@ -139,24 +139,24 @@ class PageOfPatients(Model):
         self._links = links
 
     @property
-    def items(self):
-        """Gets the items of this PageOfPatients.
+    def patients(self):
+        """Gets the patients of this PageOfPatients.
 
         An array of FHIR Patients  # noqa: E501
 
-        :return: The items of this PageOfPatients.
+        :return: The patients of this PageOfPatients.
         :rtype: List[Patient]
         """
-        return self._items
+        return self._patients
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfPatients.
+    @patients.setter
+    def patients(self, patients):
+        """Sets the patients of this PageOfPatients.
 
         An array of FHIR Patients  # noqa: E501
 
-        :param items: The items of this PageOfPatients.
-        :type items: List[Patient]
+        :param patients: The patients of this PageOfPatients.
+        :type patients: List[Patient]
         """
 
-        self._items = items
+        self._patients = patients

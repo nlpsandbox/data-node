@@ -15,35 +15,35 @@ class Note(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, text=None, type=None, patient_id=None):  # noqa: E501
+    def __init__(self, id=None, text=None, note_type=None, patient_id=None):  # noqa: E501
         """Note - a model defined in OpenAPI
 
         :param id: The id of this Note.  # noqa: E501
         :type id: str
         :param text: The text of this Note.  # noqa: E501
         :type text: str
-        :param type: The type of this Note.  # noqa: E501
-        :type type: str
+        :param note_type: The note_type of this Note.  # noqa: E501
+        :type note_type: str
         :param patient_id: The patient_id of this Note.  # noqa: E501
         :type patient_id: str
         """
         self.openapi_types = {
             'id': str,
             'text': str,
-            'type': str,
+            'note_type': str,
             'patient_id': str
         }
 
         self.attribute_map = {
             'id': 'id',
             'text': 'text',
-            'type': 'type',
+            'note_type': 'noteType',
             'patient_id': 'patientId'
         }
 
         self._id = id
         self._text = text
-        self._type = type
+        self._note_type = note_type
         self._patient_id = patient_id
 
     @classmethod
@@ -104,27 +104,27 @@ class Note(Model):
         self._text = text
 
     @property
-    def type(self):
-        """Gets the type of this Note.
+    def note_type(self):
+        """Gets the note_type of this Note.
 
         The note type (LOINC concept)  # noqa: E501
 
-        :return: The type of this Note.
+        :return: The note_type of this Note.
         :rtype: str
         """
-        return self._type
+        return self._note_type
 
-    @type.setter
-    def type(self, type):
-        """Sets the type of this Note.
+    @note_type.setter
+    def note_type(self, note_type):
+        """Sets the note_type of this Note.
 
         The note type (LOINC concept)  # noqa: E501
 
-        :param type: The type of this Note.
-        :type type: str
+        :param note_type: The note_type of this Note.
+        :type note_type: str
         """
 
-        self._type = type
+        self._note_type = note_type
 
     @property
     def patient_id(self):

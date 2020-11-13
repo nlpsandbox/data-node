@@ -17,21 +17,21 @@ class PageOfDatasetsAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, items=None):  # noqa: E501
+    def __init__(self, datasets=None):  # noqa: E501
         """PageOfDatasetsAllOf - a model defined in OpenAPI
 
-        :param items: The items of this PageOfDatasetsAllOf.  # noqa: E501
-        :type items: List[Dataset]
+        :param datasets: The datasets of this PageOfDatasetsAllOf.  # noqa: E501
+        :type datasets: List[Dataset]
         """
         self.openapi_types = {
-            'items': List[Dataset]
+            'datasets': List[Dataset]
         }
 
         self.attribute_map = {
-            'items': 'items'
+            'datasets': 'datasets'
         }
 
-        self._items = items
+        self._datasets = datasets
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfDatasetsAllOf':
@@ -45,24 +45,24 @@ class PageOfDatasetsAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def items(self):
-        """Gets the items of this PageOfDatasetsAllOf.
+    def datasets(self):
+        """Gets the datasets of this PageOfDatasetsAllOf.
 
         An array of datasets  # noqa: E501
 
-        :return: The items of this PageOfDatasetsAllOf.
+        :return: The datasets of this PageOfDatasetsAllOf.
         :rtype: List[Dataset]
         """
-        return self._items
+        return self._datasets
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfDatasetsAllOf.
+    @datasets.setter
+    def datasets(self, datasets):
+        """Sets the datasets of this PageOfDatasetsAllOf.
 
         An array of datasets  # noqa: E501
 
-        :param items: The items of this PageOfDatasetsAllOf.
-        :type items: List[Dataset]
+        :param datasets: The datasets of this PageOfDatasetsAllOf.
+        :type datasets: List[Dataset]
         """
 
-        self._items = items
+        self._datasets = datasets

@@ -17,21 +17,21 @@ class PageOfNotesAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, items=None):  # noqa: E501
+    def __init__(self, notes=None):  # noqa: E501
         """PageOfNotesAllOf - a model defined in OpenAPI
 
-        :param items: The items of this PageOfNotesAllOf.  # noqa: E501
-        :type items: List[Note]
+        :param notes: The notes of this PageOfNotesAllOf.  # noqa: E501
+        :type notes: List[Note]
         """
         self.openapi_types = {
-            'items': List[Note]
+            'notes': List[Note]
         }
 
         self.attribute_map = {
-            'items': 'items'
+            'notes': 'notes'
         }
 
-        self._items = items
+        self._notes = notes
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfNotesAllOf':
@@ -45,24 +45,24 @@ class PageOfNotesAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def items(self):
-        """Gets the items of this PageOfNotesAllOf.
+    def notes(self):
+        """Gets the notes of this PageOfNotesAllOf.
 
         An array of notes  # noqa: E501
 
-        :return: The items of this PageOfNotesAllOf.
+        :return: The notes of this PageOfNotesAllOf.
         :rtype: List[Note]
         """
-        return self._items
+        return self._notes
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfNotesAllOf.
+    @notes.setter
+    def notes(self, notes):
+        """Sets the notes of this PageOfNotesAllOf.
 
         An array of notes  # noqa: E501
 
-        :param items: The items of this PageOfNotesAllOf.
-        :type items: List[Note]
+        :param notes: The notes of this PageOfNotesAllOf.
+        :type notes: List[Note]
         """
 
-        self._items = items
+        self._notes = notes

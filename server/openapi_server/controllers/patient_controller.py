@@ -153,7 +153,7 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
             links={
                 "next": next_
             },
-            items=patients)
+            patients=patients)
         status = 200
     except DoesNotExist:
         status = 404

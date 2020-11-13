@@ -122,7 +122,7 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
             links={
                 "next": next_
             },
-            items=datasets)
+            datasets=datasets)
         status = 200
     except DoesNotExist:
         status = 404

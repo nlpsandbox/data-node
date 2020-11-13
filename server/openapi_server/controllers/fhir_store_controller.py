@@ -3,6 +3,7 @@ from mongoengine.errors import DoesNotExist
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.fhir_store import FhirStore  # noqa: E501
+from openapi_server.models.fhir_stores import FhirStores  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.config import Config
@@ -131,8 +132,8 @@ def list_fhir_stores(dataset_id):  # noqa: E501
     status = None
     try:
         db_fhir_stores = DbFhirStore.objects
-        fhir_stores = [FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores]  # noqa: E501
-        res = fhir_stores
+        res = FhirStores(fhir_stores=[
+            FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores])
         status = 200
     except DoesNotExist:
         status = 404

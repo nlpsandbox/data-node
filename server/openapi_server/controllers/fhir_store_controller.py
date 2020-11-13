@@ -131,7 +131,8 @@ def list_fhir_stores(dataset_id):  # noqa: E501
     res = None
     status = None
     try:
-        db_fhir_stores = DbFhirStore.objects
+        dataset_name = "datasets/%s" % (dataset_id)
+        db_fhir_stores = DbFhirStore.objects(name__startswith=dataset_name)
         res = FhirStores(fhir_stores=[
             FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores])
         status = 200

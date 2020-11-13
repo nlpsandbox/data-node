@@ -43,7 +43,7 @@ def create_patient(dataset_id, fhir_store_id, patient=None):  # noqa: E501
         try:
             patient = Patient.from_dict(connexion.request.get_json())
             db_patient = DbPatient(
-                fhir_store_name=store_name,
+                fhirStoreName=store_name,
                 identifier=patient.identifier,
                 gender=patient.gender
             ).save()
@@ -138,7 +138,7 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
         db_patients = DbPatient.objects(
-            fhir_store_name__startswith=store_name).skip(offset).limit(limit)
+            fhirStoreName__startswith=store_name).skip(offset).limit(limit)
         patients = [Patient.from_dict(p.to_dict()) for p in db_patients]
         next_ = ""
         if len(patients) == limit:

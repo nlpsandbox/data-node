@@ -4,7 +4,7 @@ from openapi_server.dbmodels.base_document import BaseDocument
 
 
 class Patient(BaseDocument):
-    fhir_store_name = StringField()
+    fhirStoreName = StringField()
     identifier = StringField()
     gender = StringField()
 
@@ -13,6 +13,6 @@ class Patient(BaseDocument):
         doc["id"] = str(self.pk)
 
         # remove internal properties
-        del doc['fhir_store_name']
+        del doc['fhirStoreName']
 
         return doc

@@ -31,6 +31,7 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
     status = None
     try:
         dbDataset = DbDataset(name=dataset.name).save()
+        status = 201
         res = Dataset.from_dict(dbDataset.to_dict())
     except Exception as error:
         status = 500
@@ -56,6 +57,7 @@ def delete_dataset(dataset_id):  # noqa: E501
         dbDataset = DbDataset.objects.get(name=datasetName)
         res = Dataset.from_dict(dbDataset.to_dict())
         dbDataset.delete()
+        status = 200
     except DoesNotExist:
         status = 404
         res = Error("The specified resource was not found", status)
@@ -81,6 +83,7 @@ def get_dataset(dataset_id):  # noqa: E501
     try:
         datasetName = "datasets/%s" % (dataset_id,)
         dbDataset = DbDataset.objects.get(name=datasetName)
+        status = 200
         res = Dataset.from_dict(dbDataset.to_dict())
     except DoesNotExist:
         status = 404
@@ -111,6 +114,7 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
         datasets = [Dataset.from_dict(d.to_dict()) for d in dbDatasets]
         next_ = "%s/datasets?limit=%s&offset=%s" % \
             (Config().server_api_url, limit, offset + limit)
+        status = 200
         res = PageOfDatasets(
             offset=offset,
             limit=limit,

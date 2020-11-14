@@ -6,13 +6,13 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
-from openapi_server.models.annotation import Annotation
 from openapi_server.models.annotation_source import AnnotationSource
+from openapi_server.models.text_annotation import TextAnnotation
 from openapi_server.models.text_physical_address_annotation_all_of import TextPhysicalAddressAnnotationAllOf
 from openapi_server import util
 
-from openapi_server.models.annotation import Annotation  # noqa: E501
 from openapi_server.models.annotation_source import AnnotationSource  # noqa: E501
+from openapi_server.models.text_annotation import TextAnnotation  # noqa: E501
 from openapi_server.models.text_physical_address_annotation_all_of import TextPhysicalAddressAnnotationAllOf  # noqa: E501
 
 class TextPhysicalAddressAnnotation(Model):
@@ -21,11 +21,11 @@ class TextPhysicalAddressAnnotation(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, annotation_source=None, annotation_type=None, start=None, length=None, text=None, type=None):  # noqa: E501
+    def __init__(self, id=None, annotation_source=None, annotation_type=None, start=None, length=None, text=None, address_type=None):  # noqa: E501
         """TextPhysicalAddressAnnotation - a model defined in OpenAPI
 
-        :param name: The name of this TextPhysicalAddressAnnotation.  # noqa: E501
-        :type name: str
+        :param id: The id of this TextPhysicalAddressAnnotation.  # noqa: E501
+        :type id: str
         :param annotation_source: The annotation_source of this TextPhysicalAddressAnnotation.  # noqa: E501
         :type annotation_source: AnnotationSource
         :param annotation_type: The annotation_type of this TextPhysicalAddressAnnotation.  # noqa: E501
@@ -36,36 +36,36 @@ class TextPhysicalAddressAnnotation(Model):
         :type length: int
         :param text: The text of this TextPhysicalAddressAnnotation.  # noqa: E501
         :type text: str
-        :param type: The type of this TextPhysicalAddressAnnotation.  # noqa: E501
-        :type type: str
+        :param address_type: The address_type of this TextPhysicalAddressAnnotation.  # noqa: E501
+        :type address_type: str
         """
         self.openapi_types = {
-            'name': str,
+            'id': str,
             'annotation_source': AnnotationSource,
             'annotation_type': str,
             'start': int,
             'length': int,
             'text': str,
-            'type': str
+            'address_type': str
         }
 
         self.attribute_map = {
-            'name': 'name',
+            'id': 'id',
             'annotation_source': 'annotationSource',
             'annotation_type': 'annotationType',
             'start': 'start',
             'length': 'length',
             'text': 'text',
-            'type': 'type'
+            'address_type': 'addressType'
         }
 
-        self._name = name
+        self._id = id
         self._annotation_source = annotation_source
         self._annotation_type = annotation_type
         self._start = start
         self._length = length
         self._text = text
-        self._type = type
+        self._address_type = address_type
 
     @classmethod
     def from_dict(cls, dikt) -> 'TextPhysicalAddressAnnotation':
@@ -79,27 +79,27 @@ class TextPhysicalAddressAnnotation(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def name(self):
-        """Gets the name of this TextPhysicalAddressAnnotation.
+    def id(self):
+        """Gets the id of this TextPhysicalAddressAnnotation.
 
-        Resource name of the annotation  # noqa: E501
+        The ID of the annotation  # noqa: E501
 
-        :return: The name of this TextPhysicalAddressAnnotation.
+        :return: The id of this TextPhysicalAddressAnnotation.
         :rtype: str
         """
-        return self._name
+        return self._id
 
-    @name.setter
-    def name(self, name):
-        """Sets the name of this TextPhysicalAddressAnnotation.
+    @id.setter
+    def id(self, id):
+        """Sets the id of this TextPhysicalAddressAnnotation.
 
-        Resource name of the annotation  # noqa: E501
+        The ID of the annotation  # noqa: E501
 
-        :param name: The name of this TextPhysicalAddressAnnotation.
-        :type name: str
+        :param id: The id of this TextPhysicalAddressAnnotation.
+        :type id: str
         """
 
-        self._name = name
+        self._id = id
 
     @property
     def annotation_source(self):
@@ -221,30 +221,30 @@ class TextPhysicalAddressAnnotation(Model):
         self._text = text
 
     @property
-    def type(self):
-        """Gets the type of this TextPhysicalAddressAnnotation.
+    def address_type(self):
+        """Gets the address_type of this TextPhysicalAddressAnnotation.
 
         Type of address information  # noqa: E501
 
-        :return: The type of this TextPhysicalAddressAnnotation.
+        :return: The address_type of this TextPhysicalAddressAnnotation.
         :rtype: str
         """
-        return self._type
+        return self._address_type
 
-    @type.setter
-    def type(self, type):
-        """Sets the type of this TextPhysicalAddressAnnotation.
+    @address_type.setter
+    def address_type(self, address_type):
+        """Sets the address_type of this TextPhysicalAddressAnnotation.
 
         Type of address information  # noqa: E501
 
-        :param type: The type of this TextPhysicalAddressAnnotation.
-        :type type: str
+        :param address_type: The address_type of this TextPhysicalAddressAnnotation.
+        :type address_type: str
         """
         allowed_values = ["city", "country", "department", "hospital", "organization", "other", "room", "state", "street", "zip"]  # noqa: E501
-        if type not in allowed_values:
+        if address_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `type` ({0}), must be one of {1}"
-                .format(type, allowed_values)
+                "Invalid value for `address_type` ({0}), must be one of {1}"
+                .format(address_type, allowed_values)
             )
 
-        self._type = type
+        self._address_type = address_type

@@ -6,13 +6,13 @@ from __future__ import absolute_import
 from openapi_server.models.annotation import Annotation
 from openapi_server.models.annotation_source import AnnotationSource
 from openapi_server.models.annotation_store import AnnotationStore
-from openapi_server.models.annotation_stores import AnnotationStores
 from openapi_server.models.dataset import Dataset
 from openapi_server.models.error import Error
 from openapi_server.models.fhir_store import FhirStore
 from openapi_server.models.fhir_stores import FhirStores
-from openapi_server.models.health import Health
 from openapi_server.models.note import Note
+from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores
+from openapi_server.models.page_of_annotation_stores_all_of import PageOfAnnotationStoresAllOf
 from openapi_server.models.page_of_annotations import PageOfAnnotations
 from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf
 from openapi_server.models.page_of_datasets import PageOfDatasets
@@ -25,9 +25,10 @@ from openapi_server.models.page_response import PageResponse
 from openapi_server.models.page_response_links import PageResponseLinks
 from openapi_server.models.patient import Patient
 from openapi_server.models.service import Service
+from openapi_server.models.text_annotation import TextAnnotation
+from openapi_server.models.text_annotation_all_of import TextAnnotationAllOf
 from openapi_server.models.text_date_annotation import TextDateAnnotation
 from openapi_server.models.text_date_annotation_all_of import TextDateAnnotationAllOf
 from openapi_server.models.text_person_name_annotation import TextPersonNameAnnotation
-from openapi_server.models.text_person_name_annotation_all_of import TextPersonNameAnnotationAllOf
 from openapi_server.models.text_physical_address_annotation import TextPhysicalAddressAnnotation
 from openapi_server.models.text_physical_address_annotation_all_of import TextPhysicalAddressAnnotationAllOf

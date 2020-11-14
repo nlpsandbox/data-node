@@ -15,35 +15,20 @@ class TextDateAnnotationAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, start=None, length=None, text=None, date_format=None):  # noqa: E501
+    def __init__(self, date_format=None):  # noqa: E501
         """TextDateAnnotationAllOf - a model defined in OpenAPI
 
-        :param start: The start of this TextDateAnnotationAllOf.  # noqa: E501
-        :type start: int
-        :param length: The length of this TextDateAnnotationAllOf.  # noqa: E501
-        :type length: int
-        :param text: The text of this TextDateAnnotationAllOf.  # noqa: E501
-        :type text: str
         :param date_format: The date_format of this TextDateAnnotationAllOf.  # noqa: E501
         :type date_format: str
         """
         self.openapi_types = {
-            'start': int,
-            'length': int,
-            'text': str,
             'date_format': str
         }
 
         self.attribute_map = {
-            'start': 'start',
-            'length': 'length',
-            'text': 'text',
             'date_format': 'dateFormat'
         }
 
-        self._start = start
-        self._length = length
-        self._text = text
         self._date_format = date_format
 
     @classmethod
@@ -56,75 +41,6 @@ class TextDateAnnotationAllOf(Model):
         :rtype: TextDateAnnotationAllOf
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def start(self):
-        """Gets the start of this TextDateAnnotationAllOf.
-
-        The position of the first character  # noqa: E501
-
-        :return: The start of this TextDateAnnotationAllOf.
-        :rtype: int
-        """
-        return self._start
-
-    @start.setter
-    def start(self, start):
-        """Sets the start of this TextDateAnnotationAllOf.
-
-        The position of the first character  # noqa: E501
-
-        :param start: The start of this TextDateAnnotationAllOf.
-        :type start: int
-        """
-
-        self._start = start
-
-    @property
-    def length(self):
-        """Gets the length of this TextDateAnnotationAllOf.
-
-        The length of the annotation  # noqa: E501
-
-        :return: The length of this TextDateAnnotationAllOf.
-        :rtype: int
-        """
-        return self._length
-
-    @length.setter
-    def length(self, length):
-        """Sets the length of this TextDateAnnotationAllOf.
-
-        The length of the annotation  # noqa: E501
-
-        :param length: The length of this TextDateAnnotationAllOf.
-        :type length: int
-        """
-
-        self._length = length
-
-    @property
-    def text(self):
-        """Gets the text of this TextDateAnnotationAllOf.
-
-        The string annotated  # noqa: E501
-
-        :return: The text of this TextDateAnnotationAllOf.
-        :rtype: str
-        """
-        return self._text
-
-    @text.setter
-    def text(self, text):
-        """Sets the text of this TextDateAnnotationAllOf.
-
-        The string annotated  # noqa: E501
-
-        :param text: The text of this TextDateAnnotationAllOf.
-        :type text: str
-        """
-
-        self._text = text
 
     @property
     def date_format(self):

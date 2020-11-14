@@ -2,8 +2,8 @@ import connexion
 import six
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
-from openapi_server.models.annotation_stores import AnnotationStores  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
+from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server import util
 
 
@@ -56,14 +56,18 @@ def get_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     return 'do some magic!'
 
 
-def list_annotation_stores(dataset_id):  # noqa: E501
+def list_annotation_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     """List the annotation stores in a dataset
 
     Returns the annotation stores # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
+    :param limit: Maximum number of results returned
+    :type limit: int
+    :param offset: Index of the first result that must be returned
+    :type offset: int
 
-    :rtype: AnnotationStores
+    :rtype: PageOfAnnotationStores
     """
     return 'do some magic!'

@@ -17,29 +17,29 @@ class Annotation(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name=None, annotation_source=None, annotation_type=None):  # noqa: E501
+    def __init__(self, id=None, annotation_source=None, annotation_type=None):  # noqa: E501
         """Annotation - a model defined in OpenAPI
 
-        :param name: The name of this Annotation.  # noqa: E501
-        :type name: str
+        :param id: The id of this Annotation.  # noqa: E501
+        :type id: str
         :param annotation_source: The annotation_source of this Annotation.  # noqa: E501
         :type annotation_source: AnnotationSource
         :param annotation_type: The annotation_type of this Annotation.  # noqa: E501
         :type annotation_type: str
         """
         self.openapi_types = {
-            'name': str,
+            'id': str,
             'annotation_source': AnnotationSource,
             'annotation_type': str
         }
 
         self.attribute_map = {
-            'name': 'name',
+            'id': 'id',
             'annotation_source': 'annotationSource',
             'annotation_type': 'annotationType'
         }
 
-        self._name = name
+        self._id = id
         self._annotation_source = annotation_source
         self._annotation_type = annotation_type
 
@@ -55,27 +55,27 @@ class Annotation(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def name(self):
-        """Gets the name of this Annotation.
+    def id(self):
+        """Gets the id of this Annotation.
 
-        Resource name of the annotation  # noqa: E501
+        The ID of the annotation  # noqa: E501
 
-        :return: The name of this Annotation.
+        :return: The id of this Annotation.
         :rtype: str
         """
-        return self._name
+        return self._id
 
-    @name.setter
-    def name(self, name):
-        """Sets the name of this Annotation.
+    @id.setter
+    def id(self, id):
+        """Sets the id of this Annotation.
 
-        Resource name of the annotation  # noqa: E501
+        The ID of the annotation  # noqa: E501
 
-        :param name: The name of this Annotation.
-        :type name: str
+        :param id: The id of this Annotation.
+        :type id: str
         """
 
-        self._name = name
+        self._id = id
 
     @property
     def annotation_source(self):

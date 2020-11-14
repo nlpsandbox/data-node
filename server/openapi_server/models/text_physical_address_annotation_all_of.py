@@ -15,36 +15,21 @@ class TextPhysicalAddressAnnotationAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, start=None, length=None, text=None, type=None):  # noqa: E501
+    def __init__(self, address_type=None):  # noqa: E501
         """TextPhysicalAddressAnnotationAllOf - a model defined in OpenAPI
 
-        :param start: The start of this TextPhysicalAddressAnnotationAllOf.  # noqa: E501
-        :type start: int
-        :param length: The length of this TextPhysicalAddressAnnotationAllOf.  # noqa: E501
-        :type length: int
-        :param text: The text of this TextPhysicalAddressAnnotationAllOf.  # noqa: E501
-        :type text: str
-        :param type: The type of this TextPhysicalAddressAnnotationAllOf.  # noqa: E501
-        :type type: str
+        :param address_type: The address_type of this TextPhysicalAddressAnnotationAllOf.  # noqa: E501
+        :type address_type: str
         """
         self.openapi_types = {
-            'start': int,
-            'length': int,
-            'text': str,
-            'type': str
+            'address_type': str
         }
 
         self.attribute_map = {
-            'start': 'start',
-            'length': 'length',
-            'text': 'text',
-            'type': 'type'
+            'address_type': 'addressType'
         }
 
-        self._start = start
-        self._length = length
-        self._text = text
-        self._type = type
+        self._address_type = address_type
 
     @classmethod
     def from_dict(cls, dikt) -> 'TextPhysicalAddressAnnotationAllOf':
@@ -58,99 +43,30 @@ class TextPhysicalAddressAnnotationAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def start(self):
-        """Gets the start of this TextPhysicalAddressAnnotationAllOf.
-
-        The position of the first character  # noqa: E501
-
-        :return: The start of this TextPhysicalAddressAnnotationAllOf.
-        :rtype: int
-        """
-        return self._start
-
-    @start.setter
-    def start(self, start):
-        """Sets the start of this TextPhysicalAddressAnnotationAllOf.
-
-        The position of the first character  # noqa: E501
-
-        :param start: The start of this TextPhysicalAddressAnnotationAllOf.
-        :type start: int
-        """
-
-        self._start = start
-
-    @property
-    def length(self):
-        """Gets the length of this TextPhysicalAddressAnnotationAllOf.
-
-        The length of the annotation  # noqa: E501
-
-        :return: The length of this TextPhysicalAddressAnnotationAllOf.
-        :rtype: int
-        """
-        return self._length
-
-    @length.setter
-    def length(self, length):
-        """Sets the length of this TextPhysicalAddressAnnotationAllOf.
-
-        The length of the annotation  # noqa: E501
-
-        :param length: The length of this TextPhysicalAddressAnnotationAllOf.
-        :type length: int
-        """
-
-        self._length = length
-
-    @property
-    def text(self):
-        """Gets the text of this TextPhysicalAddressAnnotationAllOf.
-
-        The string annotated  # noqa: E501
-
-        :return: The text of this TextPhysicalAddressAnnotationAllOf.
-        :rtype: str
-        """
-        return self._text
-
-    @text.setter
-    def text(self, text):
-        """Sets the text of this TextPhysicalAddressAnnotationAllOf.
-
-        The string annotated  # noqa: E501
-
-        :param text: The text of this TextPhysicalAddressAnnotationAllOf.
-        :type text: str
-        """
-
-        self._text = text
-
-    @property
-    def type(self):
-        """Gets the type of this TextPhysicalAddressAnnotationAllOf.
+    def address_type(self):
+        """Gets the address_type of this TextPhysicalAddressAnnotationAllOf.
 
         Type of address information  # noqa: E501
 
-        :return: The type of this TextPhysicalAddressAnnotationAllOf.
+        :return: The address_type of this TextPhysicalAddressAnnotationAllOf.
         :rtype: str
         """
-        return self._type
+        return self._address_type
 
-    @type.setter
-    def type(self, type):
-        """Sets the type of this TextPhysicalAddressAnnotationAllOf.
+    @address_type.setter
+    def address_type(self, address_type):
+        """Sets the address_type of this TextPhysicalAddressAnnotationAllOf.
 
         Type of address information  # noqa: E501
 
-        :param type: The type of this TextPhysicalAddressAnnotationAllOf.
-        :type type: str
+        :param address_type: The address_type of this TextPhysicalAddressAnnotationAllOf.
+        :type address_type: str
         """
         allowed_values = ["city", "country", "department", "hospital", "organization", "other", "room", "state", "street", "zip"]  # noqa: E501
-        if type not in allowed_values:
+        if address_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `type` ({0}), must be one of {1}"
-                .format(type, allowed_values)
+                "Invalid value for `address_type` ({0}), must be one of {1}"
+                .format(address_type, allowed_values)
             )
 
-        self._type = type
+        self._address_type = address_type

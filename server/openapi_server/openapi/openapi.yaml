@@ -1367,30 +1367,60 @@ components:
       - $ref: '#/components/schemas/TextAnnotation'
       - $ref: '#/components/schemas/TextDateAnnotation_allOf'
       description: A date annotation in a text
+      example:
+        start: 42
+        length: 10
+        text: 10/26/2020
+        dateFormat: MM/DD/YYYY
       type: object
     TextPersonNameAnnotation:
       allOf:
       - $ref: '#/components/schemas/TextAnnotation'
       description: A person name annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: Chloe Price
       type: object
     TextPhysicalAddressAnnotation:
       allOf:
       - $ref: '#/components/schemas/TextAnnotation'
       - $ref: '#/components/schemas/TextPhysicalAddressAnnotation_allOf'
       description: A person name annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: Seattle
+        addressType: city
       type: object
     Annotation:
       description: An annotation record
       example:
         textDateAnnotations:
-        - null
-        # - null
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
         textPersonNameAnnotations:
-        - null
-        # - null
+        - start: 42
+          length: 11
+          text: Chloe Price
+        - start: 42
+          length: 11
+          text: Chloe Price
         textPhysicalAddressAnnotations:
-        - null
-        # - null
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
         annotationSource:
           name: name
         name: name

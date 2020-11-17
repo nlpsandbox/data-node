@@ -32,7 +32,7 @@ tags:
   name: Note
 - description: Operations about patients
   name: Patient
-- description: Operations about NLP services
+- description: Operations about this API service
   name: Service
 paths:
   /datasets:
@@ -496,19 +496,13 @@ paths:
         content:
           application/json:
             schema:
-              anyOf:
-              - $ref: '#/components/schemas/TextDateAnnotation'
-              - $ref: '#/components/schemas/TextPersonNameAnnotation'
-              - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+              $ref: '#/components/schemas/Annotation'
       responses:
         "201":
           content:
             application/json:
               schema:
-                anyOf:
-                - $ref: '#/components/schemas/TextDateAnnotation'
-                - $ref: '#/components/schemas/TextPersonNameAnnotation'
-                - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+                $ref: '#/components/schemas/Annotation'
           description: Success
         "403":
           content:
@@ -560,10 +554,7 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
-                - $ref: '#/components/schemas/TextDateAnnotation'
-                - $ref: '#/components/schemas/TextPersonNameAnnotation'
-                - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+                $ref: '#/components/schemas/Annotation'
           description: Success
         "403":
           content:
@@ -614,10 +605,7 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
-                - $ref: '#/components/schemas/TextDateAnnotation'
-                - $ref: '#/components/schemas/TextPersonNameAnnotation'
-                - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+                $ref: '#/components/schemas/Annotation'
           description: Success
         "403":
           content:
@@ -1173,7 +1161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/patient'
+                $ref: '#/components/schemas/Patient'
           description: Success
         "403":
           content:
@@ -1224,7 +1212,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/patient'
+                $ref: '#/components/schemas/Patient'
           description: Success
         "403":
           content:
@@ -1284,7 +1272,7 @@ components:
             $ref: '#/components/schemas/Error'
       description: The specified resource was not found
   schemas:
-    PageResponse:
+    ResponsePageMetadata:
       description: A page of results
       properties:
         offset:
@@ -1294,7 +1282,7 @@ components:
           description: Maximum number of results returned
           type: integer
         links:
-          $ref: '#/components/schemas/PageResponse_links'
+          $ref: '#/components/schemas/ResponsePageMetadata_links'
       required:
       - limit
       - links
@@ -1307,11 +1295,12 @@ components:
       properties:
         name:
           description: Resource name of the dataset, of the form datasets/{datasetId}
+          readOnly: true
           type: string
       type: object
     PageOfDatasets:
       allOf:
-      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfDatasets_allOf'
       description: A page of datasets
       type: object
@@ -1342,43 +1331,36 @@ components:
       properties:
         name:
           description: Resource name of the annotation store, of the form datasets/{datasetId}/annotationStore/{annotationStoreId}
+          readOnly: true
           type: string
       type: object
     PageOfAnnotationStores:
       allOf:
-      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
       type: object
     AnnotationSource:
       description: The source of an annotation record
+      example:
+        name: name
       properties:
         name:
           description: The source of the annotation record
           type: string
       type: object
-    Annotation:
-      description: A annotation record
-      properties:
-        id:
-          description: The ID of the annotation
-          readOnly: true
-          type: string
-        annotationSource:
-          $ref: '#/components/schemas/AnnotationSource'
-        annotationType:
-          description: The type of the annotation
-          enum:
-          - text_date
-          - text_person_name
-          - text_physical_address
-          type: string
-      type: object
     TextAnnotation:
-      allOf:
-      - $ref: '#/components/schemas/Annotation'
-      - $ref: '#/components/schemas/TextAnnotation_allOf'
       description: An annotation in a text
+      properties:
+        start:
+          description: The position of the first character
+          type: integer
+        length:
+          description: The length of the annotation
+          type: integer
+        text:
+          description: The string annotated
+          type: string
       type: object
     TextDateAnnotation:
       allOf:
@@ -1397,9 +1379,47 @@ components:
       - $ref: '#/components/schemas/TextPhysicalAddressAnnotation_allOf'
       description: A person name annotation in a text
       type: object
+    Annotation:
+      description: An annotation record
+      example:
+        textDateAnnotations:
+        - null
+        # - null
+        textPersonNameAnnotations:
+        - null
+        # - null
+        textPhysicalAddressAnnotations:
+        - null
+        # - null
+        annotationSource:
+          name: name
+        name: name
+      properties:
+        name:
+          description: Resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
+          readOnly: true
+          type: string
+        annotationSource:
+          $ref: '#/components/schemas/AnnotationSource'
+        textDateAnnotations:
+          description: Date annotations in a text
+          items:
+            $ref: '#/components/schemas/TextDateAnnotation'
+          type: array
+        textPersonNameAnnotations:
+          description: Person name annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPersonNameAnnotation'
+          type: array
+        textPhysicalAddressAnnotations:
+          description: Physical address annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+          type: array
+      type: object
     PageOfAnnotations:
       allOf:
-      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotations_allOf'
       description: A page of annotations
       type: object
@@ -1410,6 +1430,7 @@ components:
       properties:
         name:
           description: Resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+          readOnly: true
           type: string
       type: object
     FhirStores:
@@ -1450,32 +1471,9 @@ components:
       type: object
     PageOfPatients:
       allOf:
-      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfPatients_allOf'
       description: A page of FHIR Patients
-      type: object
-    patient:
-      description: A FHIR Patient
-      example:
-        identifier: identifier
-        gender: male
-        id: id
-      properties:
-        id:
-          description: The patient ID
-          readOnly: true
-          type: string
-        identifier:
-          description: An identifier for this patient
-          type: string
-        gender:
-          description: Gender of the patient
-          enum:
-          - male
-          - female
-          - other
-          - unknown
-          type: string
       type: object
     Note:
       description: A clinical note
@@ -1503,7 +1501,7 @@ components:
       type: object
     PageOfNotes:
       allOf:
-      - $ref: '#/components/schemas/PageResponse'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfNotes_allOf'
       description: A page of notes
       type: object
@@ -1559,7 +1557,7 @@ components:
           format: uri
           type: string
       type: object
-    PageResponse_links:
+    ResponsePageMetadata_links:
       description: Links to navigate to different pages of results
       properties:
         next:
@@ -1580,17 +1578,6 @@ components:
           items:
             $ref: '#/components/schemas/AnnotationStore'
           type: array
-    TextAnnotation_allOf:
-      properties:
-        start:
-          description: The position of the first character
-          type: integer
-        length:
-          description: The length of the annotation
-          type: integer
-        text:
-          description: The string annotated
-          type: string
     TextDateAnnotation_allOf:
       properties:
         dateFormat:
@@ -1617,10 +1604,7 @@ components:
         items:
           description: An array of annotations
           items:
-            anyOf:
-            - $ref: '#/components/schemas/TextDateAnnotation'
-            - $ref: '#/components/schemas/TextPersonNameAnnotation'
-            - $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+            $ref: '#/components/schemas/Annotation'
           type: array
     PageOfPatients_allOf:
       properties:

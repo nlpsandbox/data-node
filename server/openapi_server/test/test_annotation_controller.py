@@ -6,10 +6,9 @@ import unittest
 from flask import json
 from six import BytesIO
 
-# from openapi_server.models.any_of_text_date_annotation_text_person_name_annotation_text_physical_address_annotation import AnyOfTextDateAnnotationTextPersonNameAnnotationTextPhysicalAddressAnnotation  # noqa: E501
+from openapi_server.models.annotation import Annotation  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
-# from openapi_server.models.unknownbasetype import UNKNOWN_BASE_TYPE  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
@@ -21,8 +20,16 @@ class TestAnnotationController(BaseTestCase):
 
         Create an annotation
         """
-        unknown_base_type = {}
-        headers = {
+        annotation = {
+  "textDateAnnotations" : [ null, null ],
+  "textPersonNameAnnotations" : [ null, null ],
+  "textPhysicalAddressAnnotations" : [ null, null ],
+  "annotationSource" : {
+    "name" : "name"
+  },
+  "name" : "name"
+}
+        headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -30,7 +37,7 @@ class TestAnnotationController(BaseTestCase):
             '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}/annotations'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='POST',
             headers=headers,
-            data=json.dumps(unknown_base_type),
+            data=json.dumps(annotation),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -40,7 +47,7 @@ class TestAnnotationController(BaseTestCase):
 
         Delete an annotation
         """
-        headers = {
+        headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -55,7 +62,7 @@ class TestAnnotationController(BaseTestCase):
 
         Get an annotation
         """
-        headers = {
+        headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -71,8 +78,9 @@ class TestAnnotationController(BaseTestCase):
         List the annotations in an annotation store
         """
         query_string = [('limit', 10),
-                        ('offset', 0)]
-        headers = {
+                        ('offset', 0),
+                        ('annotationType', 'annotation_type_example')]
+        headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(

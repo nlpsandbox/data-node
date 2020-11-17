@@ -21,17 +21,17 @@ class TestNoteController(BaseTestCase):
         Create a note
         """
         note = {
+  "noteType" : "loinc:LP29684-5",
   "patientId" : "patientId",
   "id" : "id",
-  "text" : "This is a text.",
-  "type" : "loinc:LP29684-5"
+  "text" : "This is a text."
 }
         headers = { 
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Note'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
             method='POST',
             headers=headers,
             data=json.dumps(note),
@@ -48,7 +48,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Note/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -63,7 +63,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Note/{note_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example', note_id='note_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -80,7 +80,7 @@ class TestNoteController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/notes'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Note'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

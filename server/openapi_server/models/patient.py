@@ -47,7 +47,7 @@ class Patient(Model):
 
         :param dikt: A dict.
         :type: dict
-        :return: The patient of this Patient.  # noqa: E501
+        :return: The Patient of this Patient.  # noqa: E501
         :rtype: Patient
         """
         return util.deserialize_model(dikt, cls)

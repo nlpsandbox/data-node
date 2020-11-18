@@ -3,8 +3,14 @@ import os
 
 defaultValues = {
     "SERVER_PROTOCOL": "http://",
-    "SERVER_HOST": "localhost",
-    "SERVER_PORT": "8080"
+    "SERVER_DOMAIN": "localhost",
+    "SERVER_PORT": "8080",
+    "DB_PROTOCOL": "mongodb://",
+    "DB_DOMAIN": "localhost",
+    "DB_PORT": "27017",
+    "DB_DATABASE": "nlpsandbox",
+    "DB_USERNAME": "nlpmongo",
+    "DB_PASSWORD": "nlpmongo"
 }
 
 
@@ -38,8 +44,8 @@ class Config(AbstractConfig):
         return self.get_property('SERVER_PROTOCOL')
 
     @property
-    def server_host(self):
-        return self.get_property('SERVER_HOST')
+    def server_domain(self):
+        return self.get_property('SERVER_DOMAIN')
 
     @property
     def server_port(self):
@@ -47,30 +53,38 @@ class Config(AbstractConfig):
 
     @property
     def server_url(self):
-        return "%s%s:%s" % (self.server_protocol, self.server_host,
-                            self.server_port)
+        return "%s%s:%s" % (
+            self.server_protocol, self.server_domain, self.server_port)
 
     @property
     def server_api_url(self):
-        return "%s%s:%s%s" % (self.server_protocol, self.server_host,
-                              self.server_port, "/api/v1")
+        return "%s%s" % (self.server_url(), "/api/v1")
 
-    # @property
-    # def sql_user(self):
-    #     return self.get_property('SQL_USER')
+    @property
+    def db_protocol(self):
+        return self.get_property('DB_PROTOCOL')
 
-    # @property
-    # def sql_password(self):
-    #     return self.get_property('SQL_PASSWORD')
+    @property
+    def db_domain(self):
+        return self.get_property('DB_DOMAIN')
 
-    # @property
-    # def sql_db(self):
-    #     return self.get_property('SQL_DB')
+    @property
+    def db_port(self):
+        return self.get_property('DB_PORT')
 
-    # @property
-    # def sql_port(self):
-    #     return self.get_property('SQL_PORT')
+    @property
+    def db_database(self):
+        return self.get_property('DB_DATABASE')
 
-    # @property
-    # def sql_host(self):
-    #     return self.get_property('SQL_HOST')
+    @property
+    def db_username(self):
+        return self.get_property('DB_USERNAME')
+
+    @property
+    def db_password(self):
+        return self.get_property('DB_PASSWORD')
+
+    @property
+    def db_host(self):
+        return "%s%s:%s" % (
+            self.db_protocol, self.db_domain, self.db_port)

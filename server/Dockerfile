@@ -30,6 +30,9 @@ RUN pip install -r ${APP_DIR}/requirements.txt
 # Expose the port used by the application
 EXPOSE 8080
 
+# WORKDIR ${APP_DIR}
+# ENTRYPOINT ["python", "-m", "openapi_server"]
+
 # Set the entrypoint script and the default command run by the container
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["uwsgi", "--ini", "app.ini", "--http-socket", ":8080"]

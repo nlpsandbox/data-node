@@ -17,21 +17,21 @@ class PageOfAnnotationsAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, items=None):  # noqa: E501
+    def __init__(self, annotations=None):  # noqa: E501
         """PageOfAnnotationsAllOf - a model defined in OpenAPI
 
-        :param items: The items of this PageOfAnnotationsAllOf.  # noqa: E501
-        :type items: List[Annotation]
+        :param annotations: The annotations of this PageOfAnnotationsAllOf.  # noqa: E501
+        :type annotations: List[Annotation]
         """
         self.openapi_types = {
-            'items': List[Annotation]
+            'annotations': List[Annotation]
         }
 
         self.attribute_map = {
-            'items': 'items'
+            'annotations': 'annotations'
         }
 
-        self._items = items
+        self._annotations = annotations
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfAnnotationsAllOf':
@@ -45,24 +45,24 @@ class PageOfAnnotationsAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def items(self):
-        """Gets the items of this PageOfAnnotationsAllOf.
+    def annotations(self):
+        """Gets the annotations of this PageOfAnnotationsAllOf.
 
         An array of annotations  # noqa: E501
 
-        :return: The items of this PageOfAnnotationsAllOf.
+        :return: The annotations of this PageOfAnnotationsAllOf.
         :rtype: List[Annotation]
         """
-        return self._items
+        return self._annotations
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfAnnotationsAllOf.
+    @annotations.setter
+    def annotations(self, annotations):
+        """Sets the annotations of this PageOfAnnotationsAllOf.
 
         An array of annotations  # noqa: E501
 
-        :param items: The items of this PageOfAnnotationsAllOf.
-        :type items: List[Annotation]
+        :param annotations: The annotations of this PageOfAnnotationsAllOf.
+        :type annotations: List[Annotation]
         """
 
-        self._items = items
+        self._annotations = annotations

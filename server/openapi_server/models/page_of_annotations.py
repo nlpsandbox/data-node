@@ -23,7 +23,7 @@ class PageOfAnnotations(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, items=None):  # noqa: E501
+    def __init__(self, offset=None, limit=None, links=None, annotations=None):  # noqa: E501
         """PageOfAnnotations - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfAnnotations.  # noqa: E501
@@ -32,27 +32,27 @@ class PageOfAnnotations(Model):
         :type limit: int
         :param links: The links of this PageOfAnnotations.  # noqa: E501
         :type links: ResponsePageMetadataLinks
-        :param items: The items of this PageOfAnnotations.  # noqa: E501
-        :type items: List[Annotation]
+        :param annotations: The annotations of this PageOfAnnotations.  # noqa: E501
+        :type annotations: List[Annotation]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
-            'items': List[Annotation]
+            'annotations': List[Annotation]
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
-            'items': 'items'
+            'annotations': 'annotations'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
-        self._items = items
+        self._annotations = annotations
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfAnnotations':
@@ -139,24 +139,24 @@ class PageOfAnnotations(Model):
         self._links = links
 
     @property
-    def items(self):
-        """Gets the items of this PageOfAnnotations.
+    def annotations(self):
+        """Gets the annotations of this PageOfAnnotations.
 
         An array of annotations  # noqa: E501
 
-        :return: The items of this PageOfAnnotations.
+        :return: The annotations of this PageOfAnnotations.
         :rtype: List[Annotation]
         """
-        return self._items
+        return self._annotations
 
-    @items.setter
-    def items(self, items):
-        """Sets the items of this PageOfAnnotations.
+    @annotations.setter
+    def annotations(self, annotations):
+        """Sets the annotations of this PageOfAnnotations.
 
         An array of annotations  # noqa: E501
 
-        :param items: The items of this PageOfAnnotations.
-        :type items: List[Annotation]
+        :param annotations: The annotations of this PageOfAnnotations.
+        :type annotations: List[Annotation]
         """
 
-        self._items = items
+        self._annotations = annotations

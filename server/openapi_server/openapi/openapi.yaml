@@ -1291,7 +1291,7 @@ components:
     Dataset:
       description: A dataset
       example:
-        name: name
+        name: datasets/awesome-dataset
       properties:
         name:
           description: Resource name of the dataset, of the form datasets/{datasetId}
@@ -1631,7 +1631,7 @@ components:
           type: string
     PageOfAnnotations_allOf:
       properties:
-        items:
+        annotations:
           description: An array of annotations
           items:
             $ref: '#/components/schemas/Annotation'

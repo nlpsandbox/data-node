@@ -72,8 +72,8 @@ jobs:
           MAJOR=${MINOR%.*}
           TAGS="$TAGS,${DOCKER_IMAGE}:${MINOR},${DOCKER_IMAGE}:${MAJOR},${DOCKER_IMAGE}:latest"
           PUSH=true
-        elif [ "${{ github.event_name }}" = "push" ]; then
-          TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+        # elif [ "${{ github.event_name }}" = "push" ]; then
+        #   TAGS="$TAGS,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
         fi
         echo ::set-output name=version::${VERSION}
         echo ::set-output name=tags::${TAGS}
@@ -104,3 +104,10 @@ jobs:
           org.opencontainers.image.version=${{ steps.prep.outputs.version }}
           org.opencontainers.image.revision=${{ github.sha }}
           org.opencontainers.image.licenses=${{ github.event.repository.license.name }}
+    - name: Docker Hub Description
+      if: steps.prep.outputs.push == 'true'
+      uses: peter-evans/dockerhub-description@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        repository: nlpsandbox/data-node

@@ -1,9 +1,11 @@
 import connexion
-import six
+from mongoengine.errors import DoesNotExist
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
+from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
+from openapi_server.dbmodels.annotation import Annotation as DbAnnotation
 from openapi_server import util
 
 
@@ -21,34 +23,71 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
 
     :rtype: Annotation
     """
-    if connexion.request.is_json:
-        annotation = Annotation.from_dict(connexion.request.get_json())  # noqa: E501
-    # return 'do some magic!'
-    # res = None
-    # status = None
-    # if connexion.request.is_json:
-    #     annotation = Annotation.from_dict(connexion.request.get_json())  # noqa: E501
-    #     db_annotation = None
-    #     try:
-    #         if annotation.annotation_type == 'text_date':
-    #             annotation = TextDateAnnotation.from_dict(connexion.request.get_json())  # noqa: E501
-    #             db_annotation = DbTextDateAnnotation(
-    #                 annotationType=annotation.annotation_type,
-    #                 start=annotation.start,
-    #                 length=annotation.length,
-    #                 text=annotation.text,
-    #                 dateFormat=annotation.date_format).save()
-    #             annotation = TextDateAnnotation.from_dict(db_annotation.to_dict())  # noqa: E501
-    #         elif annotation.annotation_type == 'text_person_name':
-    #             annotation = TextPersonNameAnnotation.from_dict(connexion.request.get_json())  # noqa: E501
-    #         elif annotation.annotation_type == 'text_physical_address':
-    #             annotation = TextPhysicalAddressAnnotation.from_dict(connexion.request.get_json())  # noqa: E501
-    #     except Exception as error:
-    #         status = 500
-    #         res = Error("Internal error", status, str(error))
+    res = None
+    status = None
 
-    # return res, status
-    return {}, 200
+    if dataset_id is None:
+        status = 422
+        res = Error("The query parameter datasetId is not specified", status)
+    elif annotation_store_id is None:
+        status = 422
+        res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
+
+    # check if the annotation store exists
+    store_name = None
+    if status is None:
+        try:
+            store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
+            DbAnnotationStore.objects.get(name=store_name)
+        except DoesNotExist:
+            status = 404
+            res = Error("The specified annotation store was not found", status)
+        except Exception as error:
+            status = 500
+            res = Error("Internal error", status, str(error))
+
+    # create the annotation
+    if status is None and connexion.request.is_json:
+        try:
+            annotation = Annotation.from_dict(connexion.request.get_json())
+            text_date_annotations = None
+            text_person_name_annotations = None
+            text_physical_address_annotations = None
+
+            if annotation.text_date_annotations is not None:
+                text_date_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation.text_date_annotations]
+
+            if annotation.text_person_name_annotations is not None:
+                text_person_name_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation.text_person_name_annotations]
+
+            if annotation.text_physical_address_annotations is not None:
+                text_physical_address_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation.text_physical_address_annotations]
+
+            # create the annotation
+            db_annotation = DbAnnotation(
+                annotationStoreName=store_name,
+                annotationSource=annotation.annotation_source.to_dict(),
+                textDateAnnotations=text_date_annotations,
+                textPersonNameAnnotations=text_person_name_annotations,
+                textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501
+            ).save()
+
+            res = Annotation.from_dict(db_annotation.to_dict())
+            status = 201
+        except Exception as error:
+            status = 500
+            res = Error("Internal error", status, str(error))
+
+    return res, status
 
 
 def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E501

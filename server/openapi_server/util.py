@@ -1,7 +1,7 @@
 import datetime
 
+import re
 import six
-# import typing
 from openapi_server import typing_utils
 
 
@@ -140,3 +140,53 @@ def _deserialize_dict(data, boxed_type):
     """
     return {k: _deserialize(v, boxed_type)
             for k, v in six.iteritems(data)}
+
+
+# Source: http://lopezpino.com/2015/11/12/python-dicts-naming-conventions/
+def camel_to_underscore(name):
+    """
+    Convert a name from camel case convention to underscore lower case.
+    Args:
+        name (str): name in camel case convention.
+    Returns:
+        name in underscore lowercase convention.
+    """
+    camel_pat = re.compile(r'([A-Z])')
+    return camel_pat.sub(lambda x: '_' + x.group(1).lower(), name)
+
+
+# Source: http://lopezpino.com/2015/11/12/python-dicts-naming-conventions/
+def underscore_to_camel(name):
+    """
+    Convert a name from underscore lower case convention to camel case.
+    Args:
+        name (str): name in underscore lowercase convention.
+    Returns:
+        Name in camel case convention.
+    """
+    under_pat = re.compile(r'_([a-z])')
+    return under_pat.sub(lambda x: x.group(1).upper(), name)
+
+
+# Source: http://lopezpino.com/2015/11/12/python-dicts-naming-conventions/
+def change_dict_naming_convention(d, convert_function):
+    """
+    Convert a nested dictionary from one convention to another.
+    Args:
+        d (dict): dictionary (nested or not) to be converted.
+        convert_function (func): function that takes the string in one
+        convention and returns it in the other one.
+    Returns:
+        Dictionary with the new keys.
+    """
+    new = {}
+    for k, v in d.items():
+        new_v = v
+        if isinstance(v, dict):
+            new_v = change_dict_naming_convention(v, convert_function)
+        elif isinstance(v, list):
+            new_v = list()
+            for x in v:
+                new_v.append(change_dict_naming_convention(x, convert_function))
+        new[convert_function(k)] = new_v
+    return new

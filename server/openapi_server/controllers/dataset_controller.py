@@ -1,4 +1,3 @@
-import connexion
 from mongoengine.errors import DoesNotExist
 
 from openapi_server.models.dataset import Dataset  # noqa: E501

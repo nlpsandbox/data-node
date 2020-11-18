@@ -6,7 +6,6 @@ from openapi_server.models.fhir_store import FhirStore  # noqa: E501
 from openapi_server.models.fhir_stores import FhirStores  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
-from openapi_server.config import Config
 
 
 def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501

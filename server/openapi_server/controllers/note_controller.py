@@ -6,7 +6,7 @@ from openapi_server.models.note import Note  # noqa: E501
 from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.dbmodels.note import Note as DbNote
-from openapi_server.dbmodels.patient import Patient as DbPatient
+# from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 

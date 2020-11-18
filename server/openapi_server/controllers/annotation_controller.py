@@ -7,6 +7,7 @@ from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa:
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
 from openapi_server.dbmodels.annotation import Annotation as DbAnnotation
 from openapi_server import util
+from openapi_server.config import Config
 
 
 def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa: E501
@@ -104,7 +105,21 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
 
     :rtype: Annotation
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        db_annotation = DbAnnotation.objects.get(id=annotation_id)
+        res = Annotation.from_dict(db_annotation.to_dict())
+        db_annotation.delete()
+        status = 200
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status
 
 
 def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E501
@@ -121,7 +136,20 @@ def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E50
 
     :rtype: Annotation
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        db_annotation = DbAnnotation.objects.get(id=annotation_id)
+        res = Annotation.from_dict(db_annotation.to_dict())
+        status = 200
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status
 
 
 def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None, annotation_type=None):  # noqa: E501
@@ -142,4 +170,33 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None, a
 
     :rtype: PageOfAnnotations
     """
-    return 'do some magic!'
+    res = None
+    status = None
+    try:
+        store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
+        db_annotations = DbAnnotation.objects(
+            annotationStoreName__startswith=store_name).skip(offset).limit(limit)  # noqa: E501
+        annotations = [Annotation.from_dict(a.to_dict()) for a in db_annotations]  # noqa: E501
+        next_ = ""
+        if len(annotations) == limit:
+            next_ = (
+                "%s/datasets/%s/annotationStores/%s/annotations"
+                "?limit=%s&offset=%s") % \
+                (Config().server_api_url, dataset_id, annotation_store_id, limit,  # noqa: E501
+                    offset + limit)
+        res = PageOfAnnotations(
+            offset=offset,
+            limit=limit,
+            links={
+                "next": next_
+            },
+            annotations=annotations)
+        status = 200
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+
+    return res, status

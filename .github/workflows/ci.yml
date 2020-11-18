@@ -50,7 +50,7 @@ jobs:
     - name: Prepare
       id: prep
       run: |
-        DOCKER_IMAGE=nlpsandbox/data-node-i2b2-2014
+        DOCKER_IMAGE=nlpsandbox/data-node
         VERSION=noop
         PUSH=false
         if [ "${{ github.event_name }}" = "schedule" ]; then

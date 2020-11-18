@@ -13,7 +13,7 @@ info:
     name: Apache 2.0
     url: https://github.com/Sage-Bionetworks/nlp-sandbox/blob/main/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.1.6
+  version: 0.2.0
   x-logo:
     url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas/logo.png
 servers:

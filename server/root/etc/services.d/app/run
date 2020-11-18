@@ -1,6 +1,0 @@
-#!/usr/bin/with-contenv sh
-
-cd /opt/app
-
-echo "Starting data node server"
-s6-setuidgid app python -m openapi_server

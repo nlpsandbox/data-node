@@ -13,22 +13,32 @@ info:
     name: Apache 2.0
     url: https://github.com/Sage-Bionetworks/nlp-sandbox/blob/main/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.1.4
+  version: 0.1.6
   x-logo:
     url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas/logo.png
 servers:
 - url: http://example.com/api/v1
 - url: https://example.com/api/v1
 tags:
-- description: Operations about clinical notes
+- description: Operations about annotations
+  name: Annotation
+- description: Operations about annotation stores
+  name: AnnotationStore
+- description: Operations about datasets
+  name: Dataset
+- description: Operations about FHIR stores
+  name: FhirStore
+- description: Operations about notes
   name: Note
-- description: Operations about API health
-  name: Health
+- description: Operations about patients
+  name: Patient
+- description: Operations about this API service
+  name: Service
 paths:
-  /annotations/dates:
+  /datasets:
     get:
-      description: Returns the date annotations
-      operationId: dates_read_all
+      description: Returns the datasets
+      operationId: list_datasets
       parameters:
       - description: Maximum number of results returned
         explode: true
@@ -37,6 +47,7 @@ paths:
         required: false
         schema:
           default: 10
+          maximum: 100
           minimum: 10
           type: integer
         style: form
@@ -55,14 +66,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: '#/components/schemas/PageResponse'
-                properties:
-                  items:
-                    items:
-                      $ref: '#/components/schemas/DateAnnotation'
-                    type: array
-                type: object
+                $ref: '#/components/schemas/PageOfDatasets'
           description: Success
         "403":
           content:
@@ -76,20 +80,73 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get all date annotations
+      summary: Get all datasets
       tags:
-      - Date
-      x-openapi-router-controller: openapi_server.controllers.date_controller
-  /health:
-    get:
-      description: Get the health of the API
-      operationId: health
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+    post:
+      description: Create a dataset with the name specified
+      operationId: create_dataset
+      parameters:
+      - description: The ID of the dataset that is being created.
+        explode: true
+        in: query
+        name: datasetId
+        required: true
+        schema:
+          example: awesome-dataset
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a dataset
+      tags:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+  /datasets/{datasetId}:
+    delete:
+      description: Deletes the dataset for a given ID
+      operationId: delete_dataset
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Health'
+                $ref: '#/components/schemas/Dataset'
           description: Success
         "403":
           content:
@@ -103,15 +160,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get Health
+      summary: Delete a dataset by ID
       tags:
-      - Health
-      x-openapi-router-controller: openapi_server.controllers.health_controller
-  /notes:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
     get:
-      description: Returns the clinical notes
-      operationId: notes_read_all
+      description: Returns the dataset for a given ID
+      operationId: get_dataset
       parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a dataset by ID
+      tags:
+      - Dataset
+      x-openapi-router-controller: openapi_server.controllers.dataset_controller
+  /datasets/{datasetId}/annotationStore:
+    get:
+      description: Returns the annotation stores
+      operationId: list_annotation_stores
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
       - description: Maximum number of results returned
         explode: true
         in: query
@@ -119,6 +219,7 @@ paths:
         required: false
         schema:
           default: 10
+          maximum: 100
           minimum: 10
           type: integer
         style: form
@@ -137,14 +238,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                - $ref: '#/components/schemas/PageResponse'
-                properties:
-                  items:
-                    items:
-                      $ref: '#/components/schemas/Note'
-                    type: array
-                type: object
+                $ref: '#/components/schemas/PageOfAnnotationStores'
           description: Success
         "403":
           content:
@@ -158,19 +252,690 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get all clinical notes
+      summary: List the annotation stores in a dataset
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+    post:
+      description: Create an annotation store with the ID specified
+      operationId: create_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store that is being created.
+        explode: true
+        in: query
+        name: annotationStoreId
+        required: true
+        schema:
+          example: awesome-annotation-store
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnotationStore'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create an annotation store
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+  /datasets/{datasetId}/annotationStore/{annotationStoreId}:
+    delete:
+      description: Deletes the annotation store specified
+      operationId: delete_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete an annotation store
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+    get:
+      description: Returns the annotation store specified
+      operationId: get_annotation_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get an annotation store
+      tags:
+      - AnnotationStore
+      x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
+  /datasets/{datasetId}/annotationStore/{annotationStoreId}/annotations:
+    get:
+      description: Returns the annotations in an annotation store
+      operationId: list_annotations
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: Type of the annotations that must be returned
+        explode: true
+        in: query
+        name: annotationType
+        required: false
+        schema:
+          enum:
+          - text_date
+          - text_person_name
+          - text_physical_address
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfAnnotations'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: List the annotations in an annotation store
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+    post:
+      description: Create an annotation
+      operationId: create_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Annotation'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Annotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create an annotation
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+  /datasets/{datasetId}/annotationStore/{annotationStoreId}/annotations/{annotationId}:
+    delete:
+      description: Deletes the annotation specified
+      operationId: delete_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation
+        explode: false
+        in: path
+        name: annotationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Annotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete an annotation
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+    get:
+      description: Returns the annotation specified
+      operationId: get_annotation
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation store
+        explode: false
+        in: path
+        name: annotationStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the annotation
+        explode: false
+        in: path
+        name: annotationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Annotation'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get an annotation
+      tags:
+      - Annotation
+      x-openapi-router-controller: openapi_server.controllers.annotation_controller
+  /datasets/{datasetId}/fhirStores:
+    get:
+      description: Returns the FHIR stores
+      operationId: list_fhir_stores
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FhirStores'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: List the FHIR stores in a dataset
+      tags:
+      - FhirStore
+      x-openapi-router-controller: openapi_server.controllers.fhir_store_controller
+    post:
+      description: Create a FHIR store with the ID specified
+      operationId: create_fhir_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store that is being created.
+        explode: true
+        in: query
+        name: fhirStoreId
+        required: true
+        schema:
+          example: awesome-fhir-store
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FhirStore'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FhirStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a FHIR store
+      tags:
+      - FhirStore
+      x-openapi-router-controller: openapi_server.controllers.fhir_store_controller
+  /datasets/{datasetId}/fhirStores/{fhirStoreId}:
+    delete:
+      description: Deletes the FHIR store specified
+      operationId: delete_fhir_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FhirStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete a FHIR store
+      tags:
+      - FhirStore
+      x-openapi-router-controller: openapi_server.controllers.fhir_store_controller
+    get:
+      description: Returns the FHIR store specified
+      operationId: get_fhir_store
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FhirStore'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a FHIR store
+      tags:
+      - FhirStore
+      x-openapi-router-controller: openapi_server.controllers.fhir_store_controller
+  /datasets/{datasetId}/fhirStores/{fhirStoreId}/fhir/Note:
+    get:
+      description: Returns the notes in a FHIR store
+      operationId: list_notes
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfNotes'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: List notes
       tags:
       - Note
       x-openapi-router-controller: openapi_server.controllers.note_controller
-  /notes/{id}:
-    get:
-      description: Returns the clinical note for a given ID
-      operationId: notes_read
+    post:
+      description: Create a note
+      operationId: create_note
       parameters:
-      - description: The ID of the clinical note to fetch
+      - description: The ID of the dataset
         explode: false
         in: path
-        name: id
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Note'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a note
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+  /datasets/{datasetId}/fhirStores/{fhirStoreId}/fhir/Note/{noteId}:
+    delete:
+      description: Deletes the note specified
+      operationId: delete_note
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note
+        explode: false
+        in: path
+        name: noteId
         required: true
         schema:
           type: string
@@ -194,10 +959,304 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get a clinical note by ID
+      summary: Delete a note
       tags:
       - Note
       x-openapi-router-controller: openapi_server.controllers.note_controller
+    get:
+      description: Returns the note specified
+      operationId: get_note
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the note
+        explode: false
+        in: path
+        name: noteId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a note
+      tags:
+      - Note
+      x-openapi-router-controller: openapi_server.controllers.note_controller
+  /datasets/{datasetId}/fhirStores/{fhirStoreId}/fhir/Patient:
+    get:
+      description: Returns the Patients in a FHIR store
+      operationId: list_patients
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOfPatients'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: List the Patients in a FHIR store
+      tags:
+      - Patient
+      x-openapi-router-controller: openapi_server.controllers.patient_controller
+    post:
+      description: Create a FHIR Patient
+      operationId: create_patient
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Create a FHIR Patient
+      tags:
+      - Patient
+      x-openapi-router-controller: openapi_server.controllers.patient_controller
+  /datasets/{datasetId}/fhirStores/{fhirStoreId}/fhir/Patient/{patientId}:
+    delete:
+      description: Deletes the FHIR Patient specified
+      operationId: delete_patient
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR Patient
+        explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Delete a FHIR Patient
+      tags:
+      - Patient
+      x-openapi-router-controller: openapi_server.controllers.patient_controller
+    get:
+      description: Returns the FHIR Patient specified
+      operationId: get_patient
+      parameters:
+      - description: The ID of the dataset
+        explode: false
+        in: path
+        name: datasetId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR store
+        explode: false
+        in: path
+        name: fhirStoreId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the FHIR Patient
+        explode: false
+        in: path
+        name: patientId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get a FHIR Patient
+      tags:
+      - Patient
+      x-openapi-router-controller: openapi_server.controllers.patient_controller
+  /service:
+    get:
+      description: Get information about the service
+      operationId: service
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Success
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+      summary: Get service information
+      tags:
+      - Service
+      x-openapi-router-controller: openapi_server.controllers.service_controller
 components:
   responses:
     Unauthorized:
@@ -213,96 +1272,41 @@ components:
             $ref: '#/components/schemas/Error'
       description: The specified resource was not found
   schemas:
-    PageResponse:
+    ResponsePageMetadata:
       description: A page of results
       properties:
+        offset:
+          description: Index of the first result that must be returned
+          type: integer
+        limit:
+          description: Maximum number of results returned
+          type: integer
         links:
-          $ref: '#/components/schemas/PageResponse_links'
-      type: object
-    Email:
-      description: User email address
-      example: john.smith@example.com
-      format: test
-      type: string
-    User:
-      properties:
-        username:
-          example: John78
-          minLength: 4
-          type: string
-        firstName:
-          example: John
-          type: string
-        lastName:
-          example: Smith
-          type: string
-        email:
-          description: User email address
-          example: john.smith@example.com
-          format: test
-          type: string
+          $ref: '#/components/schemas/ResponsePageMetadata_links'
       required:
-      - email
-      - firstName
-      - lastName
-      - username
+      - limit
+      - links
+      - offset
       type: object
-    Entity:
+    Dataset:
+      description: A dataset
+      example:
+        name: datasets/awesome-dataset
       properties:
-        id:
-          description: ID
-          type: integer
-        createdBy:
-          $ref: '#/components/schemas/User'
-        createdAt:
-          description: When the entity has been created
-          format: date-time
+        name:
+          description: Resource name of the dataset, of the form datasets/{datasetId}
+          readOnly: true
           type: string
-        updatedBy:
-          $ref: '#/components/schemas/User'
-        updatedAt:
-          description: When the entity has been updated
-          format: date-time
-          type: string
-      required:
-      - id
       type: object
-    Annotation:
+    PageOfDatasets:
       allOf:
-      - $ref: '#/components/schemas/Entity'
-      description: An annotation in a text
-      properties:
-        noteId:
-          description: The note ID
-          type: integer
-        start:
-          description: The position of the first character
-          type: integer
-        length:
-          description: The length of the annotation
-          type: integer
-        text:
-          description: The string annotated
-          type: string
-      required:
-      - length
-      - noteId
-      - start
-      type: object
-    DateAnnotation:
-      allOf:
-      - $ref: '#/components/schemas/Annotation'
-      description: A date annotation in a text
-      properties:
-        format:
-          description: Date format (ISO 8601)
-          type: string
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfDatasets_allOf'
+      description: A page of datasets
       type: object
     Error:
+      description: Problem details (tools.ietf.org/html/rfc7807)
       properties:
-        type:
-          description: An absolute URI that identifies the problem type
-          type: string
         title:
           description: A human readable documentation for the problem type
           type: string
@@ -313,55 +1317,336 @@ components:
           description: A human readable explanation specific to this occurrence of
             the problem
           type: string
+        type:
+          description: An absolute URI that identifies the problem type
+          type: string
       required:
       - status
       - title
       type: object
-    Health:
+    AnnotationStore:
+      description: An annotation store
       example:
-        status: pass
+        name: name
       properties:
-        status:
-          description: Health status
-          enum:
-          - pass
-          - warn
+        name:
+          description: Resource name of the annotation store, of the form datasets/{datasetId}/annotationStore/{annotationStoreId}
+          readOnly: true
           type: string
       type: object
-    PatientPublicId:
-      description: The patient public ID
-      example: 4f6cf35x-2c4y-483z-a0a9-158621f77a21
-      maxLength: 50
-      type: string
-    Note:
+    PageOfAnnotationStores:
       allOf:
-      - $ref: '#/components/schemas/Entity'
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
+      description: A page of annotation stores
+      type: object
+    AnnotationSource:
+      description: The source of an annotation record
+      example:
+        name: name
+      properties:
+        name:
+          description: The source of the annotation record
+          type: string
+      type: object
+    TextAnnotation:
+      description: An annotation in a text
+      properties:
+        start:
+          description: The position of the first character
+          type: integer
+        length:
+          description: The length of the annotation
+          type: integer
+        text:
+          description: The string annotated
+          type: string
+      type: object
+    TextDateAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      - $ref: '#/components/schemas/TextDateAnnotation_allOf'
+      description: A date annotation in a text
+      example:
+        start: 42
+        length: 10
+        text: 10/26/2020
+        dateFormat: MM/DD/YYYY
+      type: object
+    TextPersonNameAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      description: A person name annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: Chloe Price
+      type: object
+    TextPhysicalAddressAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      - $ref: '#/components/schemas/TextPhysicalAddressAnnotation_allOf'
+      description: A person name annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: Seattle
+        addressType: city
+      type: object
+    Annotation:
+      description: An annotation record
+      example:
+        textDateAnnotations:
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
+        textPersonNameAnnotations:
+        - start: 42
+          length: 11
+          text: Chloe Price
+        - start: 42
+          length: 11
+          text: Chloe Price
+        textPhysicalAddressAnnotations:
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
+        annotationSource:
+          name: name
+        name: name
+      properties:
+        name:
+          description: Resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
+          readOnly: true
+          type: string
+        annotationSource:
+          $ref: '#/components/schemas/AnnotationSource'
+        textDateAnnotations:
+          description: Date annotations in a text
+          items:
+            $ref: '#/components/schemas/TextDateAnnotation'
+          type: array
+        textPersonNameAnnotations:
+          description: Person name annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPersonNameAnnotation'
+          type: array
+        textPhysicalAddressAnnotations:
+          description: Physical address annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+          type: array
+      type: object
+    PageOfAnnotations:
+      allOf:
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfAnnotations_allOf'
+      description: A page of annotations
+      type: object
+    FhirStore:
+      description: A FHIR store
+      example:
+        name: name
+      properties:
+        name:
+          description: Resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+          readOnly: true
+          type: string
+      type: object
+    FhirStores:
+      description: A list of FHIR stores
+      example:
+        fhirStores:
+        - name: name
+        - name: name
+      properties:
+        fhirStores:
+          description: A list of FHIR stores
+          items:
+            $ref: '#/components/schemas/FhirStore'
+          type: array
+      type: object
+    Patient:
+      description: A FHIR Patient
+      example:
+        identifier: identifier
+        gender: male
+        id: id
+      properties:
+        id:
+          description: The patient ID
+          readOnly: true
+          type: string
+        identifier:
+          description: An identifier for this patient
+          type: string
+        gender:
+          description: Gender of the patient
+          enum:
+          - male
+          - female
+          - other
+          - unknown
+          type: string
+      type: object
+    PageOfPatients:
+      allOf:
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfPatients_allOf'
+      description: A page of FHIR Patients
+      type: object
+    Note:
       description: A clinical note
       example:
-        text: On March 11, Ms Chloe Price met with her family.
-        type: pathology
-        patientPublicId: ""
+        noteType: loinc:LP29684-5
+        patientId: patientId
+        id: id
+        text: This is a text.
       properties:
+        id:
+          description: The ID of the note
+          readOnly: true
+          type: string
         text:
-          description: The content of the note
-          example: On March 11, Ms Chloe Price met with her family.
+          description: A text
+          example: This is a text.
           type: string
-        patientPublicId:
-          allOf:
-          - $ref: '#/components/schemas/PatientPublicId'
-        type:
-          description: The note type
-          enum:
-          - pathology
-          - phone_call
+        noteType:
+          description: The note type (LOINC concept)
+          example: loinc:LP29684-5
           type: string
-      required:
-      - text
+        patientId:
+          description: The patient ID
+          type: string
       type: object
-    PageResponse_links:
+    PageOfNotes:
+      allOf:
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfNotes_allOf'
+      description: A page of notes
+      type: object
+    Service:
+      description: Information about an NLP service
+      example:
+        license: Apache-2.0
+        authorEmail: author@example.com
+        author: Example Author
+        name: awesome-date-annotator
+        description: An awesome Date Annotator based on regex patterns
+        repository: github:awesome-org/awesome-date-annotator
+        version: 1.0.0
+        url: https://openapi-generator.tech
+      properties:
+        name:
+          description: The service name
+          example: awesome-date-annotator
+          maxLength: 60
+          minLength: 3
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+          type: string
+        version:
+          description: The version of the service (SemVer string)
+          example: 1.0.0
+          minLength: 1
+          pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+          type: string
+        license:
+          description: The license of this service (spdx.org/licenses Identifier)
+          example: Apache-2.0
+          type: string
+        repository:
+          description: The place where the code lives
+          example: github:awesome-org/awesome-date-annotator
+          type: string
+        description:
+          description: A short, one-sentence summary of the service
+          example: An awesome Date Annotator based on regex patterns
+          maxLength: 100
+          type: string
+        author:
+          description: The author of the service
+          example: Example Author
+          type: string
+        authorEmail:
+          description: The email address of the author
+          example: author@example.com
+          format: email
+          type: string
+        url:
+          description: The URL to the homepage of the service
+          format: uri
+          type: string
+      type: object
+    ResponsePageMetadata_links:
       description: Links to navigate to different pages of results
       properties:
         next:
-          description: Link to the enxt page of results
+          description: Link to the next page of results
           format: uri
           type: string
+    PageOfDatasets_allOf:
+      properties:
+        datasets:
+          description: An array of datasets
+          items:
+            $ref: '#/components/schemas/Dataset'
+          type: array
+    PageOfAnnotationStores_allOf:
+      properties:
+        annotationStores:
+          description: An array of annotation stores
+          items:
+            $ref: '#/components/schemas/AnnotationStore'
+          type: array
+    TextDateAnnotation_allOf:
+      properties:
+        dateFormat:
+          description: Date format (ISO 8601)
+          type: string
+    TextPhysicalAddressAnnotation_allOf:
+      properties:
+        addressType:
+          description: Type of address information
+          enum:
+          - city
+          - country
+          - department
+          - hospital
+          - organization
+          - other
+          - room
+          - state
+          - street
+          - zip
+          type: string
+    PageOfAnnotations_allOf:
+      properties:
+        annotations:
+          description: An array of annotations
+          items:
+            $ref: '#/components/schemas/Annotation'
+          type: array
+    PageOfPatients_allOf:
+      properties:
+        patients:
+          description: An array of FHIR Patients
+          items:
+            $ref: '#/components/schemas/Patient'
+          type: array
+    PageOfNotes_allOf:
+      properties:
+        notes:
+          description: An array of notes
+          items:
+            $ref: '#/components/schemas/Note'
+          type: array

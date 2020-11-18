@@ -1,40 +1,29 @@
 #!/usr/bin/env python3
 
 import connexion
+from mongoengine import connect
+
 from openapi_server import encoder
-from logging.config import dictConfig
-from openapi_server.util.configuration import Config as config
+from openapi_server.config import Config as config
+
+
+app = connexion.App(__name__, specification_dir='./openapi/')
+app.app.json_encoder = encoder.JSONEncoder
+app.add_api('openapi.yaml',
+            arguments={'title': 'NLP Sandbox Data Node API'},
+            pythonic_params=True)
+
+connect(
+    db=config().db_database,
+    username=config().db_username,
+    password=config().db_password,
+    host=config().db_host
+)
 
 
 def main():
-    # Set up logging
-    dictConfig({
-        'version': 1,
-        'formatters': {'default': {
-            'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-        }},
-        'handlers': {'wsgi': {
-            'class': 'logging.StreamHandler',
-            'stream': 'ext://flask.logging.wsgi_errors_stream',
-            'formatter': 'default'
-        }},
-        'root': {
-            'level': 'INFO',
-            'handlers': ['wsgi']
-        }
-    })
-
-    app = connexion.App(__name__, specification_dir='./openapi/')
-    app.app.logger.warning("Startup of Server...")
-    app.app.json_encoder = encoder.JSONEncoder
-    app.add_api('openapi.yaml',
-                arguments={'title': '2014 i2b2 NLP Sandbox Data Node'},
-                pythonic_params=True)
-
-    server_port = config().server_port
-    print(f"Starting on port  {server_port}")
-    app.run(port=server_port)
-    app.app.logger.warning("Stopping of Server...")
+    # TODO: Consider using param host="0.0.0.0", debug=True,
+    app.run(port=config().server_port)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 connexion==2.7.0
 mongoengine==0.20.0
 psycopg2-binary==2.8.6
-requests==2.24.0
+requests==2.25.0
 swagger-ui-bundle==0.0.8
 uWSGI==2.0.19.1

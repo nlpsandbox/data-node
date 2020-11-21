@@ -81,6 +81,8 @@ class TextDateAnnotation(Model):
         :param start: The start of this TextDateAnnotation.
         :type start: int
         """
+        if start is None:
+            raise ValueError("Invalid value for `start`, must not be `None`")  # noqa: E501
 
         self._start = start
 
@@ -104,6 +106,8 @@ class TextDateAnnotation(Model):
         :param length: The length of this TextDateAnnotation.
         :type length: int
         """
+        if length is None:
+            raise ValueError("Invalid value for `length`, must not be `None`")  # noqa: E501
 
         self._length = length
 

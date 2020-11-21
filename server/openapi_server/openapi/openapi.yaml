@@ -106,7 +106,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Dataset'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -124,6 +124,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create a dataset
       tags:
       - Dataset
@@ -286,7 +292,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AnnotationStore'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -304,6 +310,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create an annotation store
       tags:
       - AnnotationStore
@@ -498,7 +510,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Annotation'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -516,6 +528,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create an annotation
       tags:
       - Annotation
@@ -689,7 +707,7 @@ paths:
             schema:
               $ref: '#/components/schemas/FhirStore'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -707,6 +725,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create a FHIR store
       tags:
       - FhirStore
@@ -889,7 +913,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Note'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -907,6 +931,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create a note
       tags:
       - Note
@@ -1105,7 +1135,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Patient'
       responses:
-        "201":
+        "200":
           content:
             application/json:
               schema:
@@ -1123,6 +1153,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request conflicts with current state of the target resource
       summary: Create a FHIR Patient
       tags:
       - Patient
@@ -1271,6 +1307,12 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: The specified resource was not found
+    Conflict:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: The request conflicts with current state of the target resource
   schemas:
     ResponsePageMetadata:
       description: A page of results
@@ -1354,13 +1396,18 @@ components:
       properties:
         start:
           description: The position of the first character
+          example: 42
           type: integer
         length:
           description: The length of the annotation
+          example: 10
           type: integer
         text:
           description: The string annotated
           type: string
+      required:
+      - length
+      - start
       type: object
     TextDateAnnotation:
       allOf:
@@ -1509,17 +1556,17 @@ components:
       description: A clinical note
       example:
         noteType: loinc:LP29684-5
-        patientId: patientId
+        patientId: 507f1f77bcf86cd799439011
         id: id
-        text: This is a text.
+        text: This is the content of a clinical note.
       properties:
         id:
           description: The ID of the note
           readOnly: true
           type: string
         text:
-          description: A text
-          example: This is a text.
+          description: The content of the clinical note
+          example: This is the content of a clinical note.
           type: string
         noteType:
           description: The note type (LOINC concept)
@@ -1527,7 +1574,11 @@ components:
           type: string
         patientId:
           description: The patient ID
+          example: 507f1f77bcf86cd799439011
           type: string
+      required:
+      - noteType
+      - text
       type: object
     PageOfNotes:
       allOf:
@@ -1594,6 +1645,7 @@ components:
           description: Link to the next page of results
           format: uri
           type: string
+      type: object
     PageOfDatasets_allOf:
       properties:
         datasets:
@@ -1601,6 +1653,7 @@ components:
           items:
             $ref: '#/components/schemas/Dataset'
           type: array
+      type: object
     PageOfAnnotationStores_allOf:
       properties:
         annotationStores:
@@ -1608,11 +1661,14 @@ components:
           items:
             $ref: '#/components/schemas/AnnotationStore'
           type: array
+      type: object
     TextDateAnnotation_allOf:
       properties:
         dateFormat:
           description: Date format (ISO 8601)
+          example: MM/DD/YYYY
           type: string
+      type: object
     TextPhysicalAddressAnnotation_allOf:
       properties:
         addressType:
@@ -1629,6 +1685,7 @@ components:
           - street
           - zip
           type: string
+      type: object
     PageOfAnnotations_allOf:
       properties:
         annotations:
@@ -1636,6 +1693,7 @@ components:
           items:
             $ref: '#/components/schemas/Annotation'
           type: array
+      type: object
     PageOfPatients_allOf:
       properties:
         patients:
@@ -1643,6 +1701,7 @@ components:
           items:
             $ref: '#/components/schemas/Patient'
           type: array
+      type: object
     PageOfNotes_allOf:
       properties:
         notes:
@@ -1650,3 +1709,4 @@ components:
           items:
             $ref: '#/components/schemas/Note'
           type: array
+      type: object

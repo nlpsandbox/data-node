@@ -1,5 +1,5 @@
 import connexion
-from mongoengine.errors import DoesNotExist
+from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
@@ -83,7 +83,10 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
             ).save()
 
             res = Annotation.from_dict(db_annotation.to_dict())
-            status = 201
+            status = 200
+        except NotUniqueError as error:
+            status = 409
+            res = Error("Conflict", status, str(error))
         except Exception as error:
             status = 500
             res = Error("Internal error", status, str(error))

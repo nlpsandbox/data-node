@@ -10,7 +10,7 @@ def service():  # noqa: E501
     """
     service = Service(
         name="data-node",
-        version="0.2.0",
+        version="0.2.1",
         license="Apache-2.0",
         repository="github:nlpsandbox/data-node",
         description="NLP Sandbox Data Node",

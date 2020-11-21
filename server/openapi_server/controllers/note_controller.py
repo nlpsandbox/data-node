@@ -1,5 +1,5 @@
 import connexion
-from mongoengine.errors import DoesNotExist
+from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.note import Note  # noqa: E501
@@ -50,7 +50,10 @@ def create_note(dataset_id, fhir_store_id, note=None):  # noqa: E501
                 patientId=note.patient_id
             ).save()
             res = Note.from_dict(db_note.to_dict())
-            status = 201
+            status = 200
+        except NotUniqueError as error:
+            status = 409
+            res = Error("Conflict", status, str(error))
         except Exception as error:
             status = 500
             res = Error("Internal error", status, str(error))

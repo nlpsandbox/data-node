@@ -1,4 +1,4 @@
-from mongoengine.errors import DoesNotExist
+from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.dataset import Dataset  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
@@ -27,7 +27,10 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
             dataset = Dataset(name=dataset_name)
             db_dataset = DbDataset(name=dataset.name).save()
             res = Dataset.from_dict(db_dataset.to_dict())
-            status = 201
+            status = 200
+        except NotUniqueError as error:
+            status = 409
+            res = Error("Conflict", status, str(error))
         except Exception as error:
             status = 500
             res = Error("Internal error", status, str(error))

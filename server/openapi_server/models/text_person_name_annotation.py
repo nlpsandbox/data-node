@@ -74,6 +74,8 @@ class TextPersonNameAnnotation(Model):
         :param start: The start of this TextPersonNameAnnotation.
         :type start: int
         """
+        if start is None:
+            raise ValueError("Invalid value for `start`, must not be `None`")  # noqa: E501
 
         self._start = start
 
@@ -97,6 +99,8 @@ class TextPersonNameAnnotation(Model):
         :param length: The length of this TextPersonNameAnnotation.
         :type length: int
         """
+        if length is None:
+            raise ValueError("Invalid value for `length`, must not be `None`")  # noqa: E501
 
         self._length = length
 

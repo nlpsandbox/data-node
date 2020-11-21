@@ -84,7 +84,7 @@ class Note(Model):
     def text(self):
         """Gets the text of this Note.
 
-        A text  # noqa: E501
+        The content of the clinical note  # noqa: E501
 
         :return: The text of this Note.
         :rtype: str
@@ -95,11 +95,13 @@ class Note(Model):
     def text(self, text):
         """Sets the text of this Note.
 
-        A text  # noqa: E501
+        The content of the clinical note  # noqa: E501
 
         :param text: The text of this Note.
         :type text: str
         """
+        if text is None:
+            raise ValueError("Invalid value for `text`, must not be `None`")  # noqa: E501
 
         self._text = text
 
@@ -123,6 +125,8 @@ class Note(Model):
         :param note_type: The note_type of this Note.
         :type note_type: str
         """
+        if note_type is None:
+            raise ValueError("Invalid value for `note_type`, must not be `None`")  # noqa: E501
 
         self._note_type = note_type
 

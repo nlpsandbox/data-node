@@ -205,7 +205,7 @@ paths:
       tags:
       - Dataset
       x-openapi-router-controller: openapi_server.controllers.dataset_controller
-  /datasets/{datasetId}/annotationStore:
+  /datasets/{datasetId}/annotationStores:
     get:
       description: Returns the annotation stores
       operationId: list_annotation_stores
@@ -320,7 +320,7 @@ paths:
       tags:
       - AnnotationStore
       x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
-  /datasets/{datasetId}/annotationStore/{annotationStoreId}:
+  /datasets/{datasetId}/annotationStores/{annotationStoreId}:
     delete:
       description: Deletes the annotation store specified
       operationId: delete_annotation_store
@@ -407,7 +407,7 @@ paths:
       tags:
       - AnnotationStore
       x-openapi-router-controller: openapi_server.controllers.annotation_store_controller
-  /datasets/{datasetId}/annotationStore/{annotationStoreId}/annotations:
+  /datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations:
     get:
       description: Returns the annotations in an annotation store
       operationId: list_annotations
@@ -538,7 +538,7 @@ paths:
       tags:
       - Annotation
       x-openapi-router-controller: openapi_server.controllers.annotation_controller
-  /datasets/{datasetId}/annotationStore/{annotationStoreId}/annotations/{annotationId}:
+  /datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}:
     delete:
       description: Deletes the annotation specified
       operationId: delete_annotation

@@ -3,9 +3,10 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.fhir_store import FhirStore  # noqa: E501
-from openapi_server.models.fhir_stores import FhirStores  # noqa: E501
+from openapi_server.models.page_of_fhir_stores import PageOfFhirStores  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
+from openapi_server.config import Config
 
 
 def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501
@@ -120,23 +121,36 @@ def get_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     return res, status
 
 
-def list_fhir_stores(dataset_id):  # noqa: E501
+def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     """List the FHIR stores in a dataset
 
     Returns the FHIR stores # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
+    :param limit: Maximum number of results returned
+    :type limit: int
+    :param offset: Index of the first result that must be returned
+    :type offset: int
 
-    :rtype: FhirStores
+    :rtype: PageOfFhirStores
     """
     res = None
     status = None
     try:
-        dataset_name = "datasets/%s" % (dataset_id)
-        db_fhir_stores = DbFhirStore.objects(name__startswith=dataset_name)
-        res = FhirStores(fhir_stores=[
-            FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores])
+        db_fhir_stores = DbFhirStore.objects.skip(offset).limit(limit)  # noqa: E501
+        fhir_stores = [FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores]  # noqa: E501
+        next_ = ""
+        if len(fhir_stores) == limit:
+            next_ = "%s/datasets/%s/FhirStores?limit=%s&offset=%s" % \
+                (Config().server_api_url, dataset_id, limit, offset + limit)
+        res = PageOfFhirStores(
+            offset=offset,
+            limit=limit,
+            links={
+                "next": next_
+            },
+            fhir_stores=fhir_stores)
         status = 200
     except DoesNotExist:
         status = 404

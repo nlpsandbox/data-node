@@ -17,21 +17,21 @@ class PageOfFhirStoresAllOf(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, annotation_stores=None):  # noqa: E501
+    def __init__(self, fhir_stores=None):  # noqa: E501
         """PageOfFhirStoresAllOf - a model defined in OpenAPI
 
-        :param annotation_stores: The annotation_stores of this PageOfFhirStoresAllOf.  # noqa: E501
-        :type annotation_stores: List[FhirStore]
+        :param fhir_stores: The fhir_stores of this PageOfFhirStoresAllOf.  # noqa: E501
+        :type fhir_stores: List[FhirStore]
         """
         self.openapi_types = {
-            'annotation_stores': List[FhirStore]
+            'fhir_stores': List[FhirStore]
         }
 
         self.attribute_map = {
-            'annotation_stores': 'annotationStores'
+            'fhir_stores': 'fhirStores'
         }
 
-        self._annotation_stores = annotation_stores
+        self._fhir_stores = fhir_stores
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfFhirStoresAllOf':
@@ -45,24 +45,24 @@ class PageOfFhirStoresAllOf(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def annotation_stores(self):
-        """Gets the annotation_stores of this PageOfFhirStoresAllOf.
+    def fhir_stores(self):
+        """Gets the fhir_stores of this PageOfFhirStoresAllOf.
 
         An array of FHIR stores  # noqa: E501
 
-        :return: The annotation_stores of this PageOfFhirStoresAllOf.
+        :return: The fhir_stores of this PageOfFhirStoresAllOf.
         :rtype: List[FhirStore]
         """
-        return self._annotation_stores
+        return self._fhir_stores
 
-    @annotation_stores.setter
-    def annotation_stores(self, annotation_stores):
-        """Sets the annotation_stores of this PageOfFhirStoresAllOf.
+    @fhir_stores.setter
+    def fhir_stores(self, fhir_stores):
+        """Sets the fhir_stores of this PageOfFhirStoresAllOf.
 
         An array of FHIR stores  # noqa: E501
 
-        :param annotation_stores: The annotation_stores of this PageOfFhirStoresAllOf.
-        :type annotation_stores: List[FhirStore]
+        :param fhir_stores: The fhir_stores of this PageOfFhirStoresAllOf.
+        :type fhir_stores: List[FhirStore]
         """
 
-        self._annotation_stores = annotation_stores
+        self._fhir_stores = fhir_stores

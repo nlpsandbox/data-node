@@ -1710,7 +1710,7 @@ components:
       type: object
     PageOfFhirStores_allOf:
       properties:
-        annotationStores:
+        fhirStores:
           description: An array of FHIR stores
           items:
             $ref: '#/components/schemas/FhirStore'

@@ -23,7 +23,7 @@ class PageOfFhirStores(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, annotation_stores=None):  # noqa: E501
+    def __init__(self, offset=None, limit=None, links=None, fhir_stores=None):  # noqa: E501
         """PageOfFhirStores - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfFhirStores.  # noqa: E501
@@ -32,27 +32,27 @@ class PageOfFhirStores(Model):
         :type limit: int
         :param links: The links of this PageOfFhirStores.  # noqa: E501
         :type links: ResponsePageMetadataLinks
-        :param annotation_stores: The annotation_stores of this PageOfFhirStores.  # noqa: E501
-        :type annotation_stores: List[FhirStore]
+        :param fhir_stores: The fhir_stores of this PageOfFhirStores.  # noqa: E501
+        :type fhir_stores: List[FhirStore]
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
-            'annotation_stores': List[FhirStore]
+            'fhir_stores': List[FhirStore]
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
-            'annotation_stores': 'annotationStores'
+            'fhir_stores': 'fhirStores'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
-        self._annotation_stores = annotation_stores
+        self._fhir_stores = fhir_stores
 
     @classmethod
     def from_dict(cls, dikt) -> 'PageOfFhirStores':
@@ -139,24 +139,24 @@ class PageOfFhirStores(Model):
         self._links = links
 
     @property
-    def annotation_stores(self):
-        """Gets the annotation_stores of this PageOfFhirStores.
+    def fhir_stores(self):
+        """Gets the fhir_stores of this PageOfFhirStores.
 
         An array of FHIR stores  # noqa: E501
 
-        :return: The annotation_stores of this PageOfFhirStores.
+        :return: The fhir_stores of this PageOfFhirStores.
         :rtype: List[FhirStore]
         """
-        return self._annotation_stores
+        return self._fhir_stores
 
-    @annotation_stores.setter
-    def annotation_stores(self, annotation_stores):
-        """Sets the annotation_stores of this PageOfFhirStores.
+    @fhir_stores.setter
+    def fhir_stores(self, fhir_stores):
+        """Sets the fhir_stores of this PageOfFhirStores.
 
         An array of FHIR stores  # noqa: E501
 
-        :param annotation_stores: The annotation_stores of this PageOfFhirStores.
-        :type annotation_stores: List[FhirStore]
+        :param fhir_stores: The fhir_stores of this PageOfFhirStores.
+        :type fhir_stores: List[FhirStore]
         """
 
-        self._annotation_stores = annotation_stores
+        self._fhir_stores = fhir_stores

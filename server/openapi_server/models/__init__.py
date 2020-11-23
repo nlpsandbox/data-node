@@ -9,7 +9,6 @@ from openapi_server.models.annotation_store import AnnotationStore
 from openapi_server.models.dataset import Dataset
 from openapi_server.models.error import Error
 from openapi_server.models.fhir_store import FhirStore
-from openapi_server.models.fhir_stores import FhirStores
 from openapi_server.models.note import Note
 from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores
 from openapi_server.models.page_of_annotation_stores_all_of import PageOfAnnotationStoresAllOf
@@ -17,6 +16,8 @@ from openapi_server.models.page_of_annotations import PageOfAnnotations
 from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf
 from openapi_server.models.page_of_datasets import PageOfDatasets
 from openapi_server.models.page_of_datasets_all_of import PageOfDatasetsAllOf
+from openapi_server.models.page_of_fhir_stores import PageOfFhirStores
+from openapi_server.models.page_of_fhir_stores_all_of import PageOfFhirStoresAllOf
 from openapi_server.models.page_of_notes import PageOfNotes
 from openapi_server.models.page_of_notes_all_of import PageOfNotesAllOf
 from openapi_server.models.page_of_patients import PageOfPatients

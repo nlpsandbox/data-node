@@ -654,12 +654,33 @@ paths:
         schema:
           type: string
         style: simple
+      - description: Maximum number of results returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 10
+          type: integer
+        style: form
+      - description: Index of the first result that must be returned
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FhirStores'
+                $ref: '#/components/schemas/PageOfFhirStores'
           description: Success
         "403":
           content:
@@ -1510,18 +1531,11 @@ components:
           readOnly: true
           type: string
       type: object
-    FhirStores:
-      description: A list of FHIR stores
-      example:
-        fhirStores:
-        - name: name
-        - name: name
-      properties:
-        fhirStores:
-          description: A list of FHIR stores
-          items:
-            $ref: '#/components/schemas/FhirStore'
-          type: array
+    PageOfFhirStores:
+      allOf:
+      - $ref: '#/components/schemas/ResponsePageMetadata'
+      - $ref: '#/components/schemas/PageOfFhirStores_allOf'
+      description: A page of FHIR stores
       type: object
     Patient:
       description: A FHIR Patient
@@ -1692,6 +1706,14 @@ components:
           description: An array of annotations
           items:
             $ref: '#/components/schemas/Annotation'
+          type: array
+      type: object
+    PageOfFhirStores_allOf:
+      properties:
+        annotationStores:
+          description: An array of FHIR stores
+          items:
+            $ref: '#/components/schemas/FhirStore'
           type: array
       type: object
     PageOfPatients_allOf:

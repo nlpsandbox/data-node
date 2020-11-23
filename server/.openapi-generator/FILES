@@ -20,7 +20,6 @@ openapi_server/models/base_model_.py
 openapi_server/models/dataset.py
 openapi_server/models/error.py
 openapi_server/models/fhir_store.py
-openapi_server/models/fhir_stores.py
 openapi_server/models/note.py
 openapi_server/models/page_of_annotation_stores.py
 openapi_server/models/page_of_annotation_stores_all_of.py
@@ -28,6 +27,8 @@ openapi_server/models/page_of_annotations.py
 openapi_server/models/page_of_annotations_all_of.py
 openapi_server/models/page_of_datasets.py
 openapi_server/models/page_of_datasets_all_of.py
+openapi_server/models/page_of_fhir_stores.py
+openapi_server/models/page_of_fhir_stores_all_of.py
 openapi_server/models/page_of_notes.py
 openapi_server/models/page_of_notes_all_of.py
 openapi_server/models/page_of_patients.py

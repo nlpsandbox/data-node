@@ -34,6 +34,7 @@ openapi_server/models/page_of_notes_all_of.py
 openapi_server/models/page_of_patients.py
 openapi_server/models/page_of_patients_all_of.py
 openapi_server/models/patient.py
+openapi_server/models/resource_source.py
 openapi_server/models/response_page_metadata.py
 openapi_server/models/response_page_metadata_links.py
 openapi_server/models/service.py

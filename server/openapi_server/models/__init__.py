@@ -23,6 +23,7 @@ from openapi_server.models.page_of_notes_all_of import PageOfNotesAllOf
 from openapi_server.models.page_of_patients import PageOfPatients
 from openapi_server.models.page_of_patients_all_of import PageOfPatientsAllOf
 from openapi_server.models.patient import Patient
+from openapi_server.models.resource_source import ResourceSource
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
 from openapi_server.models.service import Service

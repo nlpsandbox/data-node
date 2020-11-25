@@ -1403,14 +1403,23 @@ components:
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
       type: object
-    AnnotationSource:
-      description: The source of an annotation record
+    ResourceSource:
+      description: An API resource source
       example:
         name: name
       properties:
         name:
-          description: The source of the annotation record
+          description: Full path of an API resource
           type: string
+      type: object
+    AnnotationSource:
+      description: The source of an annotation record
+      example:
+        resourceSource:
+          name: name
+      properties:
+        resourceSource:
+          $ref: '#/components/schemas/ResourceSource'
       type: object
     TextAnnotation:
       description: An annotation in a text
@@ -1426,6 +1435,13 @@ components:
         text:
           description: The string annotated
           type: string
+        confidence:
+          description: The confidence in the accuracy of the annotation
+          example: 95
+          format: float
+          maximum: 100
+          minimum: 0
+          type: number
       required:
       - length
       - start
@@ -1490,7 +1506,8 @@ components:
           text: Seattle
           addressType: city
         annotationSource:
-          name: name
+          resourceSource:
+            name: name
         name: name
       properties:
         name:

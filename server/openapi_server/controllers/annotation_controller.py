@@ -73,10 +73,14 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
                         a.to_dict(), util.underscore_to_camel)
                     for a in annotation.text_physical_address_annotations]
 
+            annotation_source = util.change_dict_naming_convention(
+                annotation.annotation_source.to_dict(),
+                util.underscore_to_camel)
+
             # create the annotation
             db_annotation = DbAnnotation(
+                annotationSource=annotation_source,
                 annotationStoreName=store_name,
-                annotationSource=annotation.annotation_source.to_dict(),
                 textDateAnnotations=text_date_annotations,
                 textPersonNameAnnotations=text_person_name_annotations,
                 textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501

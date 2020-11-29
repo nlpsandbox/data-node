@@ -21,11 +21,41 @@ class TestAnnotationController(BaseTestCase):
         Create an annotation
         """
         annotation = {
-  "textDateAnnotations" : [ null, null ],
-  "textPersonNameAnnotations" : [ null, null ],
-  "textPhysicalAddressAnnotations" : [ null, null ],
+  "textDateAnnotations" : [ {
+    "start" : 42,
+    "length" : 10,
+    "text" : "10/26/2020",
+    "dateFormat" : "MM/DD/YYYY"
+  }, {
+    "start" : 42,
+    "length" : 10,
+    "text" : "10/26/2020",
+    "dateFormat" : "MM/DD/YYYY"
+  } ],
+  "textPersonNameAnnotations" : [ {
+    "start" : 42,
+    "length" : 11,
+    "text" : "Chloe Price"
+  }, {
+    "start" : 42,
+    "length" : 11,
+    "text" : "Chloe Price"
+  } ],
+  "textPhysicalAddressAnnotations" : [ {
+    "start" : 42,
+    "length" : 11,
+    "text" : "Seattle",
+    "addressType" : "city"
+  }, {
+    "start" : 42,
+    "length" : 11,
+    "text" : "Seattle",
+    "addressType" : "city"
+  } ],
   "annotationSource" : {
-    "name" : "name"
+    "resourceSource" : {
+      "name" : "name"
+    }
   },
   "name" : "name"
 }
@@ -34,7 +64,7 @@ class TestAnnotationController(BaseTestCase):
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}/annotations'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}/annotations'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='POST',
             headers=headers,
             data=json.dumps(annotation),
@@ -51,7 +81,7 @@ class TestAnnotationController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}/annotations/{annotation_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example', annotation_id='annotation_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}/annotations/{annotation_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example', annotation_id='annotation_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -66,7 +96,7 @@ class TestAnnotationController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}/annotations/{annotation_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example', annotation_id='annotation_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}/annotations/{annotation_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example', annotation_id='annotation_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -84,7 +114,7 @@ class TestAnnotationController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}/annotations'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}/annotations'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

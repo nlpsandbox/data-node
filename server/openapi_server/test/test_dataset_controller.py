@@ -21,7 +21,7 @@ class TestDatasetController(BaseTestCase):
         Create a dataset
         """
         dataset = {
-  "name" : "name"
+  "name" : "datasets/awesome-dataset"
 }
         query_string = [('datasetId', awesome-dataset)]
         headers = { 

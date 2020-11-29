@@ -22,9 +22,9 @@ class TestNoteController(BaseTestCase):
         """
         note = {
   "noteType" : "loinc:LP29684-5",
-  "patientId" : "patientId",
+  "patientId" : "507f1f77bcf86cd799439011",
   "id" : "id",
-  "text" : "This is a text."
+  "text" : "This is the content of a clinical note."
 }
         headers = { 
             'Accept': 'application/json',

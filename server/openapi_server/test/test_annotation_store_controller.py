@@ -29,7 +29,7 @@ class TestAnnotationStoreController(BaseTestCase):
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores'.format(dataset_id='dataset_id_example'),
             method='POST',
             headers=headers,
             data=json.dumps(annotation_store),
@@ -47,7 +47,7 @@ class TestAnnotationStoreController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -62,7 +62,7 @@ class TestAnnotationStoreController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -79,7 +79,7 @@ class TestAnnotationStoreController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/annotationStore'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}/annotationStores'.format(dataset_id='dataset_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

@@ -21,10 +21,9 @@ class TestFhirStoreController(BaseTestCase):
         Create a FHIR store
         """
         fhir_store = {
-  "name" : "name"
 }
         query_string = [('fhirStoreId', awesome-fhir-store)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -43,7 +42,7 @@ class TestFhirStoreController(BaseTestCase):
 
         Delete a FHIR store
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -58,7 +57,7 @@ class TestFhirStoreController(BaseTestCase):
 
         Get a FHIR store
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -75,7 +74,7 @@ class TestFhirStoreController(BaseTestCase):
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

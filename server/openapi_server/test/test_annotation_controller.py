@@ -56,10 +56,9 @@ class TestAnnotationController(BaseTestCase):
     "resourceSource" : {
       "name" : "name"
     }
-  },
-  "name" : "name"
+  }
 }
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -77,7 +76,7 @@ class TestAnnotationController(BaseTestCase):
 
         Delete an annotation
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -92,7 +91,7 @@ class TestAnnotationController(BaseTestCase):
 
         Get an annotation
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -110,7 +109,7 @@ class TestAnnotationController(BaseTestCase):
         query_string = [('limit', 10),
                         ('offset', 0),
                         ('annotationType', 'annotation_type_example')]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

@@ -21,10 +21,9 @@ class TestDatasetController(BaseTestCase):
         Create a dataset
         """
         dataset = {
-  "name" : "datasets/awesome-dataset"
 }
         query_string = [('datasetId', awesome-dataset)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -43,7 +42,7 @@ class TestDatasetController(BaseTestCase):
 
         Delete a dataset by ID
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -58,7 +57,7 @@ class TestDatasetController(BaseTestCase):
 
         Get a dataset by ID
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -75,7 +74,7 @@ class TestDatasetController(BaseTestCase):
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

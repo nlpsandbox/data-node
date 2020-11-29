@@ -23,10 +23,9 @@ class TestNoteController(BaseTestCase):
         note = {
   "noteType" : "loinc:LP29684-5",
   "patientId" : "507f1f77bcf86cd799439011",
-  "id" : "id",
   "text" : "This is the content of a clinical note."
 }
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -44,7 +43,7 @@ class TestNoteController(BaseTestCase):
 
         Delete a note
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -59,7 +58,7 @@ class TestNoteController(BaseTestCase):
 
         Get a note
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -76,7 +75,7 @@ class TestNoteController(BaseTestCase):
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

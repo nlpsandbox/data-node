@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import connexion
+import flask
 from mongoengine import connect
 
 from openapi_server import encoder
@@ -13,6 +14,9 @@ app.add_api('openapi.yaml',
             arguments={'title': 'NLP Sandbox Data Node API'},
             pythonic_params=True)
 
+# Configuring / to return the service information (required by NLP Sandbox)
+app.add_url_rule('/', 'root', lambda: flask.redirect('/api/v1/service'))
+
 connect(
     db=config().db_database,
     username=config().db_username,
@@ -22,7 +26,6 @@ connect(
 
 
 def main():
-    # TODO: Consider using param host="0.0.0.0", debug=True,
     app.run(port=config().server_port)
 
 

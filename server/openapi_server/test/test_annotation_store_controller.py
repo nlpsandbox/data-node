@@ -21,10 +21,9 @@ class TestAnnotationStoreController(BaseTestCase):
         Create an annotation store
         """
         annotation_store = {
-  "name" : "name"
 }
         query_string = [('annotationStoreId', awesome-annotation-store)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -43,7 +42,7 @@ class TestAnnotationStoreController(BaseTestCase):
 
         Delete an annotation store
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -58,7 +57,7 @@ class TestAnnotationStoreController(BaseTestCase):
 
         Get an annotation store
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -75,7 +74,7 @@ class TestAnnotationStoreController(BaseTestCase):
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

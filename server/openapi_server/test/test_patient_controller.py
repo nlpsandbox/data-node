@@ -23,9 +23,8 @@ class TestPatientController(BaseTestCase):
         patient = {
   "identifier" : "identifier",
   "gender" : "male",
-  "id" : "id"
 }
-        headers = { 
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -43,7 +42,7 @@ class TestPatientController(BaseTestCase):
 
         Delete a FHIR Patient
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -58,7 +57,7 @@ class TestPatientController(BaseTestCase):
 
         Get a FHIR Patient
         """
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
@@ -75,7 +74,7 @@ class TestPatientController(BaseTestCase):
         """
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

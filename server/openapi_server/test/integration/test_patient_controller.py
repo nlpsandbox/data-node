@@ -109,8 +109,8 @@ class TestPatientController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '''/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}
-            /fhir/Patient'''
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
+            '/fhir/Patient'
             .format(
                 dataset_id='awesome-dataset',
                 fhir_store_id='awesome-fhir-store'),

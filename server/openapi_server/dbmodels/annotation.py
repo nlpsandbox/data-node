@@ -20,6 +20,4 @@ class Annotation(BaseDocument):
         doc = self.to_mongo().to_dict()  # TODO try self.to_python()
         doc["id"] = str(self.pk)
         doc["name"] = "%s/annotations/%s" % (doc["annotationStoreName"], doc["id"])  # noqa: E501
-
-        print(f"doc: {doc}")
         return doc

@@ -83,7 +83,6 @@ def get_dataset(dataset_id):  # noqa: E501
     status = None
     try:
         dataset_name = "datasets/%s" % (dataset_id,)
-        print(f"dataset name: {dataset_name}")
         db_dataset = DbDataset.objects.get(name=dataset_name)
         res = Dataset.from_dict(db_dataset.to_dict())
         status = 200

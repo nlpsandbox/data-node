@@ -1,105 +1,84 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-import pytest
 import unittest
 
 from flask import json
-from mongoengine import connect, disconnect
 from six import BytesIO
 
-from openapi_server.dbmodels.dataset import Dataset as DbDataset
-from openapi_server.models.dataset import Dataset  # noqa: E501
+from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
+from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.test import BaseTestCase
 
 
-class TestDatasetController(BaseTestCase):
-    """DatasetController integration test stubs"""
+class TestAnnotationStoreController(BaseTestCase):
+    """AnnotationStoreController integration test stubs"""
 
-    def setUp(self):
-        connect('mongoenginetest', host='mongomock://localhost')
-        DbDataset.objects().delete()
+    def test_create_annotation_store(self):
+        """Test case for create_annotation_store
 
-    def tearDown(self):
-        disconnect(alias='mongoenginetest')
-
-    def _create_dataset(self, dataset_id):
-        DbDataset(name='datasets/{dataset_id}'.format(
-            dataset_id=dataset_id)
-        ).save()
-
-    def test_create_dataset(self):
-        """Test case for create_dataset
-
-        Create a dataset
+        Create an annotation store
         """
-        dataset = {}
-        query_string = [('datasetId', 'awesome-dataset')]
+        annotation_store = {
+}
+        query_string = [('annotationStoreId', awesome-annotation-store)]
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets',
+            '/api/v1/datasets/{dataset_id}/annotationStores'.format(dataset_id='dataset_id_example'),
             method='POST',
             headers=headers,
-            data=json.dumps(dataset),
+            data=json.dumps(annotation_store),
             content_type='application/json',
             query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_delete_dataset(self):
-        """Test case for delete_dataset
+    def test_delete_annotation_store(self):
+        """Test case for delete_annotation_store
 
-        Delete a dataset by ID
+        Delete an annotation store
         """
-        self._create_dataset("awesome-dataset")
         headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}'.format(
-                dataset_id='awesome-dataset'
-            ),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_get_dataset(self):
-        """Test case for get_dataset
+    def test_get_annotation_store(self):
+        """Test case for get_annotation_store
 
-        Get a dataset by ID
+        Get an annotation store
         """
-        self._create_dataset("awesome-dataset")
         headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}'.format(
-                dataset_id='awesome-dataset'
-            ),
+            '/api/v1/datasets/{dataset_id}/annotationStores/{annotation_store_id}'.format(dataset_id='dataset_id_example', annotation_store_id='annotation_store_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_list_datasets(self):
-        """Test case for list_datasets
+    def test_list_annotation_stores(self):
+        """Test case for list_annotation_stores
 
-        Get all datasets
+        List the annotation stores in a dataset
         """
-        self._create_dataset("awesome-dataset")
         query_string = [('limit', 10),
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets',
+            '/api/v1/datasets/{dataset_id}/annotationStores'.format(dataset_id='dataset_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)

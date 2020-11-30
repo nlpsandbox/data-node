@@ -57,7 +57,6 @@ class TestDatasetController(BaseTestCase):
         Delete a dataset by ID
         """
         self._create_dataset("awesome-dataset")
-
         headers = {
             'Accept': 'application/json',
         }
@@ -76,7 +75,6 @@ class TestDatasetController(BaseTestCase):
         Get a dataset by ID
         """
         self._create_dataset("awesome-dataset")
-
         headers = {
             'Accept': 'application/json',
         }
@@ -95,7 +93,6 @@ class TestDatasetController(BaseTestCase):
         Get all datasets
         """
         self._create_dataset("awesome-dataset")
-
         query_string = [('limit', 10),
                         ('offset', 0)]
         headers = {

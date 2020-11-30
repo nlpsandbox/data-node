@@ -2,6 +2,7 @@ from mongoengine import connect, disconnect
 
 from openapi_server.dbmodels.dataset import Dataset
 from openapi_server.dbmodels.fhir_store import FhirStore
+from openapi_server.dbmodels.note import Note
 from openapi_server.dbmodels.patient import Patient
 
 
@@ -34,4 +35,16 @@ def create_test_patient(dataset_id, fhir_store_id):
             fhir_store_id=fhir_store_id),
         identifier='',
         gender='unknown'
+    ).save()
+
+
+def create_test_note(dataset_id, fhir_store_id):
+    return Note(
+        fhirStoreName='/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
+        .format(
+            dataset_id=dataset_id,
+            fhir_store_id=fhir_store_id),
+        text='This is the content of a clinical note.',
+        noteType='loinc:LP29684-5',
+        patientId='507f1f77bcf86cd799439011'
     ).save()

@@ -46,5 +46,12 @@ openapi_server/models/text_physical_address_annotation.py
 openapi_server/models/text_physical_address_annotation_all_of.py
 openapi_server/openapi/openapi.yaml
 openapi_server/test/__init__.py
+openapi_server/test/test_annotation_controller.py
+openapi_server/test/test_annotation_store_controller.py
+openapi_server/test/test_dataset_controller.py
+openapi_server/test/test_fhir_store_controller.py
+openapi_server/test/test_note_controller.py
+openapi_server/test/test_patient_controller.py
+openapi_server/test/test_service_controller.py
 openapi_server/typing_utils.py
 openapi_server/util.py

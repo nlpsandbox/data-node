@@ -4,32 +4,39 @@ from __future__ import absolute_import
 import unittest
 
 from flask import json
-from six import BytesIO
 
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.fhir_store import FhirStore  # noqa: E501
-from openapi_server.models.fhir_stores import FhirStores  # noqa: E501
-from openapi_server.test import BaseTestCase
+from openapi_server.dbmodels.dataset import Dataset as DbDataset
+from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
+from openapi_server.test.integration import BaseTestCase
+from openapi_server.test.integration import util
 
 
 class TestFhirStoreController(BaseTestCase):
     """FhirStoreController integration test stubs"""
+
+    def setUp(self):
+        util.connect_db()
+        DbDataset.objects().delete()
+        DbFhirStore.objects().delete()
+        util.create_test_dataset('awesome-dataset')
+
+    def tearDown(self):
+        util.disconnect_db()
 
     def test_create_fhir_store(self):
         """Test case for create_fhir_store
 
         Create a FHIR store
         """
-        fhir_store = {
-  "name" : "name"
-}
-        query_string = [('fhirStoreId', awesome-fhir-store)]
-        headers = { 
+        fhir_store = {}
+        query_string = [('fhirStoreId', 'awesome-fhir-store')]
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores'
+            .format(dataset_id='awesome-dataset'),
             method='POST',
             headers=headers,
             data=json.dumps(fhir_store),
@@ -43,11 +50,15 @@ class TestFhirStoreController(BaseTestCase):
 
         Delete a FHIR store
         """
-        headers = { 
+        util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
+            .format(
+                dataset_id='awesome-dataset',
+                fhir_store_id='awesome-fhir-store'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -58,11 +69,15 @@ class TestFhirStoreController(BaseTestCase):
 
         Get a FHIR store
         """
-        headers = { 
+        util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'.format(dataset_id='dataset_id_example', fhir_store_id='fhir_store_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
+            .format(
+                dataset_id='awesome-dataset',
+                fhir_store_id='awesome-fhir-store'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -73,13 +88,18 @@ class TestFhirStoreController(BaseTestCase):
 
         List the FHIR stores in a dataset
         """
-        headers = { 
+        util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
+        query_string = [('limit', 10),
+                        ('offset', 0)]
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}/fhirStores'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}/fhirStores'.format(
+                dataset_id='awesome-dataset'),
             method='GET',
-            headers=headers)
+            headers=headers,
+            query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

@@ -4,27 +4,30 @@ from __future__ import absolute_import
 import unittest
 
 from flask import json
-from six import BytesIO
 
-from openapi_server.models.dataset import Dataset  # noqa: E501
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-from openapi_server.test import BaseTestCase
+from openapi_server.dbmodels.dataset import Dataset as DbDataset
+from openapi_server.test.integration import BaseTestCase
+from openapi_server.test.integration import util
 
 
 class TestDatasetController(BaseTestCase):
     """DatasetController integration test stubs"""
+
+    def setUp(self):
+        util.connect_db()
+        DbDataset.objects().delete()
+
+    def tearDown(self):
+        util.disconnect_db()
 
     def test_create_dataset(self):
         """Test case for create_dataset
 
         Create a dataset
         """
-        dataset = {
-  "name" : "name"
-}
-        query_string = [('datasetId', awesome-dataset)]
-        headers = { 
+        dataset = {}
+        query_string = [('datasetId', 'awesome-dataset')]
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         }
@@ -43,11 +46,14 @@ class TestDatasetController(BaseTestCase):
 
         Delete a dataset by ID
         """
-        headers = { 
+        util.create_test_dataset("awesome-dataset")
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}'.format(
+                dataset_id='awesome-dataset'
+            ),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -58,11 +64,14 @@ class TestDatasetController(BaseTestCase):
 
         Get a dataset by ID
         """
-        headers = { 
+        util.create_test_dataset("awesome-dataset")
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v1/datasets/{dataset_id}'.format(dataset_id='dataset_id_example'),
+            '/api/v1/datasets/{dataset_id}'.format(
+                dataset_id='awesome-dataset'
+            ),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -73,9 +82,10 @@ class TestDatasetController(BaseTestCase):
 
         Get all datasets
         """
+        util.create_test_dataset("awesome-dataset")
         query_string = [('limit', 10),
                         ('offset', 0)]
-        headers = { 
+        headers = {
             'Accept': 'application/json',
         }
         response = self.client.open(

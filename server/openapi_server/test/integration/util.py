@@ -1,5 +1,6 @@
 from mongoengine import connect, disconnect
 
+from openapi_server.dbmodels.annotation_store import AnnotationStore
 from openapi_server.dbmodels.dataset import Dataset
 from openapi_server.dbmodels.fhir_store import FhirStore
 from openapi_server.dbmodels.note import Note
@@ -47,4 +48,11 @@ def create_test_note(dataset_id, fhir_store_id):
         text='This is the content of a clinical note.',
         noteType='loinc:LP29684-5',
         patientId='507f1f77bcf86cd799439011'
+    ).save()
+
+
+def create_test_annotation_store(dataset_id, annotation_store_id):
+    return AnnotationStore(
+        name='datasets/{dataset_id}/annotationStores/{annotation_store_id}'
+        .format(dataset_id=dataset_id, annotation_store_id=annotation_store_id)
     ).save()

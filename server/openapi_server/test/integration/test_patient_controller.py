@@ -4,14 +4,10 @@ from __future__ import absolute_import
 import unittest
 
 from flask import json
-from six import BytesIO
 
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.dbmodels.patient import Patient as DbPatient
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_patients import PageOfPatients  # noqa: E501
-from openapi_server.models.patient import Patient  # noqa: E501
 from openapi_server.test.integration import BaseTestCase
 from openapi_server.test.integration import util
 

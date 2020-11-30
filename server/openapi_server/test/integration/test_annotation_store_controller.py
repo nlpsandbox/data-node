@@ -4,13 +4,9 @@ from __future__ import absolute_import
 import unittest
 
 from flask import json
-from six import BytesIO
 
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
-from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
-from openapi_server.models.error import Error  # noqa: E501
-from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.test.integration import BaseTestCase
 from openapi_server.test.integration import util
 

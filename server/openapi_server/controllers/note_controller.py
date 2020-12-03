@@ -147,11 +147,13 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
         notes = [Note.from_dict(n.to_dict()) for n in db_notes]
         next_ = ""
         if len(notes) == limit:
-            next_ = (
-                "%s/datasets/%s/fhirStores/%s/notes"
-                "?limit=%s&offset=%s") % \
-                (Config().server_api_url, dataset_id, fhir_store_id, limit,
-                    offset + limit)
+            next_ = '{api_url}/{fhir_store_name}/fhir/Note?limit={limit}' \
+                '&offset={offset}'.format(
+                    api_url=Config().server_api_url,
+                    fhir_store_name=store_name,
+                    limit=limit,
+                    offset=offset + limit
+                )
         res = PageOfNotes(
             offset=offset,
             limit=limit,

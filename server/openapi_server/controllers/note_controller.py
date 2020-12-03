@@ -142,8 +142,8 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
     status = None
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        db_notes = DbNote.objects(
-            fhirStoreName__startswith=store_name).skip(offset).limit(limit)
+        db_notes = DbNote.objects(fhirStoreName=store_name) \
+            .skip(offset).limit(limit)
         notes = [Note.from_dict(n.to_dict()) for n in db_notes]
         next_ = ""
         if len(notes) == limit:

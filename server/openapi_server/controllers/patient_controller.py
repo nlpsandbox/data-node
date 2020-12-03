@@ -140,23 +140,26 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
     status = None
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        db_patients = DbPatient.objects(
-            fhirStoreName__startswith=store_name).skip(offset).limit(limit)
+        db_patients = DbPatient.objects(fhirStoreName=store_name) \
+            .skip(offset).limit(limit)
         patients = [Patient.from_dict(p.to_dict()) for p in db_patients]
         next_ = ""
         if len(patients) == limit:
-            next_ = (
-                "%s/datasets/%s/fhirStores/%s/fhir/Patient"
-                "?limit=%s&offset=%s") % \
-                (Config().server_api_url, dataset_id, fhir_store_id, limit,
-                    offset + limit)
+            next_ = '{api_url}/{fhir_store_name}/fhir/Patient?limit={limit}' \
+                '&offset={offset}'.format(
+                    api_url=Config().server_api_url,
+                    fhir_store_name=store_name,
+                    limit=limit,
+                    offset=offset + limit
+                )
         res = PageOfPatients(
             offset=offset,
             limit=limit,
             links={
                 "next": next_
             },
-            patients=patients)
+            patients=patients
+        )
         status = 200
     except DoesNotExist:
         status = 404

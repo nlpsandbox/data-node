@@ -58,7 +58,10 @@ class Config(AbstractConfig):
 
     @property
     def server_api_url(self):
-        return "%s%s" % (self.server_url(), "/api/v1")
+        return '{server_url}{base_path}'.format(
+            server_url=self.server_url,
+            base_path='/api/v1'
+        )
 
     @property
     def db_protocol(self):

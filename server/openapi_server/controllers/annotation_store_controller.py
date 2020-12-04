@@ -4,6 +4,7 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
+from openapi_server.dbmodels.annotation import Annotation as DbAnnotation  # noqa: E501
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.config import Config
@@ -74,11 +75,20 @@ def delete_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
 
     :rtype: AnnotationStore
     """
+    store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
+    return delete_annotation_store_by_name(store_name)
+
+
+def delete_annotation_store_by_name(annotation_store_by_name):
     res = None
     status = None
     try:
-        store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-        db_fhir_store = DbAnnotationStore.objects.get(name=store_name)
+        db_fhir_store = DbAnnotationStore.objects.get(
+            name=annotation_store_by_name)
+        # delete resources in the store
+        DbAnnotation.objects(annotationStoreName=annotation_store_by_name) \
+            .delete()
+        # delete the store
         res = AnnotationStore.from_dict(db_fhir_store.to_dict())
         db_fhir_store.delete()
         status = 200

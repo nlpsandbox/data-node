@@ -6,6 +6,8 @@ from openapi_server.models.fhir_store import FhirStore  # noqa: E501
 from openapi_server.models.page_of_fhir_stores import PageOfFhirStores  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
+from openapi_server.dbmodels.note import Note as DbNote
+from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
@@ -74,11 +76,19 @@ def delete_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
 
     :rtype: FhirStore
     """
+    store_name = 'datasets/%s/fhirStores/%s' % (dataset_id, fhir_store_id)
+    return delete_fhir_store_by_name(store_name)
+
+
+def delete_fhir_store_by_name(fhir_store_name):
     res = None
     status = None
     try:
-        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        db_fhir_store = DbFhirStore.objects.get(name=store_name)
+        db_fhir_store = DbFhirStore.objects.get(name=fhir_store_name)
+        # delete resources in the store
+        DbPatient.objects(fhirStoreName=fhir_store_name).delete()
+        DbNote.objects(fhirStoreName=fhir_store_name).delete()
+        # delete the store
         res = FhirStore.from_dict(db_fhir_store.to_dict())
         db_fhir_store.delete()
         status = 200

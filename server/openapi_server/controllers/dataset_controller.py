@@ -5,6 +5,8 @@ from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.config import Config
+from openapi_server.controllers.annotation_store_controller import delete_annotation_store_by_name, list_annotation_stores  # noqa: E501
+from openapi_server.controllers.fhir_store_controller import delete_fhir_store_by_name, list_fhir_stores  # noqa: E501
 
 
 def create_dataset(dataset_id, dataset=None):  # noqa: E501
@@ -56,6 +58,14 @@ def delete_dataset(dataset_id):  # noqa: E501
     try:
         dataset_name = "datasets/%s" % (dataset_id,)
         db_dataset = DbDataset.objects.get(name=dataset_name)
+        # delete resources in dataset
+        stores = list_annotation_stores(dataset_id)[0]
+        for store in stores.annotation_stores:
+            delete_annotation_store_by_name(store.name)
+        stores = list_fhir_stores(dataset_id)[0]
+        for store in stores.fhir_stores:
+            delete_fhir_store_by_name(store.name)
+        # delete the dataset
         res = Dataset.from_dict(db_dataset.to_dict())
         db_dataset.delete()
         status = 200

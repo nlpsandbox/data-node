@@ -26,7 +26,7 @@ connect(
 
 
 def main():
-    app.run(port=config().server_port)
+    app.run(port=config().server_port, debug=False)
 
 
 if __name__ == '__main__':

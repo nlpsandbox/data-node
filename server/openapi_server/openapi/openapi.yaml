@@ -3,7 +3,7 @@ info:
   contact:
     email: thomas.schaffter@sagebionetworks.org
     name: The NLP Sandbox Team
-    url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas
+    url: https://nlpsandbox.github.io/nlpsandbox-schemas
   description: |
     The OpenAPI specification implemented by NLP Sandbox Data Nodes.
     # Overview
@@ -11,11 +11,11 @@ info:
     For the sake of benchmarking NLP Tool, a Data Node can also give access to the gold standard that the NLP Tool is expected to infer (e.g. annotations).
   license:
     name: Apache 2.0
-    url: https://github.com/Sage-Bionetworks/nlp-sandbox/blob/main/LICENSE
+    url: https://nlpsandbox.github.io/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.2.0
+  version: 0.2.2
   x-logo:
-    url: https://Sage-Bionetworks.github.io/nlp-sandbox-schemas/logo.png
+    url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
 - url: http://example.com/api/v1
 - url: https://example.com/api/v1
@@ -448,18 +448,6 @@ paths:
           default: 0
           minimum: 0
           type: integer
-        style: form
-      - description: Type of the annotations that must be returned
-        explode: true
-        in: query
-        name: annotationType
-        required: false
-        schema:
-          enum:
-          - text_date
-          - text_person_name
-          - text_physical_address
-          type: string
         style: form
       responses:
         "200":
@@ -1589,7 +1577,7 @@ components:
         noteType: loinc:LP29684-5
         patientId: 507f1f77bcf86cd799439011
         id: id
-        text: This is the content of a clinical note.
+        text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
       properties:
         id:
           description: The ID of the note
@@ -1597,7 +1585,7 @@ components:
           type: string
         text:
           description: The content of the clinical note
-          example: This is the content of a clinical note.
+          example: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
           type: string
         noteType:
           description: The note type (LOINC concept)
@@ -1620,7 +1608,7 @@ components:
     Service:
       description: Information about an NLP service
       example:
-        license: Apache-2.0
+        license: apache-2.0
         authorEmail: author@example.com
         author: Example Author
         name: awesome-date-annotator
@@ -1644,7 +1632,42 @@ components:
           type: string
         license:
           description: The license of this service (spdx.org/licenses Identifier)
-          example: Apache-2.0
+          enum:
+          - afl-3.0
+          - apache-2.0
+          - artistic-2.0
+          - bsl-1.0
+          - bsd-2-clause
+          - bsd-3-clause
+          - bsd-3-clause-clear
+          - cc
+          - cc0-1.0
+          - cc-by-4.0
+          - cc-by-sa-4.0
+          - wtfpl
+          - ecl-2.0
+          - epl-1.0
+          - epl-2.0
+          - eupl-1.1
+          - agpl-3.0
+          - gpl
+          - gpl-2.0
+          - gpl-3.0
+          - lgpl
+          - lgpl-2.1
+          - lgpl-3.0
+          - isc
+          - lppl-1.3c
+          - ms-pl
+          - mit
+          - mpl-2.0
+          - osl-3.0
+          - postgresql
+          - ofl-1.1
+          - ncsa
+          - unlicense
+          - zlib
+          example: apache-2.0
           type: string
         repository:
           description: The place where the code lives

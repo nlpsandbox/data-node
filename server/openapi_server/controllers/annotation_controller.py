@@ -159,7 +159,7 @@ def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E50
     return res, status
 
 
-def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None, annotation_type=None):  # noqa: E501
+def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None):  # noqa: E501
     """List the annotations in an annotation store
 
     Returns the annotations in an annotation store # noqa: E501
@@ -172,8 +172,6 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None, a
     :type limit: int
     :param offset: Index of the first result that must be returned
     :type offset: int
-    :param annotation_type: Type of the annotations that must be returned
-    :type annotation_type: str
 
     :rtype: PageOfAnnotations
     """

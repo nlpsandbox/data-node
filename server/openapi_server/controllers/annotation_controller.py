@@ -179,8 +179,8 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None): 
     status = None
     try:
         store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-        db_annotations = DbAnnotation.objects(
-            annotationStoreName__startswith=store_name).skip(offset).limit(limit)  # noqa: E501
+        db_annotations = DbAnnotation.objects(annotationStoreName=store_name) \
+            .skip(offset).limit(limit)
         annotations = [Annotation.from_dict(a.to_dict()) for a in db_annotations]  # noqa: E501
         next_ = ""
         if len(annotations) == limit:

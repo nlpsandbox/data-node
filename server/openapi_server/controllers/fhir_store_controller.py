@@ -148,9 +148,10 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     res = None
     status = None
     try:
-        dataset_name = "datasets/%s" % (dataset_id,)
         db_fhir_stores = DbFhirStore.objects(
-            name__startswith=dataset_name).skip(offset).limit(limit)  # noqa: E501
+            name__startswith='datasets/{dataset_id}/'.format(
+                dataset_id=dataset_id
+            )).skip(offset).limit(limit)  # noqa: E501
         fhir_stores = [FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores]  # noqa: E501
         next_ = ""
         if len(fhir_stores) == limit:

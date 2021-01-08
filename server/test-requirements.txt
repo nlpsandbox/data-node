@@ -1,4 +1,4 @@
-Flask-Testing==0.8.0
+Flask-Testing==0.8.1
 mongomock==3.21.0
 pytest-cov>=2.8.1
 pytest-randomly==3.5.0 # needed for python 2.7+3.4

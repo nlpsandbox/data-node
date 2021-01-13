@@ -1,9 +1,8 @@
-.env
-venv/
-data/
-/.idea/
-__pycache__/
-conda.gpg
+# folders
 .vscode
 node_modules
+
+# files
+.env
 dist.yaml
+openapi.yaml

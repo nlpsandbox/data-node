@@ -3,7 +3,7 @@ from flask import jsonify
 from openapi_server.models.service import Service  # noqa: E501
 
 
-def service():  # noqa: E501
+def get_service():  # noqa: E501
     """Get service information
     Get information about the service # noqa: E501
     :rtype: Service

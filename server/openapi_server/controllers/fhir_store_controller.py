@@ -3,6 +3,7 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.fhir_store import FhirStore  # noqa: E501
+from openapi_server.models.fhir_store_create_response import FhirStoreCreateResponse  # noqa: E501
 from openapi_server.models.page_of_fhir_stores import PageOfFhirStores  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
@@ -11,7 +12,7 @@ from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
-def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501
+def create_fhir_store(dataset_id, fhir_store_id, body=None):  # noqa: E501
     """Create a FHIR store
 
     Create a FHIR store with the ID specified # noqa: E501
@@ -20,21 +21,22 @@ def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store that is being created.
     :type fhir_store_id: str
-    :param fhir_store:
-    :type fhir_store: dict | bytes
+    :param body:
+    :type body:
 
-    :rtype: FhirStore
+    :rtype: FhirStoreCreateResponse
     """
     res = None
     status = None
 
     # build the store name
     fhir_store = None
-    if dataset_id is not None and fhir_store_id is not None:
-        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
+    try:
+        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
         fhir_store = FhirStore(name=store_name)
-    elif connexion.request.is_json:
-        fhir_store = FhirStore.from_dict(connexion.request.get_json())
+    except Exception as error:
+        status = 400
+        res = Error("Invalid input", status, str(error))
 
     # check that the dataset specified exists
     try:
@@ -42,7 +44,7 @@ def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501
         dataset_name = "/".join(tokens[:2])
         DbDataset.objects.get(name=dataset_name)
     except DoesNotExist:
-        status = 404
+        status = 400
         res = Error("The specified dataset was not found", status)
     except Exception as error:
         status = 500
@@ -52,8 +54,9 @@ def create_fhir_store(dataset_id, fhir_store_id, fhir_store=None):  # noqa: E501
     if status is None:
         try:
             db_fhir_store = DbFhirStore(name=fhir_store.name).save()
-            res = FhirStore.from_dict(db_fhir_store.to_dict())
-            status = 200
+            fhir_store = FhirStore.from_dict(db_fhir_store.to_dict())
+            res = FhirStoreCreateResponse(name=fhir_store.name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
@@ -74,7 +77,7 @@ def delete_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
 
-    :rtype: FhirStore
+    :rtype: object
     """
     store_name = 'datasets/%s/fhirStores/%s' % (dataset_id, fhir_store_id)
     return delete_fhir_store_by_name(store_name)
@@ -89,8 +92,9 @@ def delete_fhir_store_by_name(fhir_store_name):
         DbPatient.objects(fhirStoreName=fhir_store_name).delete()
         DbNote.objects(fhirStoreName=fhir_store_name).delete()
         # delete the store
-        res = FhirStore.from_dict(db_fhir_store.to_dict())
+        FhirStore.from_dict(db_fhir_store.to_dict())
         db_fhir_store.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404
@@ -165,9 +169,6 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
             },
             fhir_stores=fhir_stores)
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

@@ -1,24 +1,24 @@
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
+from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.models.dataset import Dataset  # noqa: E501
 from openapi_server.models.dataset_create_response import DatasetCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.config import Config
 from openapi_server.controllers.annotation_store_controller import delete_annotation_store_by_name, list_annotation_stores  # noqa: E501
 from openapi_server.controllers.fhir_store_controller import delete_fhir_store_by_name, list_fhir_stores  # noqa: E501
 
 
-def create_dataset(dataset_id, dataset=None):  # noqa: E501
+def create_dataset(dataset_id, body=None):  # noqa: E501
     """Create a dataset
 
     Create a dataset with the name specified # noqa: E501
 
     :param dataset_id: The ID of the dataset that is being created
     :type dataset_id: str
-    :param dataset:
-    :type dataset: dict | bytes
+    :param body:
+    :type body:
 
     :rtype: DatasetCreateResponse
     """
@@ -73,8 +73,9 @@ def delete_dataset(dataset_id):  # noqa: E501
         for store in stores.fhir_stores:
             delete_fhir_store_by_name(store.name)
         # delete the dataset
-        res = Dataset.from_dict(db_dataset.to_dict())
+        Dataset.from_dict(db_dataset.to_dict())
         db_dataset.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404

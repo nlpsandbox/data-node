@@ -2,6 +2,8 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
+from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
+from openapi_server.models.annotation_create_response import AnnotationCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
@@ -10,7 +12,7 @@ from openapi_server import util
 from openapi_server.config import Config
 
 
-def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa: E501
+def create_annotation(dataset_id, annotation_store_id, annotation_create_request=None):  # noqa: E501
     """Create an annotation
 
     Create an annotation # noqa: E501
@@ -19,19 +21,19 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
-    :param annotation:
-    :type annotation: dict | bytes
+    :param annotation_create_request:
+    :type annotation_create_request: dict | bytes
 
-    :rtype: Annotation
+    :rtype: AnnotationCreateResponse
     """
     res = None
     status = None
 
     if dataset_id is None:
-        status = 422
+        status = 400
         res = Error("The query parameter datasetId is not specified", status)
     elif annotation_store_id is None:
-        status = 422
+        status = 400
         res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
 
     # check if the annotation store exists
@@ -41,7 +43,7 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
             store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
             DbAnnotationStore.objects.get(name=store_name)
         except DoesNotExist:
-            status = 404
+            status = 400
             res = Error("The specified annotation store was not found", status)
         except Exception as error:
             status = 500
@@ -86,8 +88,9 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
                 textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501
             ).save()
 
-            res = Annotation.from_dict(db_annotation.to_dict())
-            status = 200
+            annotation = Annotation.from_dict(db_annotation.to_dict())
+            res = AnnotationCreateResponse(name=annotation.name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
@@ -110,14 +113,14 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     :param annotation_id: The ID of the annotation
     :type annotation_id: str
 
-    :rtype: Annotation
+    :rtype: object
     """
     res = None
     status = None
     try:
         db_annotation = DbAnnotation.objects.get(id=annotation_id)
-        res = Annotation.from_dict(db_annotation.to_dict())
         db_annotation.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404
@@ -197,9 +200,6 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None): 
             },
             annotations=annotations)
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

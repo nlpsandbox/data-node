@@ -2,6 +2,7 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
+from openapi_server.models.annotation_store_create_response import AnnotationStoreCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.dbmodels.annotation import Annotation as DbAnnotation  # noqa: E501
@@ -10,7 +11,7 @@ from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.config import Config
 
 
-def create_annotation_store(dataset_id, annotation_store_id, annotation_store=None):  # noqa: E501
+def create_annotation_store(dataset_id, annotation_store_id, body=None):  # noqa: E501
     """Create an annotation store
 
     Create an annotation store with the ID specified # noqa: E501
@@ -19,10 +20,10 @@ def create_annotation_store(dataset_id, annotation_store_id, annotation_store=No
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store that is being created.
     :type annotation_store_id: str
-    :param annotation_store:
-    :type annotation_store: dict | bytes
+    :param body:
+    :type body:
 
-    :rtype: AnnotationStore
+    :rtype: AnnotationStoreCreateResponse
     """
     res = None
     status = None
@@ -41,7 +42,7 @@ def create_annotation_store(dataset_id, annotation_store_id, annotation_store=No
         dataset_name = "/".join(tokens[:2])
         DbDataset.objects.get(name=dataset_name)
     except DoesNotExist:
-        status = 404
+        status = 400
         res = Error("The specified dataset was not found", status)
     except Exception as error:
         status = 500
@@ -50,9 +51,9 @@ def create_annotation_store(dataset_id, annotation_store_id, annotation_store=No
     # create the store
     if status is None:
         try:
-            db_fhir_store = DbAnnotationStore(name=fhir_store.name).save()
-            res = AnnotationStore.from_dict(db_fhir_store.to_dict())
-            status = 200
+            DbAnnotationStore(name=fhir_store.name).save()
+            res = AnnotationStoreCreateResponse(name=store_name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
@@ -73,7 +74,7 @@ def delete_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
 
-    :rtype: AnnotationStore
+    :rtype: object
     """
     store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
     return delete_annotation_store_by_name(store_name)
@@ -83,14 +84,14 @@ def delete_annotation_store_by_name(annotation_store_by_name):
     res = None
     status = None
     try:
-        db_fhir_store = DbAnnotationStore.objects.get(
+        db_annotation_store = DbAnnotationStore.objects.get(
             name=annotation_store_by_name)
         # delete resources in the store
         DbAnnotation.objects(annotationStoreName=annotation_store_by_name) \
             .delete()
         # delete the store
-        res = AnnotationStore.from_dict(db_fhir_store.to_dict())
-        db_fhir_store.delete()
+        db_annotation_store.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404
@@ -165,9 +166,6 @@ def list_annotation_stores(dataset_id, limit=None, offset=None):  # noqa: E501
             },
             annotation_stores=annotation_stores)
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

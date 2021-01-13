@@ -1,8 +1,6 @@
-# folders
-.vscode
-node_modules
-
-# files
+.empty/
+.vscode/
+node_modules/
 .env
 dist.yaml
 openapi.yaml

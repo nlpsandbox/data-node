@@ -3,7 +3,7 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.note import Note  # noqa: E501
-from openapi_server.models.note_create_request import NoteCreateRequest  # noqa: E501
+# from openapi_server.models.note_create_request import NoteCreateRequest  # noqa: E501
 from openapi_server.models.note_create_response import NoteCreateResponse  # noqa: E501
 from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore

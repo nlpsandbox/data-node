@@ -1,4 +1,3 @@
-import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501

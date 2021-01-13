@@ -2,7 +2,7 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
-from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
+# from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
 from openapi_server.models.annotation_create_response import AnnotationCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501

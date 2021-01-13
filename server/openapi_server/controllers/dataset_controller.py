@@ -1,6 +1,7 @@
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.dataset import Dataset  # noqa: E501
+from openapi_server.models.dataset_create_response import DatasetCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
 from openapi_server.dbmodels.dataset import Dataset as DbDataset
@@ -14,12 +15,12 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
 
     Create a dataset with the name specified # noqa: E501
 
-    :param dataset_id: The ID of the dataset that is being created.
+    :param dataset_id: The ID of the dataset that is being created
     :type dataset_id: str
     :param dataset:
     :type dataset: dict | bytes
 
-    :rtype: Dataset
+    :rtype: DatasetCreateResponse
     """
     res = None
     status = None
@@ -27,9 +28,15 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
         try:
             dataset_name = "datasets/%s" % (dataset_id,)
             dataset = Dataset(name=dataset_name)
+        except Exception as error:
+            status = 400
+            res = Error("Invalid input", status, str(error))
+
+        try:
             db_dataset = DbDataset(name=dataset.name).save()
-            res = Dataset.from_dict(db_dataset.to_dict())
-            status = 200
+            dataset = Dataset.from_dict(db_dataset.to_dict())
+            res = DatasetCreateResponse(name=dataset.name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
@@ -37,7 +44,7 @@ def create_dataset(dataset_id, dataset=None):  # noqa: E501
             status = 500
             res = Error("Internal error", status, str(error))
     else:
-        status = 422
+        status = 400
         res = Error("The query parameter datasetId is not specified", status)
 
     return res, status
@@ -51,7 +58,7 @@ def delete_dataset(dataset_id):  # noqa: E501
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
 
-    :rtype: Dataset
+    :rtype: DatasetCreateResponse
     """
     res = None
     status = None
@@ -135,9 +142,6 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
             },
             datasets=datasets)
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

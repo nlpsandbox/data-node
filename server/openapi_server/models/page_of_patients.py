@@ -23,7 +23,7 @@ class PageOfPatients(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, patients=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, patients=None):  # noqa: E501
         """PageOfPatients - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfPatients.  # noqa: E501
@@ -87,6 +87,8 @@ class PageOfPatients(Model):
         """
         if offset is None:
             raise ValueError("Invalid value for `offset`, must not be `None`")  # noqa: E501
+        if offset is not None and offset < 0:  # noqa: E501
+            raise ValueError("Invalid value for `offset`, must be a value greater than or equal to `0`")  # noqa: E501
 
         self._offset = offset
 
@@ -112,6 +114,10 @@ class PageOfPatients(Model):
         """
         if limit is None:
             raise ValueError("Invalid value for `limit`, must not be `None`")  # noqa: E501
+        if limit is not None and limit > 100:  # noqa: E501
+            raise ValueError("Invalid value for `limit`, must be a value less than or equal to `100`")  # noqa: E501
+        if limit is not None and limit < 10:  # noqa: E501
+            raise ValueError("Invalid value for `limit`, must be a value greater than or equal to `10`")  # noqa: E501
 
         self._limit = limit
 
@@ -142,7 +148,7 @@ class PageOfPatients(Model):
     def patients(self):
         """Gets the patients of this PageOfPatients.
 
-        An array of FHIR Patients  # noqa: E501
+        An array of FHIR patients  # noqa: E501
 
         :return: The patients of this PageOfPatients.
         :rtype: List[Patient]
@@ -153,7 +159,7 @@ class PageOfPatients(Model):
     def patients(self, patients):
         """Sets the patients of this PageOfPatients.
 
-        An array of FHIR Patients  # noqa: E501
+        An array of FHIR patients  # noqa: E501
 
         :param patients: The patients of this PageOfPatients.
         :type patients: List[Patient]

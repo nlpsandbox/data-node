@@ -16,12 +16,12 @@ services:
     ports:
       - "${MONGO_PORT}:27017"
 
-  api:
+  data-node:
     image: nlpsandbox/data-node:0.2.0
     build:
       context: server
       dockerfile: Dockerfile
-    container_name: data-node-api
+    container_name: data-node
     environment:
       - SERVER_PROTOCOL
       - SERVER_DOMAIN

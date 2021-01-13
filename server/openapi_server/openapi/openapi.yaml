@@ -17,8 +17,13 @@ info:
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
-- url: http://example.com/api/v1
-- url: https://example.com/api/v1
+- url: '{protocol}://example.com/api/v1'
+  variables:
+    protocol:
+      default: https
+      enum:
+      - http
+      - https
 tags:
 - description: Operations about annotations
   name: Annotation
@@ -46,10 +51,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -57,9 +59,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -68,18 +68,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfDatasets'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: Get all datasets
       tags:
       - Dataset
@@ -88,42 +82,32 @@ paths:
       description: Create a dataset with the name specified
       operationId: create_dataset
       parameters:
-      - description: The ID of the dataset that is being created.
+      - description: The ID of the dataset that is being created
         explode: true
         in: query
         name: datasetId
         required: true
         schema:
-          example: awesome-dataset
-          maxLength: 60
-          minLength: 3
-          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: form
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Dataset'
+              $ref: '#/components/schemas/DatasetCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Dataset'
+                $ref: '#/components/schemas/DatasetCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
@@ -145,21 +129,15 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Dataset'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -180,7 +158,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       responses:
         "200":
@@ -189,12 +167,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dataset'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -216,7 +188,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: Maximum number of results returned
         explode: true
@@ -224,10 +196,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -235,9 +204,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -246,18 +213,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfAnnotationStores'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: List the annotation stores in a dataset
       tags:
       - AnnotationStore
@@ -272,7 +233,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store that is being created.
         explode: true
@@ -280,36 +241,26 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          example: awesome-annotation-store
-          maxLength: 60
-          minLength: 3
-          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-          type: string
+          $ref: '#/components/schemas/AnnotationStoreId'
         style: form
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AnnotationStore'
+              $ref: '#/components/schemas/AnnotationStoreCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnnotationStore'
+                $ref: '#/components/schemas/AnnotationStoreCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
@@ -331,7 +282,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -339,21 +290,15 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationStoreId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnnotationStore'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -374,7 +319,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -382,7 +327,7 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationStoreId'
         style: simple
       responses:
         "200":
@@ -391,12 +336,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AnnotationStore'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -418,7 +357,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -426,7 +365,7 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationStoreId'
         style: simple
       - description: Maximum number of results returned
         explode: true
@@ -434,10 +373,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -445,9 +381,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -456,18 +390,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfAnnotations'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: List the annotations in an annotation store
       tags:
       - Annotation
@@ -482,7 +410,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -490,32 +418,26 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationStoreId'
         style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Annotation'
+              $ref: '#/components/schemas/AnnotationCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Annotation'
+                $ref: '#/components/schemas/AnnotationCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
@@ -537,7 +459,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -545,7 +467,7 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: The ID of the annotation
         explode: false
@@ -553,21 +475,15 @@ paths:
         name: annotationId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Annotation'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -588,7 +504,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the annotation store
         explode: false
@@ -596,7 +512,7 @@ paths:
         name: annotationStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: The ID of the annotation
         explode: false
@@ -604,7 +520,7 @@ paths:
         name: annotationId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/AnnotationId'
         style: simple
       responses:
         "200":
@@ -613,12 +529,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Annotation'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -640,7 +550,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: Maximum number of results returned
         explode: true
@@ -648,10 +558,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -659,9 +566,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -670,18 +575,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfFhirStores'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: List the FHIR stores in a dataset
       tags:
       - FhirStore
@@ -696,7 +595,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store that is being created.
         explode: true
@@ -704,36 +603,26 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          example: awesome-fhir-store
-          maxLength: 60
-          minLength: 3
-          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: form
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FhirStore'
+              $ref: '#/components/schemas/FhirStoreCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FhirStore'
+                $ref: '#/components/schemas/FhirStoreCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
@@ -755,7 +644,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -763,21 +652,15 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FhirStore'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -798,7 +681,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -806,7 +689,7 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       responses:
         "200":
@@ -815,12 +698,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/FhirStore'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -842,7 +719,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -850,7 +727,7 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: Maximum number of results returned
         explode: true
@@ -858,10 +735,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -869,9 +743,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -880,18 +752,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfNotes'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: List notes
       tags:
       - Note
@@ -906,7 +772,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -914,32 +780,26 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Note'
+              $ref: '#/components/schemas/NoteCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Note'
+                $ref: '#/components/schemas/NoteCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
@@ -961,7 +821,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -969,7 +829,7 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: The ID of the note
         explode: false
@@ -977,21 +837,15 @@ paths:
         name: noteId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/NoteResourceId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Note'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -1012,7 +866,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -1020,7 +874,7 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: The ID of the note
         explode: false
@@ -1028,7 +882,7 @@ paths:
         name: noteId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/NoteResourceId'
         style: simple
       responses:
         "200":
@@ -1037,12 +891,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Note'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -1064,7 +912,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -1072,7 +920,7 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       - description: Maximum number of results returned
         explode: true
@@ -1080,10 +928,7 @@ paths:
         name: limit
         required: false
         schema:
-          default: 10
-          maximum: 100
-          minimum: 10
-          type: integer
+          $ref: '#/components/schemas/PageLimit'
         style: form
       - description: Index of the first result that must be returned
         explode: true
@@ -1091,9 +936,7 @@ paths:
         name: offset
         required: false
         schema:
-          default: 0
-          minimum: 0
-          type: integer
+          $ref: '#/components/schemas/PageOffset'
         style: form
       responses:
         "200":
@@ -1102,24 +945,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/PageOfPatients'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
       summary: List the Patients in a FHIR store
       tags:
       - Patient
       x-openapi-router-controller: openapi_server.controllers.patient_controller
     post:
-      description: Create a FHIR Patient
+      description: Create a FHIR patient
       operationId: create_patient
       parameters:
       - description: The ID of the dataset
@@ -1128,7 +965,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -1136,45 +973,39 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Patient'
+              $ref: '#/components/schemas/PatientCreateRequest'
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Patient'
+                $ref: '#/components/schemas/PatientCreateResponse'
           description: Success
-        "403":
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-          description: Unauthorized
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
+          description: Invalid request
         "409":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
-      summary: Create a FHIR Patient
+      summary: Create a FHIR patient
       tags:
       - Patient
       x-openapi-router-controller: openapi_server.controllers.patient_controller
   /datasets/{datasetId}/fhirStores/{fhirStoreId}/fhir/Patient/{patientId}:
     delete:
-      description: Deletes the FHIR Patient specified
+      description: Deletes the FHIR patient specified
       operationId: delete_patient
       parameters:
       - description: The ID of the dataset
@@ -1183,7 +1014,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -1191,41 +1022,35 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
-      - description: The ID of the FHIR Patient
+      - description: The ID of the FHIR patient
         explode: false
         in: path
         name: patientId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/PatientResourceId'
         style: simple
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Patient'
+                $ref: '#/components/schemas/EmptyResponse'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Delete a FHIR Patient
+      summary: Delete a FHIR patient
       tags:
       - Patient
       x-openapi-router-controller: openapi_server.controllers.patient_controller
     get:
-      description: Returns the FHIR Patient specified
+      description: Returns the FHIR patient specified
       operationId: get_patient
       parameters:
       - description: The ID of the dataset
@@ -1234,7 +1059,7 @@ paths:
         name: datasetId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/DatasetId'
         style: simple
       - description: The ID of the FHIR store
         explode: false
@@ -1242,15 +1067,15 @@ paths:
         name: fhirStoreId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/FhirStoreId'
         style: simple
-      - description: The ID of the FHIR Patient
+      - description: The ID of the FHIR patient
         explode: false
         in: path
         name: patientId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/PatientResourceId'
         style: simple
       responses:
         "200":
@@ -1259,26 +1084,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Patient'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
-      summary: Get a FHIR Patient
+      summary: Get a FHIR patient
       tags:
       - Patient
       x-openapi-router-controller: openapi_server.controllers.patient_controller
   /service:
     get:
       description: Get information about the service
-      operationId: service
+      operationId: get_service
       responses:
         "200":
           content:
@@ -1286,12 +1105,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Service'
           description: Success
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Unauthorized
         "404":
           content:
             application/json:
@@ -1304,33 +1117,49 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.service_controller
 components:
   responses:
-    Unauthorized:
+    BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-      description: Unauthorized
-    NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: The specified resource was not found
+      description: Invalid request
     Conflict:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
       description: The request conflicts with current state of the target resource
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: The specified resource was not found
   schemas:
+    PageLimit:
+      default: 10
+      description: Maximum number of results returned
+      maximum: 100
+      minimum: 10
+      type: integer
+    PageOffset:
+      default: 0
+      description: Index of the first result that must be returned
+      minimum: 0
+      type: integer
     ResponsePageMetadata:
       description: A page of results
       properties:
         offset:
+          default: 0
           description: Index of the first result that must be returned
+          minimum: 0
           type: integer
         limit:
+          default: 10
           description: Maximum number of results returned
+          maximum: 100
+          minimum: 10
           type: integer
         links:
           $ref: '#/components/schemas/ResponsePageMetadata_links'
@@ -1339,14 +1168,18 @@ components:
       - links
       - offset
       type: object
+    DatasetName:
+      description: The name of the dataset
+      example: datasets/awesome-dataset
+      type: string
     Dataset:
       description: A dataset
       example:
         name: datasets/awesome-dataset
       properties:
         name:
-          description: Resource name of the dataset, of the form datasets/{datasetId}
-          readOnly: true
+          description: The name of the dataset
+          example: datasets/awesome-dataset
           type: string
       type: object
     PageOfDatasets:
@@ -1375,6 +1208,29 @@ components:
       - status
       - title
       type: object
+    DatasetId:
+      description: The ID of the dataset
+      example: awesome-dataset
+      maxLength: 60
+      minLength: 3
+      pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      type: string
+    DatasetCreateRequest:
+      description: An empty object
+      type: object
+    DatasetCreateResponse:
+      description: The reference of the dataset created
+      example:
+        name: datasets/awesome-dataset
+      properties:
+        name:
+          description: The name of the dataset
+          example: datasets/awesome-dataset
+          type: string
+      type: object
+    EmptyResponse:
+      description: An empty object
+      type: object
     AnnotationStore:
       description: An annotation store
       example:
@@ -1391,6 +1247,34 @@ components:
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
       type: object
+    AnnotationStoreId:
+      description: The ID of the annotation store
+      example: awesome-annotation-store
+      maxLength: 60
+      minLength: 3
+      pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      type: string
+    AnnotationStoreCreateRequest:
+      description: An empty object
+      type: object
+    AnnotationStoreName:
+      description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
+      example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
+      type: string
+    AnnotationStoreCreateResponse:
+      description: The reference to the annotation store created
+      example:
+        name: datasets/awesome-dataset/annotationStores/awesome-annotation-store
+      properties:
+        name:
+          description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
+          example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
+          type: string
+      type: object
+    AnnotationName:
+      description: Resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
+      example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/507f1f77bcf86cd799439011
+      type: string
     ResourceSource:
       description: An API resource source
       example:
@@ -1496,11 +1380,11 @@ components:
         annotationSource:
           resourceSource:
             name: name
-        name: name
+        name: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/507f1f77bcf86cd799439011
       properties:
         name:
           description: Resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
-          readOnly: true
+          example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/507f1f77bcf86cd799439011
           type: string
         annotationSource:
           $ref: '#/components/schemas/AnnotationSource'
@@ -1526,6 +1410,77 @@ components:
       - $ref: '#/components/schemas/PageOfAnnotations_allOf'
       description: A page of annotations
       type: object
+    AnnotationCreateRequest:
+      description: An annotation record
+      example:
+        textDateAnnotations:
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
+        - start: 42
+          length: 10
+          text: 10/26/2020
+          dateFormat: MM/DD/YYYY
+        textPersonNameAnnotations:
+        - start: 42
+          length: 11
+          text: Chloe Price
+        - start: 42
+          length: 11
+          text: Chloe Price
+        textPhysicalAddressAnnotations:
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
+        - start: 42
+          length: 11
+          text: Seattle
+          addressType: city
+        annotationSource:
+          resourceSource:
+            name: name
+      properties:
+        annotationSource:
+          $ref: '#/components/schemas/AnnotationSource'
+        textDateAnnotations:
+          description: Date annotations in a text
+          items:
+            $ref: '#/components/schemas/TextDateAnnotation'
+          type: array
+        textPersonNameAnnotations:
+          description: Person name annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPersonNameAnnotation'
+          type: array
+        textPhysicalAddressAnnotations:
+          description: Physical address annotations in a text
+          items:
+            $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+          type: array
+      type: object
+    AnnotationCreateResponse:
+      description: The reference to the annotation created
+      example:
+        name: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/507f1f77bcf86cd799439011
+      properties:
+        name:
+          description: Resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
+          example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/507f1f77bcf86cd799439011
+          type: string
+      type: object
+    FhirStoreId:
+      description: The ID of the FHIR store
+      example: awesome-fhir-store
+      maxLength: 60
+      minLength: 3
+      pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      type: string
+    AnnotationId:
+      description: The ID of the annotation
+      example: 507f1f77bcf86cd799439011
+      type: string
     FhirStore:
       description: A FHIR store
       example:
@@ -1542,16 +1497,37 @@ components:
       - $ref: '#/components/schemas/PageOfFhirStores_allOf'
       description: A page of FHIR stores
       type: object
+    FhirStoreCreateRequest:
+      description: An empty object
+      type: object
+    FhirStoreName:
+      description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+      example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
+      type: string
+    FhirStoreCreateResponse:
+      description: The reference to the FHIR store created
+      example:
+        name: datasets/awesome-dataset/fhirStores/awesome-fhir-store
+      properties:
+        name:
+          description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+          example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
+          type: string
+      type: object
+    PatientResourceId:
+      description: The ID of the FHIR patient
+      example: 507f1f77bcf86cd799439011
+      type: string
     Patient:
-      description: A FHIR Patient
+      description: A FHIR patient
       example:
         identifier: identifier
         gender: male
-        id: id
+        id: 507f1f77bcf86cd799439011
       properties:
         id:
-          description: The patient ID
-          readOnly: true
+          description: The ID of the FHIR patient
+          example: 507f1f77bcf86cd799439011
           type: string
         identifier:
           description: An identifier for this patient
@@ -1569,19 +1545,55 @@ components:
       allOf:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfPatients_allOf'
-      description: A page of FHIR Patients
+      description: A page of FHIR patients
       type: object
+    PatientCreateRequest:
+      description: A FHIR patient
+      example:
+        identifier: identifier
+        gender: male
+      properties:
+        identifier:
+          description: An identifier for this patient
+          type: string
+        gender:
+          description: Gender of the patient
+          enum:
+          - male
+          - female
+          - other
+          - unknown
+          type: string
+      type: object
+    PatientResourceName:
+      description: The resource name of the FHIR patient, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Patient/{PatientId}
+      example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Patient/507f1f77bcf86cd799439011
+      type: string
+    PatientCreateResponse:
+      description: The reference to the patient created
+      example:
+        name: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Patient/507f1f77bcf86cd799439011
+      properties:
+        name:
+          description: The resource name of the FHIR patient, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Patient/{PatientId}
+          example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Patient/507f1f77bcf86cd799439011
+          type: string
+      type: object
+    NoteResourceId:
+      description: The ID of the clinical note
+      example: 507f1f77bcf86cd799439011
+      type: string
     Note:
       description: A clinical note
       example:
         noteType: loinc:LP29684-5
         patientId: 507f1f77bcf86cd799439011
-        id: id
+        id: 507f1f77bcf86cd799439011
         text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
       properties:
         id:
-          description: The ID of the note
-          readOnly: true
+          description: The ID of the clinical note
+          example: 507f1f77bcf86cd799439011
           type: string
         text:
           description: The content of the clinical note
@@ -1592,7 +1604,7 @@ components:
           example: loinc:LP29684-5
           type: string
         patientId:
-          description: The patient ID
+          description: The ID of the FHIR patient
           example: 507f1f77bcf86cd799439011
           type: string
       required:
@@ -1604,6 +1616,43 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfNotes_allOf'
       description: A page of notes
+      type: object
+    NoteCreateRequest:
+      description: A clinical note
+      example:
+        noteType: loinc:LP29684-5
+        patientId: 507f1f77bcf86cd799439011
+        text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
+      properties:
+        text:
+          description: The content of the clinical note
+          example: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
+          type: string
+        noteType:
+          description: The note type (LOINC concept)
+          example: loinc:LP29684-5
+          type: string
+        patientId:
+          description: The ID of the FHIR patient
+          example: 507f1f77bcf86cd799439011
+          type: string
+      required:
+      - noteType
+      - text
+      type: object
+    NoteResourceName:
+      description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}
+      example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/507f1f77bcf86cd799439011
+      type: string
+    NoteCreateResponse:
+      description: The reference to the note created
+      example:
+        name: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/507f1f77bcf86cd799439011
+      properties:
+        name:
+          description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}
+          example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/507f1f77bcf86cd799439011
+          type: string
       type: object
     Service:
       description: Information about an NLP service
@@ -1759,7 +1808,7 @@ components:
     PageOfPatients_allOf:
       properties:
         patients:
-          description: An array of FHIR Patients
+          description: An array of FHIR patients
           items:
             $ref: '#/components/schemas/Patient'
           type: array

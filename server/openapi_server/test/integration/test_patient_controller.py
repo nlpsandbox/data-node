@@ -48,7 +48,7 @@ class TestPatientController(BaseTestCase):
             headers=headers,
             data=json.dumps(patient),
             content_type='application/json')
-        self.assert200(response,
+        self.assert201(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
     def test_delete_patient(self):

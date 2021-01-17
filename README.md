@@ -24,15 +24,11 @@ Dockerized API service to store and retrieve data needed to benchmark NLP tools
 
        cp .env.sample .env
 
-2. Export the variables defined in *.env* to environment variables
-
-       export $(grep -v '^#' .env | xargs -d '\n')
-
-3. Start the Data Node API service
+2. Start the Data Node API service
 
        docker-compose up
 
-4. In your browser, go to the web service documentation page
+3. In your browser, go to the web service documentation page
    <http://localhost:8080/api/v1/ui/> to check that the web service of the Data
    Node started successfully.
 

@@ -83,8 +83,9 @@ class TestAnnotationController(BaseTestCase):
             headers=headers,
             data=json.dumps(annotation),
             content_type='application/json')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        self.assert_status(
+            response, 201,
+            'Response body is : ' + response.data.decode('utf-8'))
 
     def test_delete_annotation(self):
         """Test case for delete_annotation

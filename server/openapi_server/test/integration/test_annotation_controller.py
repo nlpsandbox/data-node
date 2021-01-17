@@ -104,8 +104,9 @@ class TestAnnotationController(BaseTestCase):
                 annotation_id=annotation.id),
             method='DELETE',
             headers=headers)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        self.assert_status(
+            response, 201,
+            'Response body is : ' + response.data.decode('utf-8'))
 
     def test_get_annotation(self):
         """Test case for get_annotation

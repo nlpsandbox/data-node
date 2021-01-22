@@ -3,7 +3,7 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.note import Note  # noqa: E501
-# from openapi_server.models.note_create_request import NoteCreateRequest  # noqa: E501
+from openapi_server.models.note_create_request import NoteCreateRequest  # noqa: E501
 from openapi_server.models.note_create_response import NoteCreateResponse  # noqa: E501
 from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
@@ -12,7 +12,7 @@ from openapi_server.dbmodels.note import Note as DbNote
 from openapi_server.config import Config
 
 
-def create_note(dataset_id, fhir_store_id, note_create_request=None):  # noqa: E501
+def create_note(dataset_id, fhir_store_id):  # noqa: E501
     """Create a note
 
     Create a note # noqa: E501
@@ -28,28 +28,22 @@ def create_note(dataset_id, fhir_store_id, note_create_request=None):  # noqa: E
     """
     res = None
     status = None
-
-    # check if the FHIR store exists
-    store_name = None
     try:
-        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        DbFhirStore.objects.get(name=store_name)
-    except DoesNotExist:
-        status = 400
-        res = Error("The specified FHIR store was not found", status)
-    except Exception as error:
-        status = 500
-        res = Error("Internal error", status, str(error))
-
-    # create the note
-    if status is None and connexion.request.is_json:
+        store_name = None
         try:
-            note = Note.from_dict(connexion.request.get_json())
+            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
+            DbFhirStore.objects.get(name=store_name)
+        except DoesNotExist:
+            status = 400
+            res = Error("The specified FHIR store was not found", status)
+
+        try:
+            note_create_request = NoteCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
             db_note = DbNote(
                 fhirStoreName=store_name,
-                text=note.text,
-                noteType=note.note_type,
-                patientId=note.patient_id
+                text=note_create_request.text,
+                noteType=note_create_request.note_type,
+                patientId=note_create_request.patient_id
             ).save()
             note = Note.from_dict(db_note.to_dict())
             note_resource_name = "%s/Note/%s" % (store_name, note.id)
@@ -58,10 +52,9 @@ def create_note(dataset_id, fhir_store_id, note_create_request=None):  # noqa: E
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
     return res, status
 
 
@@ -83,7 +76,6 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     status = None
     try:
         db_note = DbNote.objects.get(id=note_id)
-        Note.from_dict(db_note.to_dict())
         db_note.delete()
         res = {}
         status = 200
@@ -93,7 +85,6 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -123,7 +114,6 @@ def get_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -170,5 +160,4 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

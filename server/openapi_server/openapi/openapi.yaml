@@ -13,7 +13,7 @@ info:
     name: Apache 2.0
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.2.2
+  version: 0.3.0
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
@@ -33,11 +33,13 @@ tags:
   name: Dataset
 - description: Operations about FHIR stores
   name: FhirStore
+- description: Operations about health checks
+  name: HealthCheck
 - description: Operations about notes
   name: Note
 - description: Operations about patients
   name: Patient
-- description: Operations about this API service
+- description: Operations about this service
   name: Service
 paths:
   /datasets:
@@ -74,6 +76,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get all datasets
       tags:
       - Dataset
@@ -114,6 +123,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create a dataset
       tags:
       - Dataset
@@ -136,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -144,6 +160,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete a dataset by ID
       tags:
       - Dataset
@@ -173,6 +196,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get a dataset by ID
       tags:
       - Dataset
@@ -219,6 +249,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: List the annotation stores in a dataset
       tags:
       - AnnotationStore
@@ -267,6 +304,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create an annotation store
       tags:
       - AnnotationStore
@@ -297,7 +341,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -305,6 +349,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete an annotation store
       tags:
       - AnnotationStore
@@ -342,6 +393,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get an annotation store
       tags:
       - AnnotationStore
@@ -396,6 +454,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: List the annotations in an annotation store
       tags:
       - Annotation
@@ -444,6 +509,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create an annotation
       tags:
       - Annotation
@@ -482,7 +554,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -490,6 +562,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete an annotation
       tags:
       - Annotation
@@ -535,6 +614,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get an annotation
       tags:
       - Annotation
@@ -581,6 +667,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: List the FHIR stores in a dataset
       tags:
       - FhirStore
@@ -629,6 +722,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create a FHIR store
       tags:
       - FhirStore
@@ -659,7 +759,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -667,6 +767,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete a FHIR store
       tags:
       - FhirStore
@@ -704,6 +811,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get a FHIR store
       tags:
       - FhirStore
@@ -758,6 +872,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: List notes
       tags:
       - Note
@@ -806,6 +927,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create a note
       tags:
       - Note
@@ -844,7 +972,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -852,6 +980,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete a note
       tags:
       - Note
@@ -897,6 +1032,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get a note
       tags:
       - Note
@@ -951,6 +1093,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: List the Patients in a FHIR store
       tags:
       - Patient
@@ -999,6 +1148,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The request conflicts with current state of the target resource
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Create a FHIR patient
       tags:
       - Patient
@@ -1037,7 +1193,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmptyResponse'
+                $ref: '#/components/schemas/EmptyObject'
           description: Success
         "404":
           content:
@@ -1045,6 +1201,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Delete a FHIR patient
       tags:
       - Patient
@@ -1090,10 +1253,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get a FHIR patient
       tags:
       - Patient
       x-openapi-router-controller: openapi_server.controllers.patient_controller
+  /healthCheck:
+    get:
+      description: Get information about the health of the service
+      operationId: get_health_check
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+          description: Success
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
+      summary: Get health check information
+      tags:
+      - HealthCheck
+      x-openapi-router-controller: openapi_server.controllers.health_check_controller
   /service:
     get:
       description: Get information about the service
@@ -1111,6 +1309,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: The specified resource was not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: The request cannot be fulfilled due to an unexpected server
+            error
       summary: Get service information
       tags:
       - Service
@@ -1123,6 +1328,12 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
       description: Invalid request
+    InternalServerError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: The request cannot be fulfilled due to an unexpected server error
     Conflict:
       content:
         application/json:
@@ -1228,7 +1439,7 @@ components:
           example: datasets/awesome-dataset
           type: string
       type: object
-    EmptyResponse:
+    EmptyObject:
       description: An empty object
       type: object
     AnnotationStore:
@@ -1653,6 +1864,21 @@ components:
           description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}
           example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/507f1f77bcf86cd799439011
           type: string
+      type: object
+    HealthCheck:
+      description: Represents the health of a service
+      example:
+        status: pass
+      properties:
+        status:
+          description: Indicates whether the service status is acceptable or not
+          enum:
+          - pass
+          - fail
+          - warn
+          type: string
+      required:
+      - status
       type: object
     Service:
       description: Information about an NLP service

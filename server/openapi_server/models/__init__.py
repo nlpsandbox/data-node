@@ -14,6 +14,7 @@ from openapi_server.models.dataset_create_response import DatasetCreateResponse
 from openapi_server.models.error import Error
 from openapi_server.models.fhir_store import FhirStore
 from openapi_server.models.fhir_store_create_response import FhirStoreCreateResponse
+from openapi_server.models.health_check import HealthCheck
 from openapi_server.models.note import Note
 from openapi_server.models.note_create_request import NoteCreateRequest
 from openapi_server.models.note_create_response import NoteCreateResponse

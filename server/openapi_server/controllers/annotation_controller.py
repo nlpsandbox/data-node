@@ -12,7 +12,7 @@ from openapi_server import util
 from openapi_server.config import Config
 
 
-def create_annotation(dataset_id, annotation_store_id, annotation_create_request=None):  # noqa: E501
+def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
     """Create an annotation
 
     Create an annotation # noqa: E501
@@ -21,36 +21,31 @@ def create_annotation(dataset_id, annotation_store_id, annotation_create_request
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
-    :param annotation_create_request:
-    :type annotation_create_request: dict | bytes
 
     :rtype: AnnotationCreateResponse
     """
     res = None
     status = None
-
-    if dataset_id is None:
-        status = 400
-        res = Error("The query parameter datasetId is not specified", status)
-    elif annotation_store_id is None:
-        status = 400
-        res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
-
-    # check if the annotation store exists
-    store_name = None
-    if status is None:
-        try:
-            store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-            DbAnnotationStore.objects.get(name=store_name)
-        except DoesNotExist:
+    try:
+        if dataset_id is None:
             status = 400
-            res = Error("The specified annotation store was not found", status)
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
+            res = Error("The query parameter datasetId is not specified", status)
+        elif annotation_store_id is None:
+            status = 400
+            res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
 
-    # create the annotation
-    if status is None and connexion.request.is_json:
+        # check if the annotation store exists
+        store_name = None
+        if status is None:
+            try:
+                store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
+                DbAnnotationStore.objects.get(name=store_name)
+            except DoesNotExist:
+                status = 400
+                res = Error("The specified annotation store was not found", status)
+
+
+        # create the annotation
         try:
             annotation = Annotation.from_dict(connexion.request.get_json())
             text_date_annotations = None
@@ -87,17 +82,15 @@ def create_annotation(dataset_id, annotation_store_id, annotation_create_request
                 textPersonNameAnnotations=text_person_name_annotations,
                 textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501
             ).save()
-
             annotation = Annotation.from_dict(db_annotation.to_dict())
             res = AnnotationCreateResponse(name=annotation.name)
             status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
     return res, status
 
 
@@ -128,7 +121,6 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -158,7 +150,6 @@ def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E50
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -203,5 +194,4 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None): 
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

@@ -2,7 +2,7 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
-from openapi_server.models.annotation_store_create_response import AnnotationStoreCreateResponse  # noqa: E501
+# from openapi_server.models.annotation_store_create_response import AnnotationStoreCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.dbmodels.annotation import Annotation as DbAnnotation  # noqa: E501
@@ -11,7 +11,7 @@ from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.config import Config
 
 
-def create_annotation_store(dataset_id, annotation_store_id, body=None):  # noqa: E501
+def create_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     """Create an annotation store
 
     Create an annotation store with the ID specified # noqa: E501
@@ -20,47 +20,36 @@ def create_annotation_store(dataset_id, annotation_store_id, body=None):  # noqa
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store that is being created.
     :type annotation_store_id: str
-    :param body:
-    :type body:
 
     :rtype: AnnotationStoreCreateResponse
     """
     res = None
     status = None
-
-    # build the store name
-    fhir_store = None
-    if dataset_id is not None and annotation_store_id is not None:
+    try:
         store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
         fhir_store = AnnotationStore(name=store_name)
-    elif connexion.request.is_json:
-        fhir_store = AnnotationStore.from_dict(connexion.request.get_json())
 
-    # check that the dataset specified exists
-    try:
-        tokens = fhir_store.name.split('/')
-        dataset_name = "/".join(tokens[:2])
-        DbDataset.objects.get(name=dataset_name)
-    except DoesNotExist:
-        status = 400
-        res = Error("The specified dataset was not found", status)
+        # check that the dataset specified exists
+        try:
+            tokens = fhir_store.name.split('/')
+            dataset_name = "/".join(tokens[:2])
+            DbDataset.objects.get(name=dataset_name)
+        except DoesNotExist:
+            status = 400
+            res = Error("The specified dataset was not found", status)
+
+        # create the store
+        if status is None:
+            try:
+                DbAnnotationStore(name=fhir_store.name).save()
+                res = AnnotationStoreCreateResponse(name=store_name)
+                status = 201
+            except NotUniqueError as error:
+                status = 409
+                res = Error("Conflict", status, str(error))
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
-    # create the store
-    if status is None:
-        try:
-            DbAnnotationStore(name=fhir_store.name).save()
-            res = AnnotationStoreCreateResponse(name=store_name)
-            status = 201
-        except NotUniqueError as error:
-            status = 409
-            res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -99,7 +88,6 @@ def delete_annotation_store_by_name(annotation_store_by_name):
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -128,7 +116,6 @@ def get_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -169,5 +156,4 @@ def list_annotation_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

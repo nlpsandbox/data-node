@@ -11,7 +11,7 @@ from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
-def create_fhir_store(dataset_id, fhir_store_id, body=None):  # noqa: E501
+def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     """Create a FHIR store
 
     Create a FHIR store with the ID specified # noqa: E501
@@ -20,49 +20,43 @@ def create_fhir_store(dataset_id, fhir_store_id, body=None):  # noqa: E501
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store that is being created.
     :type fhir_store_id: str
-    :param body:
-    :type body:
 
     :rtype: FhirStoreCreateResponse
     """
     res = None
     status = None
-
-    # build the store name
-    fhir_store = None
     try:
-        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
-        fhir_store = FhirStore(name=store_name)
-    except Exception as error:
-        status = 400
-        res = Error("Invalid input", status, str(error))
+        fhir_store = None
+        try:
+            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
+            fhir_store = FhirStore(name=store_name)
+        except Exception as error:
+            status = 400
+            res = Error("Invalid input", status, str(error))
+            return status, res
 
-    # check that the dataset specified exists
-    try:
-        tokens = fhir_store.name.split('/')
-        dataset_name = "/".join(tokens[:2])
-        DbDataset.objects.get(name=dataset_name)
-    except DoesNotExist:
-        status = 400
-        res = Error("The specified dataset was not found", status)
+        # check that the dataset specified exists
+        try:
+            tokens = fhir_store.name.split('/')
+            dataset_name = "/".join(tokens[:2])
+            DbDataset.objects.get(name=dataset_name).first()
+        except DoesNotExist:
+            status = 400
+            res = Error("The specified dataset was not found", status)
+            return res, status
+
+        # create the store
+        if status is None:
+            try:
+                db_fhir_store = DbFhirStore(name=fhir_store.name).save()
+                res = FhirStoreCreateResponse(name=db_fhir_store.name)
+                status = 201
+            except NotUniqueError as error:
+                status = 409
+                res = Error("Conflict", status, str(error))
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
-    # create the store
-    if status is None:
-        try:
-            db_fhir_store = DbFhirStore(name=fhir_store.name).save()
-            fhir_store = FhirStore.from_dict(db_fhir_store.to_dict())
-            res = FhirStoreCreateResponse(name=fhir_store.name)
-            status = 201
-        except NotUniqueError as error:
-            status = 409
-            res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -101,7 +95,6 @@ def delete_fhir_store_by_name(fhir_store_name):
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -130,7 +123,6 @@ def get_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -171,5 +163,4 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

@@ -1,9 +1,4 @@
-import connexion
-import six
-
-from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.health_check import HealthCheck  # noqa: E501
-from openapi_server import util
 
 
 def get_health_check():  # noqa: E501

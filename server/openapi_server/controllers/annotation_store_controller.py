@@ -1,4 +1,3 @@
-import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501

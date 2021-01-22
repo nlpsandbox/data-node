@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 import unittest
 
-from openapi_server.test import BaseTestCase
+from openapi_server.test.integration import BaseTestCase
 
 
 class TestHealthCheckController(BaseTestCase):

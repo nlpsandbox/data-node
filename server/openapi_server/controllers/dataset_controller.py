@@ -60,6 +60,7 @@ def delete_dataset(dataset_id):  # noqa: E501
     try:
         dataset_name = "datasets/%s" % (dataset_id,)
         db_dataset = DbDataset.objects.get(name=dataset_name)
+        # delete resources in the dataset
         stores = list_annotation_stores(dataset_id)[0]
         for store in stores.annotation_stores:
             delete_annotation_store_by_name(store.name)

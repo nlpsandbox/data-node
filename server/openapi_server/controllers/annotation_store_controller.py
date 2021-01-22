@@ -2,7 +2,7 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
-# from openapi_server.models.annotation_store_create_response import AnnotationStoreCreateResponse  # noqa: E501
+from openapi_server.models.annotation_store_create_response import AnnotationStoreCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotation_stores import PageOfAnnotationStores  # noqa: E501
 from openapi_server.dbmodels.annotation import Annotation as DbAnnotation  # noqa: E501
@@ -27,26 +27,23 @@ def create_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     status = None
     try:
         store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-        fhir_store = AnnotationStore(name=store_name)
+        annotation_store = AnnotationStore(name=store_name)
 
-        # check that the dataset specified exists
         try:
-            tokens = fhir_store.name.split('/')
+            tokens = annotation_store.name.split('/')
             dataset_name = "/".join(tokens[:2])
             DbDataset.objects.get(name=dataset_name)
         except DoesNotExist:
             status = 400
             res = Error("The specified dataset was not found", status)
 
-        # create the store
-        if status is None:
-            try:
-                DbAnnotationStore(name=fhir_store.name).save()
-                res = AnnotationStoreCreateResponse(name=store_name)
-                status = 201
-            except NotUniqueError as error:
-                status = 409
-                res = Error("Conflict", status, str(error))
+        try:
+            DbAnnotationStore(name=annotation_store.name).save()
+            res = AnnotationStoreCreateResponse(name=store_name)
+            status = 201
+        except NotUniqueError as error:
+            status = 409
+            res = Error("Conflict", status, str(error))
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
@@ -76,9 +73,7 @@ def delete_annotation_store_by_name(annotation_store_by_name):
         db_annotation_store = DbAnnotationStore.objects.get(
             name=annotation_store_by_name)
         # delete resources in the store
-        DbAnnotation.objects(annotationStoreName=annotation_store_by_name) \
-            .delete()
-        # delete the store
+        DbAnnotation.objects(annotationStoreName=annotation_store_by_name).delete()  # noqa: E501
         db_annotation_store.delete()
         res = {}
         status = 200
@@ -107,8 +102,8 @@ def get_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     status = None
     try:
         store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-        db_fhir_store = DbAnnotationStore.objects.get(name=store_name)
-        res = AnnotationStore.from_dict(db_fhir_store.to_dict())
+        db_annotation_store = DbAnnotationStore.objects.get(name=store_name)
+        res = AnnotationStore.from_dict(db_annotation_store.to_dict())
         status = 200
     except DoesNotExist:
         status = 404

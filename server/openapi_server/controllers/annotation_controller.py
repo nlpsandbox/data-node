@@ -2,7 +2,7 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
-# from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
+from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
 from openapi_server.models.annotation_create_response import AnnotationCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
@@ -27,54 +27,43 @@ def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
     res = None
     status = None
     try:
-        if dataset_id is None:
-            status = 400
-            res = Error("The query parameter datasetId is not specified", status)
-        elif annotation_store_id is None:
-            status = 400
-            res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
-
-        # check if the annotation store exists
         store_name = None
-        if status is None:
-            try:
-                store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
-                DbAnnotationStore.objects.get(name=store_name)
-            except DoesNotExist:
-                status = 400
-                res = Error("The specified annotation store was not found", status)
-
-
-        # create the annotation
         try:
-            annotation = Annotation.from_dict(connexion.request.get_json())
+            store_name = "datasets/%s/annotationStores/%s" % \
+                (dataset_id, annotation_store_id)
+            DbAnnotationStore.objects.get(name=store_name)
+        except DoesNotExist:
+            status = 400
+            res = Error("The specified annotation store was not found", status)
+
+        try:
+            annotation_create_request = AnnotationCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
             text_date_annotations = None
             text_person_name_annotations = None
             text_physical_address_annotations = None
 
-            if annotation.text_date_annotations is not None:
+            if annotation_create_request.text_date_annotations is not None:
                 text_date_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_date_annotations]
+                    for a in annotation_create_request.text_date_annotations]
 
-            if annotation.text_person_name_annotations is not None:
+            if annotation_create_request.text_person_name_annotations is not None:  # noqa: E501
                 text_person_name_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_person_name_annotations]
+                    for a in annotation_create_request.text_person_name_annotations]  # noqa: E501
 
-            if annotation.text_physical_address_annotations is not None:
+            if annotation_create_request.text_physical_address_annotations is not None:  # noqa: E501
                 text_physical_address_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_physical_address_annotations]
+                    for a in annotation_create_request.text_physical_address_annotations]  # noqa: E501
 
             annotation_source = util.change_dict_naming_convention(
-                annotation.annotation_source.to_dict(),
+                annotation_create_request.annotation_source.to_dict(),
                 util.underscore_to_camel)
 
-            # create the annotation
             db_annotation = DbAnnotation(
                 annotationSource=annotation_source,
                 annotationStoreName=store_name,

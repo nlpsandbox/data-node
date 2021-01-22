@@ -79,6 +79,7 @@ def delete_fhir_store_by_name(fhir_store_name):
     status = None
     try:
         db_fhir_store = DbFhirStore.objects.get(name=fhir_store_name)
+        # delete resources in the store
         DbPatient.objects(fhirStoreName=fhir_store_name).delete()
         DbNote.objects(fhirStoreName=fhir_store_name).delete()
         FhirStore.from_dict(db_fhir_store.to_dict())

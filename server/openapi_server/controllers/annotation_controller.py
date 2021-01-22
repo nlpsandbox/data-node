@@ -2,6 +2,8 @@ import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
+from openapi_server.models.annotation_create_request import AnnotationCreateRequest  # noqa: E501
+from openapi_server.models.annotation_create_response import AnnotationCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa: E501
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
@@ -10,7 +12,7 @@ from openapi_server import util
 from openapi_server.config import Config
 
 
-def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa: E501
+def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
     """Create an annotation
 
     Create an annotation # noqa: E501
@@ -19,65 +21,49 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
-    :param annotation:
-    :type annotation: dict | bytes
 
-    :rtype: Annotation
+    :rtype: AnnotationCreateResponse
     """
     res = None
     status = None
-
-    if dataset_id is None:
-        status = 422
-        res = Error("The query parameter datasetId is not specified", status)
-    elif annotation_store_id is None:
-        status = 422
-        res = Error("The query parameter annotationStoreId is not specified", status)  # noqa: E501
-
-    # check if the annotation store exists
-    store_name = None
-    if status is None:
+    try:
+        store_name = None
         try:
-            store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
+            store_name = "datasets/%s/annotationStores/%s" % \
+                (dataset_id, annotation_store_id)
             DbAnnotationStore.objects.get(name=store_name)
         except DoesNotExist:
-            status = 404
+            status = 400
             res = Error("The specified annotation store was not found", status)
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
 
-    # create the annotation
-    if status is None and connexion.request.is_json:
         try:
-            annotation = Annotation.from_dict(connexion.request.get_json())
+            annotation_create_request = AnnotationCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
             text_date_annotations = None
             text_person_name_annotations = None
             text_physical_address_annotations = None
 
-            if annotation.text_date_annotations is not None:
+            if annotation_create_request.text_date_annotations is not None:
                 text_date_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_date_annotations]
+                    for a in annotation_create_request.text_date_annotations]
 
-            if annotation.text_person_name_annotations is not None:
+            if annotation_create_request.text_person_name_annotations is not None:  # noqa: E501
                 text_person_name_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_person_name_annotations]
+                    for a in annotation_create_request.text_person_name_annotations]  # noqa: E501
 
-            if annotation.text_physical_address_annotations is not None:
+            if annotation_create_request.text_physical_address_annotations is not None:  # noqa: E501
                 text_physical_address_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation.text_physical_address_annotations]
+                    for a in annotation_create_request.text_physical_address_annotations]  # noqa: E501
 
             annotation_source = util.change_dict_naming_convention(
-                annotation.annotation_source.to_dict(),
+                annotation_create_request.annotation_source.to_dict(),
                 util.underscore_to_camel)
 
-            # create the annotation
             db_annotation = DbAnnotation(
                 annotationSource=annotation_source,
                 annotationStoreName=store_name,
@@ -85,16 +71,15 @@ def create_annotation(dataset_id, annotation_store_id, annotation=None):  # noqa
                 textPersonNameAnnotations=text_person_name_annotations,
                 textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501
             ).save()
-
-            res = Annotation.from_dict(db_annotation.to_dict())
-            status = 200
+            annotation = Annotation.from_dict(db_annotation.to_dict())
+            res = AnnotationCreateResponse(name=annotation.name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
     return res, status
 
 
@@ -110,14 +95,14 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     :param annotation_id: The ID of the annotation
     :type annotation_id: str
 
-    :rtype: Annotation
+    :rtype: object
     """
     res = None
     status = None
     try:
         db_annotation = DbAnnotation.objects.get(id=annotation_id)
-        res = Annotation.from_dict(db_annotation.to_dict())
         db_annotation.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404
@@ -125,7 +110,6 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -155,7 +139,6 @@ def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E50
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -197,11 +180,7 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None): 
             },
             annotations=annotations)
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

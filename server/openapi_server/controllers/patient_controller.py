@@ -1,84 +1,81 @@
 import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
+from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore  # noqa: E501
+from openapi_server.dbmodels.patient import Patient as DbPatient  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_patients import PageOfPatients  # noqa: E501
 from openapi_server.models.patient import Patient  # noqa: E501
-from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
-from openapi_server.dbmodels.patient import Patient as DbPatient
+from openapi_server.models.patient_create_request import PatientCreateRequest  # noqa: E501
+from openapi_server.models.patient_create_response import PatientCreateResponse  # noqa: E501
 from openapi_server.config import Config
 
 
-def create_patient(dataset_id, fhir_store_id, patient=None):  # noqa: E501
-    """Create a FHIR Patient
+def create_patient(dataset_id, fhir_store_id):  # noqa: E501
+    """Create a FHIR patient
 
-    Create a FHIR Patient # noqa: E501
+    Create a FHIR patient # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param patient:
-    :type patient: dict | bytes
 
-    :rtype: Patient
+    :rtype: PatientCreateResponse
     """
     res = None
     status = None
-
-    # check if the FHIR store exists
-    store_name = None
     try:
-        store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        DbFhirStore.objects.get(name=store_name)
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified FHIR store was not found", status)
-    except Exception as error:
-        status = 500
-        res = Error("Internal error", status, str(error))
-
-    # create the patient
-    if status is None and connexion.request.is_json:
+        store_name = None
         try:
-            patient = Patient.from_dict(connexion.request.get_json())
+            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
+            DbFhirStore.objects.get(name=store_name)
+        except DoesNotExist:
+            status = 400
+            res = Error("The specified FHIR store was not found", status)
+            return res, status
+
+        try:
+            patient_create_request = PatientCreateRequest.from_dict(
+                connexion.request.get_json())
             db_patient = DbPatient(
                 fhirStoreName=store_name,
-                identifier=patient.identifier,
-                gender=patient.gender
+                identifier=patient_create_request.identifier,
+                gender=patient_create_request.gender
             ).save()
-            res = Patient.from_dict(db_patient.to_dict())
-            status = 200
+            patient = Patient.from_dict(db_patient.to_dict())
+            patient_resource_name = "%s/Patient/%s" % (store_name, patient.id)
+            res = PatientCreateResponse(name=patient_resource_name)
+            status = 201
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))
-        except Exception as error:
-            status = 500
-            res = Error("Internal error", status, str(error))
-
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
     return res, status
 
 
 def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
-    """Delete a FHIR Patient
+    """Delete a FHIR patient
 
-    Deletes the FHIR Patient specified # noqa: E501
+    Deletes the FHIR patient specified # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param patient_id: The ID of the FHIR Patient
+    :param patient_id: The ID of the FHIR patient
     :type patient_id: str
 
-    :rtype: Patient
+    :rtype: object
     """
     res = None
     status = None
     try:
         db_patient = DbPatient.objects.get(id=patient_id)
-        res = Patient.from_dict(db_patient.to_dict())
         db_patient.delete()
+        res = {}
         status = 200
     except DoesNotExist:
         status = 404
@@ -86,20 +83,19 @@ def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
 def get_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
-    """Get a FHIR Patient
+    """Get a FHIR patient
 
-    Returns the FHIR Patient specified # noqa: E501
+    Returns the FHIR patient specified # noqa: E501
 
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param patient_id: The ID of the FHIR Patient
+    :param patient_id: The ID of the FHIR patient
     :type patient_id: str
 
     :rtype: Patient
@@ -116,7 +112,6 @@ def get_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status
 
 
@@ -161,11 +156,7 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
             patients=patients
         )
         status = 200
-    except DoesNotExist:
-        status = 404
-        res = Error("The specified resource was not found", status)
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
-
     return res, status

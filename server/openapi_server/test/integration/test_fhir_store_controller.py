@@ -42,8 +42,9 @@ class TestFhirStoreController(BaseTestCase):
             data=json.dumps(fhir_store),
             content_type='application/json',
             query_string=query_string)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        self.assert_status(
+            response, 201,
+            'Response body is : ' + response.data.decode('utf-8'))
 
     def test_delete_fhir_store(self):
         """Test case for delete_fhir_store

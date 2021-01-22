@@ -23,7 +23,7 @@ class PageOfDatasets(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=None, limit=None, links=None, datasets=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, datasets=None):  # noqa: E501
         """PageOfDatasets - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfDatasets.  # noqa: E501
@@ -87,6 +87,8 @@ class PageOfDatasets(Model):
         """
         if offset is None:
             raise ValueError("Invalid value for `offset`, must not be `None`")  # noqa: E501
+        if offset is not None and offset < 0:  # noqa: E501
+            raise ValueError("Invalid value for `offset`, must be a value greater than or equal to `0`")  # noqa: E501
 
         self._offset = offset
 
@@ -112,6 +114,10 @@ class PageOfDatasets(Model):
         """
         if limit is None:
             raise ValueError("Invalid value for `limit`, must not be `None`")  # noqa: E501
+        if limit is not None and limit > 100:  # noqa: E501
+            raise ValueError("Invalid value for `limit`, must be a value less than or equal to `100`")  # noqa: E501
+        if limit is not None and limit < 10:  # noqa: E501
+            raise ValueError("Invalid value for `limit`, must be a value greater than or equal to `10`")  # noqa: E501
 
         self._limit = limit
 

@@ -6,32 +6,32 @@ services:
     container_name: data-node-db
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME
-      - MONGO_INITDB_ROOT_PASSWORD
-      - MONGO_INITDB_DATABASE
-      - MONGO_USERNAME
-      - MONGO_PASSWORD
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
     volumes:
       - database-data:/data/db
     ports:
       - "${MONGO_PORT}:27017"
 
-  api:
+  data-node:
     image: nlpsandbox/data-node:0.2.0
     build:
       context: server
       dockerfile: Dockerfile
-    container_name: data-node-api
+    container_name: data-node
     environment:
-      - SERVER_PROTOCOL
-      - SERVER_DOMAIN
-      - SERVER_PORT
-      - DB_PROTOCOL
+      - SERVER_PROTOCOL=${SERVER_PROTOCOL}
+      - SERVER_DOMAIN=${SERVER_DOMAIN}
+      - SERVER_PORT=${SERVER_PORT}
+      - DB_PROTOCOL=${DB_PROTOCOL}
       - DB_DOMAIN=db
-      - DB_PORT
-      - DB_DATABASE
-      - DB_USERNAME
-      - DB_PASSWORD
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:

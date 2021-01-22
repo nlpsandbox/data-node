@@ -1,9 +1,6 @@
+.empty/
+.vscode/
+node_modules/
 .env
-venv/
-data/
-/.idea/
-__pycache__/
-conda.gpg
-.vscode
-node_modules
 dist.yaml
+openapi.yaml

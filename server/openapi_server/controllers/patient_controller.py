@@ -28,7 +28,7 @@ def create_patient(dataset_id, fhir_store_id):  # noqa: E501
     try:
         store_name = None
         try:
-            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
+            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
             DbFhirStore.objects.get(name=store_name)
         except DoesNotExist:
             status = 400

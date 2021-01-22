@@ -23,26 +23,22 @@ def create_dataset(dataset_id):  # noqa: E501
     res = None
     status = None
     try:
-        if dataset_id is not None:
-            try:
-                dataset_name = "datasets/%s" % (dataset_id,)
-                dataset = Dataset(name=dataset_name)
-            except Exception as error:
-                status = 400
-                res = Error("Invalid input", status, str(error))
-                return res, status
-
-            try:
-                db_dataset = DbDataset(name=dataset.name).save()
-                dataset = Dataset.from_dict(db_dataset.to_dict())
-                res = DatasetCreateResponse(name=dataset.name)
-                status = 201
-            except NotUniqueError as error:
-                status = 409
-                res = Error("Conflict", status, str(error))
-        else:
+        try:
+            dataset_name = "datasets/%s" % (dataset_id,)
+            dataset = Dataset(name=dataset_name)
+        except Exception as error:
             status = 400
-            res = Error("The query parameter datasetId is not specified", status)
+            res = Error("Invalid input", status, str(error))
+            return res, status
+
+        try:
+            db_dataset = DbDataset(name=dataset.name).save()
+            dataset = Dataset.from_dict(db_dataset.to_dict())
+            res = DatasetCreateResponse(name=dataset.name)
+            status = 201
+        except NotUniqueError as error:
+            status = 409
+            res = Error("Conflict", status, str(error))
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

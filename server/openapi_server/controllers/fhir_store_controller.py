@@ -35,11 +35,10 @@ def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
             res = Error("Invalid input", status, str(error))
             return status, res
 
-        # check that the dataset specified exists
         try:
             tokens = fhir_store.name.split('/')
             dataset_name = "/".join(tokens[:2])
-            DbDataset.objects.get(name=dataset_name).first()
+            DbDataset.objects.get(name=dataset_name)
         except DoesNotExist:
             status = 400
             res = Error("The specified dataset was not found", status)
@@ -54,6 +53,8 @@ def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
             except NotUniqueError as error:
                 status = 409
                 res = Error("Conflict", status, str(error))
+
+
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))

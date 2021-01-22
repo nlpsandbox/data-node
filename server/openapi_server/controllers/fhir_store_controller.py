@@ -44,7 +44,6 @@ def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
             res = Error("The specified dataset was not found", status)
             return res, status
 
-        # create the store
         if status is None:
             try:
                 db_fhir_store = DbFhirStore(name=fhir_store.name).save()
@@ -53,8 +52,6 @@ def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
             except NotUniqueError as error:
                 status = 409
                 res = Error("Conflict", status, str(error))
-
-
     except Exception as error:
         status = 500
         res = Error("Internal error", status, str(error))
@@ -82,10 +79,8 @@ def delete_fhir_store_by_name(fhir_store_name):
     status = None
     try:
         db_fhir_store = DbFhirStore.objects.get(name=fhir_store_name)
-        # delete resources in the store
         DbPatient.objects(fhirStoreName=fhir_store_name).delete()
         DbNote.objects(fhirStoreName=fhir_store_name).delete()
-        # delete the store
         FhirStore.from_dict(db_fhir_store.to_dict())
         db_fhir_store.delete()
         res = {}

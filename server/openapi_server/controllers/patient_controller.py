@@ -20,8 +20,6 @@ def create_patient(dataset_id, fhir_store_id):  # noqa: E501
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param patient_create_request:
-    :type patient_create_request: dict | bytes
 
     :rtype: PatientCreateResponse
     """
@@ -37,10 +35,9 @@ def create_patient(dataset_id, fhir_store_id):  # noqa: E501
             res = Error("The specified FHIR store was not found", status)
             return res, status
 
-        # create the patient
         try:
-            patient_create_request = PatientCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
-            # patient = Patient.from_dict(connexion.request.get_json())
+            patient_create_request = PatientCreateRequest.from_dict(
+                connexion.request.get_json())
             db_patient = DbPatient(
                 fhirStoreName=store_name,
                 identifier=patient_create_request.identifier,
@@ -76,7 +73,7 @@ def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     res = None
     status = None
     try:
-        db_patient = DbPatient.objects.get(id=patient_id).first()
+        db_patient = DbPatient.objects.get(id=patient_id)
         db_patient.delete()
         res = {}
         status = 200

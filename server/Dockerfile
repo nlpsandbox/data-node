@@ -8,6 +8,7 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 RUN apt-get update -qq -y \
     && apt-get install --no-install-recommends -qq -y \
         build-essential \
+        curl \
         gosu \
         libpcre3 \
         libpcre3-dev \

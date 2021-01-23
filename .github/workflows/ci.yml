@@ -26,8 +26,7 @@ jobs:
         args: server/Dockerfile
     - name: Validate docker-compose.yml
       run: |
-        echo "$(cat .env.example)" >> $GITHUB_ENV
-        echo ${MONGO_INITDB_DATABASE}
+        export $(grep -v '^#' .env.example | xargs -d '\n')
         docker-compose -f docker-compose.yml config >/dev/null
     - name: Check that packages in requirements.txt files are in asc order
       run: |
@@ -55,11 +54,9 @@ jobs:
         cd server
         python -m pip install --upgrade pip
         pip install tox tox-gh-actions coveralls
-    - name: Prepare environment for tests
-      run: |
-        echo "$(cat .env.example)" >> $GITHUB_ENV
     - name: Test with tox
       run: |
+        export $(grep -v '^#' .env.example | xargs -d '\n')
         cd server
         tox
     - name: Prepare environment for coveralls

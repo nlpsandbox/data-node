@@ -24,6 +24,9 @@ jobs:
       with:
         entrypoint: hadolint
         args: server/Dockerfile
+    - name: Prepare environment for docker-compose.yml validation
+      run: |
+        export $(grep -v '^#' .env.example | xargs -d '\n')
     - name: Validate docker-compose.yml
       run: docker-compose -f docker-compose.yml config >/dev/null
     - name: Check that packages in requirements.txt files are in asc order
@@ -52,14 +55,14 @@ jobs:
         cd server
         python -m pip install --upgrade pip
         pip install tox tox-gh-actions coveralls
-    - name: Prepare environment for tox tests
+    - name: Prepare environment for tests
       run: |
         export $(grep -v '^#' .env.example | xargs -d '\n')
     - name: Test with tox
       run: |
         cd server
         tox
-    - name: Prepare environment
+    - name: Prepare environment for coveralls
       run: |
         echo "PYTHON_ENV=$(echo py${{ matrix.python-version }} | tr -d .)" >> $GITHUB_ENV
     # - name: Coveralls Parallel

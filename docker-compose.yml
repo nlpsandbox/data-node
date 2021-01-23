@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   db:
-    image: nlpsandbox/mongo:0.1.0
+    image: sagebionetworks/mongo:4.4.3
     container_name: data-node-db
     restart: always
     environment:

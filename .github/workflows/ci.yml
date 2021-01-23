@@ -24,11 +24,11 @@ jobs:
       with:
         entrypoint: hadolint
         args: server/Dockerfile
-    - name: Prepare environment for docker-compose.yml validation
-      run: |
-        cat .env.example >> $GITHUB_ENV
     - name: Validate docker-compose.yml
-      run: docker-compose -f docker-compose.yml config >/dev/null
+      run: |
+        echo "$(cat .env.example)" >> $GITHUB_ENV
+        echo ${MONGO_INITDB_DATABASE}
+        docker-compose -f docker-compose.yml config >/dev/null
     - name: Check that packages in requirements.txt files are in asc order
       run: |
         sort -f --check server/requirements.txt
@@ -57,7 +57,7 @@ jobs:
         pip install tox tox-gh-actions coveralls
     - name: Prepare environment for tests
       run: |
-        cat .env.example >> $GITHUB_ENV
+        echo "$(cat .env.example)" >> $GITHUB_ENV
     - name: Test with tox
       run: |
         cd server

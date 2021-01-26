@@ -24,7 +24,8 @@ class TestNoteController(BaseTestCase):
         DbNote.objects().delete()
         util.create_test_dataset('awesome-dataset')
         util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
-        util.create_test_patient('awesome-dataset', 'awesome-fhir-store')
+        self.patient = util.create_test_patient(
+            'awesome-dataset', 'awesome-fhir-store').to_dict()
 
     def tearDown(self):
         util.disconnect_db()
@@ -36,7 +37,7 @@ class TestNoteController(BaseTestCase):
         """
         note = {
             "noteType": "loinc:LP29684-5",
-            "patientId": "507f1f77bcf86cd799439011",
+            "patientId": self.patient['id'],
             "text": "This is the content of a clinical note."
         }
         headers = {

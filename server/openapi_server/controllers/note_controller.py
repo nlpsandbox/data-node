@@ -83,8 +83,23 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     res = None
     status = None
     try:
-        db_note = DbNote.objects.get(id=note_id)
-        db_note.delete()
+        DbNote.objects.get(id=note_id).delete()
+        res = {}
+        status = 200
+    except DoesNotExist:
+        status = 404
+        res = Error("The specified resource was not found", status)
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+    return res, status
+
+
+def delete_notes_by_patient(patientId):
+    res = None
+    status = None
+    try:
+        DbNote.objects(patientId=patientId).delete()
         res = {}
         status = 200
     except DoesNotExist:

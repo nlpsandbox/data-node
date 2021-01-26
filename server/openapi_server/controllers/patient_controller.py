@@ -11,6 +11,7 @@ from openapi_server.models.patient_create_response import PatientCreateResponse 
 from openapi_server.config import Config
 from openapi_server.controllers.note_controller import delete_notes_by_patient  # noqa: E501
 
+
 def create_patient(dataset_id, fhir_store_id):  # noqa: E501
     """Create a FHIR patient
 

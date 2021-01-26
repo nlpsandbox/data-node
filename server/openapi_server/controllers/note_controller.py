@@ -8,6 +8,7 @@ from openapi_server.models.note_create_response import NoteCreateResponse  # noq
 from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.dbmodels.note import Note as DbNote
+from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
@@ -35,9 +36,17 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
         except DoesNotExist:
             status = 400
             res = Error("The specified FHIR store was not found", status)
+            return res, status
 
         try:
             note_create_request = NoteCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
+            try:
+                DbPatient.objects.get(id=note_create_request.patient_id)
+            except DoesNotExist:
+                status = 400
+                res = Error("The specified patientId was not found", status)
+                return res, status
+
             db_note = DbNote(
                 fhirStoreName=store_name,
                 text=note_create_request.text,

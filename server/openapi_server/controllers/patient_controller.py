@@ -9,7 +9,7 @@ from openapi_server.models.patient import Patient  # noqa: E501
 from openapi_server.models.patient_create_request import PatientCreateRequest  # noqa: E501
 from openapi_server.models.patient_create_response import PatientCreateResponse  # noqa: E501
 from openapi_server.config import Config
-
+from openapi_server.controllers.note_controller import delete_notes_by_patient  # noqa: E501
 
 def create_patient(dataset_id, fhir_store_id):  # noqa: E501
     """Create a FHIR patient
@@ -73,6 +73,7 @@ def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     res = None
     status = None
     try:
+        delete_notes_by_patient(patient_id)
         db_patient = DbPatient.objects.get(id=patient_id)
         db_patient.delete()
         res = {}

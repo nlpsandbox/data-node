@@ -9,5 +9,4 @@ def get_health_check():  # noqa: E501
 
     :rtype: HealthCheck
     """
-    res = HealthCheck(status="pass")
-    return res, 200
+    return HealthCheck(status="pass"), 200

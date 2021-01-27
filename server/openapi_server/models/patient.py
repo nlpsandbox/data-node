@@ -56,7 +56,7 @@ class Patient(Model):
     def id(self):
         """Gets the id of this Patient.
 
-        The ID of the FHIR patient  # noqa: E501
+        ID of the FHIR patient  # noqa: E501
 
         :return: The id of this Patient.
         :rtype: str
@@ -67,7 +67,7 @@ class Patient(Model):
     def id(self, id):
         """Sets the id of this Patient.
 
-        The ID of the FHIR patient  # noqa: E501
+        ID of the FHIR patient  # noqa: E501
 
         :param id: The id of this Patient.
         :type id: str

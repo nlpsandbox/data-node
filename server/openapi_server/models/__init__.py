@@ -36,7 +36,6 @@ from openapi_server.models.patient_create_response import PatientCreateResponse
 from openapi_server.models.resource_source import ResourceSource
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
-from openapi_server.models.service import Service
 from openapi_server.models.text_annotation import TextAnnotation
 from openapi_server.models.text_date_annotation import TextDateAnnotation
 from openapi_server.models.text_date_annotation_all_of import TextDateAnnotationAllOf

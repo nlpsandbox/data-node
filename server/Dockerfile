@@ -26,7 +26,7 @@ RUN pip install --no-cache-dir \
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=5s --timeout=3s --start-period=5s CMD curl --fail http://localhost:8080/api/v1/healthCheck
+HEALTHCHECK --interval=60s --timeout=3s --start-period=5s CMD curl --fail http://localhost:8080/api/v1/healthCheck
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

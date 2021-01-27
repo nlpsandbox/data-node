@@ -129,6 +129,8 @@ class TextPersonNameAnnotation(Model):
         :param text: The text of this TextPersonNameAnnotation.
         :type text: str
         """
+        if text is None:
+            raise ValueError("Invalid value for `text`, must not be `None`")  # noqa: E501
 
         self._text = text
 

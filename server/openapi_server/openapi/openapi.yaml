@@ -13,17 +13,12 @@ info:
     name: Apache 2.0
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.3.0
+  version: 0.3.1
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
-- url: '{protocol}://example.com/api/v1'
-  variables:
-    protocol:
-      default: https
-      enum:
-      - http
-      - https
+- url: http://example.com/api/v1
+- url: https://example.com/api/v1
 tags:
 - description: Operations about annotations
   name: Annotation
@@ -39,8 +34,6 @@ tags:
   name: Note
 - description: Operations about patients
   name: Patient
-- description: Operations about this service
-  name: Service
 paths:
   /datasets:
     get:
@@ -1292,34 +1285,6 @@ paths:
       tags:
       - HealthCheck
       x-openapi-router-controller: openapi_server.controllers.health_check_controller
-  /service:
-    get:
-      description: Get information about the service
-      operationId: get_service
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-          description: Success
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The specified resource was not found
-        "500":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: The request cannot be fulfilled due to an unexpected server
-            error
-      summary: Get service information
-      tags:
-      - Service
-      x-openapi-router-controller: openapi_server.controllers.service_controller
 components:
   responses:
     BadRequest:
@@ -1528,6 +1493,7 @@ components:
       required:
       - length
       - start
+      - text
       type: object
     TextDateAnnotation:
       allOf:
@@ -1726,7 +1692,7 @@ components:
           type: string
       type: object
     PatientResourceId:
-      description: The ID of the FHIR patient
+      description: ID of the FHIR patient
       example: 507f1f77bcf86cd799439011
       type: string
     Patient:
@@ -1737,7 +1703,7 @@ components:
         id: 507f1f77bcf86cd799439011
       properties:
         id:
-          description: The ID of the FHIR patient
+          description: ID of the FHIR patient
           example: 507f1f77bcf86cd799439011
           type: string
         identifier:
@@ -1791,7 +1757,7 @@ components:
           type: string
       type: object
     NoteResourceId:
-      description: The ID of the clinical note
+      description: ID of the clinical note
       example: 507f1f77bcf86cd799439011
       type: string
     Note:
@@ -1803,7 +1769,7 @@ components:
         text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott.
       properties:
         id:
-          description: The ID of the clinical note
+          description: ID of the clinical note
           example: 507f1f77bcf86cd799439011
           type: string
         text:
@@ -1815,7 +1781,7 @@ components:
           example: loinc:LP29684-5
           type: string
         patientId:
-          description: The ID of the FHIR patient
+          description: ID of the FHIR patient
           example: 507f1f77bcf86cd799439011
           type: string
       required:
@@ -1844,7 +1810,7 @@ components:
           example: loinc:LP29684-5
           type: string
         patientId:
-          description: The ID of the FHIR patient
+          description: ID of the FHIR patient
           example: 507f1f77bcf86cd799439011
           type: string
       required:
@@ -1879,93 +1845,6 @@ components:
           type: string
       required:
       - status
-      type: object
-    Service:
-      description: Information about an NLP service
-      example:
-        license: apache-2.0
-        authorEmail: author@example.com
-        author: Example Author
-        name: awesome-date-annotator
-        description: An awesome Date Annotator based on regex patterns
-        repository: github:awesome-org/awesome-date-annotator
-        version: 1.0.0
-        url: https://openapi-generator.tech
-      properties:
-        name:
-          description: The service name
-          example: awesome-date-annotator
-          maxLength: 60
-          minLength: 3
-          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-          type: string
-        version:
-          description: The version of the service (SemVer string)
-          example: 1.0.0
-          minLength: 1
-          pattern: ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
-          type: string
-        license:
-          description: The license of this service (spdx.org/licenses Identifier)
-          enum:
-          - afl-3.0
-          - apache-2.0
-          - artistic-2.0
-          - bsl-1.0
-          - bsd-2-clause
-          - bsd-3-clause
-          - bsd-3-clause-clear
-          - cc
-          - cc0-1.0
-          - cc-by-4.0
-          - cc-by-sa-4.0
-          - wtfpl
-          - ecl-2.0
-          - epl-1.0
-          - epl-2.0
-          - eupl-1.1
-          - agpl-3.0
-          - gpl
-          - gpl-2.0
-          - gpl-3.0
-          - lgpl
-          - lgpl-2.1
-          - lgpl-3.0
-          - isc
-          - lppl-1.3c
-          - ms-pl
-          - mit
-          - mpl-2.0
-          - osl-3.0
-          - postgresql
-          - ofl-1.1
-          - ncsa
-          - unlicense
-          - zlib
-          example: apache-2.0
-          type: string
-        repository:
-          description: The place where the code lives
-          example: github:awesome-org/awesome-date-annotator
-          type: string
-        description:
-          description: A short, one-sentence summary of the service
-          example: An awesome Date Annotator based on regex patterns
-          maxLength: 100
-          type: string
-        author:
-          description: The author of the service
-          example: Example Author
-          type: string
-        authorEmail:
-          description: The email address of the author
-          example: author@example.com
-          format: email
-          type: string
-        url:
-          description: The URL to the homepage of the service
-          format: uri
-          type: string
       type: object
     ResponsePageMetadata_links:
       description: Links to navigate to different pages of results

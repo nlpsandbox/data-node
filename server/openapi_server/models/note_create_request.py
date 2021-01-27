@@ -106,7 +106,7 @@ class NoteCreateRequest(Model):
     def patient_id(self):
         """Gets the patient_id of this NoteCreateRequest.
 
-        The ID of the FHIR patient  # noqa: E501
+        ID of the FHIR patient  # noqa: E501
 
         :return: The patient_id of this NoteCreateRequest.
         :rtype: str
@@ -117,7 +117,7 @@ class NoteCreateRequest(Model):
     def patient_id(self, patient_id):
         """Sets the patient_id of this NoteCreateRequest.
 
-        The ID of the FHIR patient  # noqa: E501
+        ID of the FHIR patient  # noqa: E501
 
         :param patient_id: The patient_id of this NoteCreateRequest.
         :type patient_id: str

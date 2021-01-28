@@ -27,7 +27,6 @@ def create_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     try:
         store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
         annotation_store = AnnotationStore(name=store_name)
-
         try:
             tokens = annotation_store.name.split('/')
             dataset_name = "/".join(tokens[:2])
@@ -35,6 +34,7 @@ def create_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
         except DoesNotExist:
             status = 400
             res = Error("The specified dataset was not found", status)
+            return res, status
 
         try:
             DbAnnotationStore(name=annotation_store.name).save()

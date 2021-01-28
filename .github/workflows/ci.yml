@@ -62,26 +62,26 @@ jobs:
     - name: Prepare environment for coveralls
       run: |
         echo "PYTHON_ENV=$(echo py${{ matrix.python-version }} | tr -d .)" >> $GITHUB_ENV
-    # - name: Coveralls Parallel
-    #   env:
-    #     COVERALLS_FLAG_NAME: ${{ env.PYTHON_ENV }}
-    #     COVERALLS_PARALLEL: true
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   run: |
-    #     cd server
-    #     coveralls --service=github
+    - name: Coveralls Parallel
+      env:
+        COVERALLS_FLAG_NAME: ${{ env.PYTHON_ENV }}
+        COVERALLS_PARALLEL: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd server
+        coveralls --service=github
 
-  # finish-coveralls:
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   container: python:3-slim
-  #   steps:
-  #   - name: Finish Coveralls Parallel
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     run: |
-  #       pip3 install --upgrade coveralls
-  #       coveralls --finish
+  finish-coveralls:
+    needs: test
+    runs-on: ubuntu-latest
+    container: python:3-slim
+    steps:
+    - name: Finish Coveralls Parallel
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pip3 install --upgrade coveralls
+        coveralls --finish
 
   docker:
     needs: [test]

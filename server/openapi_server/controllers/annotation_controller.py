@@ -35,6 +35,7 @@ def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
         except DoesNotExist:
             status = 400
             res = Error("The specified annotation store was not found", status)
+            return res, status
 
         try:
             annotation_create_request = AnnotationCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501

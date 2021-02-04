@@ -1,3 +1,5 @@
+import time
+
 import connexion
 from mongoengine.errors import DoesNotExist, NotUniqueError
 
@@ -75,6 +77,7 @@ def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
             annotation = Annotation.from_dict(db_annotation.to_dict())
             res = AnnotationCreateResponse(name=annotation.name)
             status = 201
+            time.sleep(30)
         except NotUniqueError as error:
             status = 409
             res = Error("Conflict", status, str(error))

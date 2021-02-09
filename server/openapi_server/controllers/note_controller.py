@@ -12,7 +12,7 @@ from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
-def create_note(dataset_id, fhir_store_id):  # noqa: E501
+def create_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     """Create a note
 
     Create a note # noqa: E501
@@ -21,8 +21,8 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param note_create_request:
-    :type note_create_request: dict | bytes
+    :param note_id: The ID of the note that is being created
+    :type note_id: str
 
     :rtype: NoteCreateResponse
     """
@@ -47,7 +47,11 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
                 res = Error("The specified patientId was not found", status)
                 return res, status
 
+            resource_name = "%s/Note/%s" % (store_name, note_id)
+
             db_note = DbNote(
+                identifier=note_id,
+                resourceName=resource_name,
                 fhirStoreName=store_name,
                 text=note_create_request.text,
                 noteType=note_create_request.note_type,
@@ -83,7 +87,9 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     res = None
     status = None
     try:
-        DbNote.objects.get(id=note_id).delete()
+        resource_name = "datasets/%s/fhirStores/%s/Note/%s" % \
+            (dataset_id, fhir_store_id, note_id)
+        DbNote.objects.get(resourceName=resource_name).delete()
         res = {}
         status = 200
     except DoesNotExist:
@@ -95,11 +101,12 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     return res, status
 
 
-def delete_notes_by_patient(patientId):
+def delete_notes_by_patient(fhir_store_name, patientId):
     res = None
     status = None
     try:
-        DbNote.objects(patientId=patientId).delete()
+        DbNote.objects(
+            fhirStoreName=fhir_store_name & patientId=patientId).delete()
         res = {}
         status = 200
     except DoesNotExist:
@@ -128,7 +135,9 @@ def get_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     res = None
     status = None
     try:
-        db_note = DbNote.objects.get(id=note_id)
+        resource_name = "datasets/%s/fhirStores/%s/Note/%s" % \
+            (dataset_id, fhir_store_id, note_id)
+        db_note = DbNote.objects.get(resourceName=resource_name)
         res = Note.from_dict(db_note.to_dict())
         status = 200
     except DoesNotExist:

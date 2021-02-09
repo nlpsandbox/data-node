@@ -58,7 +58,7 @@ class ResponsePageMetadata(Model):
     def offset(self):
         """Gets the offset of this ResponsePageMetadata.
 
-        Index of the first result that must be returned  # noqa: E501
+        The index of the first result that must be returned  # noqa: E501
 
         :return: The offset of this ResponsePageMetadata.
         :rtype: int
@@ -69,7 +69,7 @@ class ResponsePageMetadata(Model):
     def offset(self, offset):
         """Sets the offset of this ResponsePageMetadata.
 
-        Index of the first result that must be returned  # noqa: E501
+        The index of the first result that must be returned  # noqa: E501
 
         :param offset: The offset of this ResponsePageMetadata.
         :type offset: int
@@ -85,7 +85,7 @@ class ResponsePageMetadata(Model):
     def limit(self):
         """Gets the limit of this ResponsePageMetadata.
 
-        Maximum number of results returned  # noqa: E501
+        The maximum number of results returned  # noqa: E501
 
         :return: The limit of this ResponsePageMetadata.
         :rtype: int
@@ -96,7 +96,7 @@ class ResponsePageMetadata(Model):
     def limit(self, limit):
         """Sets the limit of this ResponsePageMetadata.
 
-        Maximum number of results returned  # noqa: E501
+        The maximum number of results returned  # noqa: E501
 
         :param limit: The limit of this ResponsePageMetadata.
         :type limit: int

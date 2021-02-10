@@ -12,7 +12,7 @@ from openapi_server import util
 from openapi_server.config import Config
 
 
-def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
+def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E501
     """Create an annotation
 
     Create an annotation # noqa: E501
@@ -21,6 +21,8 @@ def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
     :type dataset_id: str
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
+    :param annotation_id: The ID of the annotation that is being created
+    :type annotation_id: str
 
     :rtype: AnnotationCreateResponse
     """
@@ -65,7 +67,10 @@ def create_annotation(dataset_id, annotation_store_id):  # noqa: E501
                 annotation_create_request.annotation_source.to_dict(),
                 util.underscore_to_camel)
 
+            annotation_name = "%s/annotations/%s" % (store_name, annotation_id)
+
             db_annotation = DbAnnotation(
+                name=annotation_name,
                 annotationSource=annotation_source,
                 annotationStoreName=store_name,
                 textDateAnnotations=text_date_annotations,
@@ -101,7 +106,9 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     res = None
     status = None
     try:
-        db_annotation = DbAnnotation.objects.get(id=annotation_id)
+        annotation_name = "datasets/%s/annotationStores/%s/annotations/%s" % \
+            (dataset_id, annotation_store_id, annotation_id)
+        db_annotation = DbAnnotation.objects.get(name=annotation_name)
         db_annotation.delete()
         res = {}
         status = 200
@@ -131,7 +138,9 @@ def get_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E50
     res = None
     status = None
     try:
-        db_annotation = DbAnnotation.objects.get(id=annotation_id)
+        annotation_name = "datasets/%s/annotationStores/%s/annotations/%s" % \
+            (dataset_id, annotation_store_id, annotation_id)
+        db_annotation = DbAnnotation.objects.get(name=annotation_name)
         res = Annotation.from_dict(db_annotation.to_dict())
         status = 200
     except DoesNotExist:

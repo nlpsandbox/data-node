@@ -10,6 +10,7 @@ from openapi_server.dbmodels.text_physical_address_annotation import TextPhysica
 
 
 class Annotation(BaseDocument):
+    name = StringField(required=True, unique=True)
     annotationStoreName = StringField(required=True)
     annotationSource = EmbeddedDocumentField(AnnotationSource, required=True)
     textDateAnnotations = EmbeddedDocumentListField(TextDateAnnotation)
@@ -18,6 +19,5 @@ class Annotation(BaseDocument):
 
     def to_dict(self):
         doc = self.to_mongo().to_dict()  # TODO try self.to_python()
-        doc["id"] = str(self.pk)
-        doc["name"] = "%s/annotations/%s" % (doc["annotationStoreName"], doc["id"])  # noqa: E501
+        # doc["id"] = str(self.pk)
         return doc

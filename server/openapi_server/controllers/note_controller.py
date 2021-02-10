@@ -12,7 +12,7 @@ from openapi_server.dbmodels.patient import Patient as DbPatient
 from openapi_server.config import Config
 
 
-def create_note(dataset_id, fhir_store_id):  # noqa: E501
+def create_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     """Create a note
 
     Create a note # noqa: E501
@@ -21,8 +21,8 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
     :type dataset_id: str
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
-    :param note_create_request:
-    :type note_create_request: dict | bytes
+    :param note_id: The ID of the note that is being created
+    :type note_id: str
 
     :rtype: NoteCreateResponse
     """
@@ -31,7 +31,8 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
     try:
         store_name = None
         try:
-            store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)  # noqa: E501
+            store_name = "datasets/%s/fhirStores/%s" % \
+                (dataset_id, fhir_store_id)
             DbFhirStore.objects.get(name=store_name)
         except DoesNotExist:
             status = 400
@@ -39,22 +40,28 @@ def create_note(dataset_id, fhir_store_id):  # noqa: E501
             return res, status
 
         try:
-            note_create_request = NoteCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
+            note_create_request = NoteCreateRequest.from_dict(
+                connexion.request.get_json())
             try:
-                DbPatient.objects.get(id=note_create_request.patient_id)
+                DbPatient.objects.get(
+                    fhirStoreName=store_name,
+                    identifier=note_create_request.patient_id)
             except DoesNotExist:
                 status = 400
-                res = Error("The specified patientId was not found", status)
+                res = Error("The specified patient was not found", status)
                 return res, status
 
-            db_note = DbNote(
+            resource_name = "%s/fhir/Note/%s" % (store_name, note_id)
+
+            DbNote(
+                identifier=note_id,
+                resourceName=resource_name,
                 fhirStoreName=store_name,
                 text=note_create_request.text,
                 noteType=note_create_request.note_type,
                 patientId=note_create_request.patient_id
             ).save()
-            note = Note.from_dict(db_note.to_dict())
-            note_resource_name = "%s/Note/%s" % (store_name, note.id)
+            note_resource_name = "%s/fhir/Note/%s" % (store_name, note_id)
             res = NoteCreateResponse(name=note_resource_name)
             status = 201
         except NotUniqueError as error:
@@ -83,7 +90,9 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     res = None
     status = None
     try:
-        DbNote.objects.get(id=note_id).delete()
+        resource_name = "datasets/%s/fhirStores/%s/fhir/Note/%s" % \
+            (dataset_id, fhir_store_id, note_id)
+        DbNote.objects.get(resourceName=resource_name).delete()
         res = {}
         status = 200
     except DoesNotExist:
@@ -95,11 +104,12 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     return res, status
 
 
-def delete_notes_by_patient(patientId):
+def delete_notes_by_patient(fhir_store_name, patientId):
     res = None
     status = None
     try:
-        DbNote.objects(patientId=patientId).delete()
+        DbNote.objects(
+            fhirStoreName=fhir_store_name, patientId=patientId).delete()
         res = {}
         status = 200
     except DoesNotExist:
@@ -128,7 +138,9 @@ def get_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     res = None
     status = None
     try:
-        db_note = DbNote.objects.get(id=note_id)
+        resource_name = "datasets/%s/fhirStores/%s/fhir/Note/%s" % \
+            (dataset_id, fhir_store_id, note_id)
+        db_note = DbNote.objects.get(resourceName=resource_name)
         res = Note.from_dict(db_note.to_dict())
         status = 200
     except DoesNotExist:

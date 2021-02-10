@@ -62,5 +62,7 @@ class AnnotationSource(Model):
         :param resource_source: The resource_source of this AnnotationSource.
         :type resource_source: ResourceSource
         """
+        if resource_source is None:
+            raise ValueError("Invalid value for `resource_source`, must not be `None`")  # noqa: E501
 
         self._resource_source = resource_source

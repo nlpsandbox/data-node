@@ -83,6 +83,8 @@ class AnnotationCreateRequest(Model):
         :param annotation_source: The annotation_source of this AnnotationCreateRequest.
         :type annotation_source: AnnotationSource
         """
+        if annotation_source is None:
+            raise ValueError("Invalid value for `annotation_source`, must not be `None`")  # noqa: E501
 
         self._annotation_source = annotation_source
 

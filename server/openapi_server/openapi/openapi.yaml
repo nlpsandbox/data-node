@@ -1438,14 +1438,20 @@ components:
     EmptyObject:
       description: An empty object
       type: object
+    AnnotationStoreName:
+      description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
+      example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
+      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      type: string
     AnnotationStore:
       description: An annotation store
       example:
-        name: name
+        name: datasets/awesome-dataset/annotationStores/awesome-annotation-store
       properties:
         name:
-          description: Resource name of the annotation store, of the form datasets/{datasetId}/annotationStore/{annotationStoreId}
-          readOnly: true
+          description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
+          example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
+          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
       type: object
     PageOfAnnotationStores:
@@ -1464,11 +1470,6 @@ components:
     AnnotationStoreCreateRequest:
       description: An empty object
       type: object
-    AnnotationStoreName:
-      description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
-      example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
-      type: string
     AnnotationStoreCreateResponse:
       description: The reference to the annotation store created
       example:
@@ -1678,6 +1679,8 @@ components:
           items:
             $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
           type: array
+      required:
+      - annotationSource
       type: object
     AnnotationCreateResponse:
       description: The reference to the annotation created
@@ -1697,14 +1700,20 @@ components:
       minLength: 3
       pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
+    FhirStoreName:
+      description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+      example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
+      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      type: string
     FhirStore:
       description: A FHIR store
       example:
-        name: name
+        name: datasets/awesome-dataset/fhirStores/awesome-fhir-store
       properties:
         name:
-          description: Resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
-          readOnly: true
+          description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
+          example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
+          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
       type: object
     PageOfFhirStores:
@@ -1716,11 +1725,6 @@ components:
     FhirStoreCreateRequest:
       description: An empty object
       type: object
-    FhirStoreName:
-      description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
-      example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
-      type: string
     FhirStoreCreateResponse:
       description: The reference to the FHIR store created
       example:

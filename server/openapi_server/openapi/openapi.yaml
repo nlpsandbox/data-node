@@ -1500,6 +1500,7 @@ components:
       example:
         resourceSource:
           name: name
+      minProperties: 1
       properties:
         resourceSource:
           $ref: '#/components/schemas/ResourceSource'

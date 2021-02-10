@@ -17,11 +17,11 @@ class Note(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, text=None, note_type=None, patient_id=None):  # noqa: E501
+    def __init__(self, identifier=None, text=None, note_type=None, patient_id=None):  # noqa: E501
         """Note - a model defined in OpenAPI
 
-        :param id: The id of this Note.  # noqa: E501
-        :type id: str
+        :param identifier: The identifier of this Note.  # noqa: E501
+        :type identifier: str
         :param text: The text of this Note.  # noqa: E501
         :type text: str
         :param note_type: The note_type of this Note.  # noqa: E501
@@ -30,20 +30,20 @@ class Note(Model):
         :type patient_id: str
         """
         self.openapi_types = {
-            'id': str,
+            'identifier': str,
             'text': str,
             'note_type': str,
             'patient_id': str
         }
 
         self.attribute_map = {
-            'id': 'id',
+            'identifier': 'identifier',
             'text': 'text',
             'note_type': 'noteType',
             'patient_id': 'patientId'
         }
 
-        self._id = id
+        self._identifier = identifier
         self._text = text
         self._note_type = note_type
         self._patient_id = patient_id
@@ -60,35 +60,33 @@ class Note(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self):
-        """Gets the id of this Note.
+    def identifier(self):
+        """Gets the identifier of this Note.
 
         The ID of the clinical note  # noqa: E501
 
-        :return: The id of this Note.
+        :return: The identifier of this Note.
         :rtype: str
         """
-        return self._id
+        return self._identifier
 
-    @id.setter
-    def id(self, id):
-        """Sets the id of this Note.
+    @identifier.setter
+    def identifier(self, identifier):
+        """Sets the identifier of this Note.
 
         The ID of the clinical note  # noqa: E501
 
-        :param id: The id of this Note.
-        :type id: str
+        :param identifier: The identifier of this Note.
+        :type identifier: str
         """
-        if id is None:
-            raise ValueError("Invalid value for `id`, must not be `None`")  # noqa: E501
-        if id is not None and len(id) > 60:
-            raise ValueError("Invalid value for `id`, length must be less than or equal to `60`")  # noqa: E501
-        if id is not None and len(id) < 3:
-            raise ValueError("Invalid value for `id`, length must be greater than or equal to `3`")  # noqa: E501
-        if id is not None and not re.search(r'^[a-z0-9]+(?:-[a-z0-9]+)*$', id):  # noqa: E501
-            raise ValueError("Invalid value for `id`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
+        if identifier is not None and len(identifier) > 60:
+            raise ValueError("Invalid value for `identifier`, length must be less than or equal to `60`")  # noqa: E501
+        if identifier is not None and len(identifier) < 3:
+            raise ValueError("Invalid value for `identifier`, length must be greater than or equal to `3`")  # noqa: E501
+        if identifier is not None and not re.search(r'^[a-z0-9]+(?:-[a-z0-9]+)*$', identifier):  # noqa: E501
+            raise ValueError("Invalid value for `identifier`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
 
-        self._id = id
+        self._identifier = identifier
 
     @property
     def text(self):

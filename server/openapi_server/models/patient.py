@@ -17,25 +17,25 @@ class Patient(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, gender=None):  # noqa: E501
+    def __init__(self, identifier=None, gender=None):  # noqa: E501
         """Patient - a model defined in OpenAPI
 
-        :param id: The id of this Patient.  # noqa: E501
-        :type id: str
+        :param identifier: The identifier of this Patient.  # noqa: E501
+        :type identifier: str
         :param gender: The gender of this Patient.  # noqa: E501
         :type gender: str
         """
         self.openapi_types = {
-            'id': str,
+            'identifier': str,
             'gender': str
         }
 
         self.attribute_map = {
-            'id': 'id',
+            'identifier': 'identifier',
             'gender': 'gender'
         }
 
-        self._id = id
+        self._identifier = identifier
         self._gender = gender
 
     @classmethod
@@ -50,33 +50,33 @@ class Patient(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self):
-        """Gets the id of this Patient.
+    def identifier(self):
+        """Gets the identifier of this Patient.
 
         The ID of the FHIR patient  # noqa: E501
 
-        :return: The id of this Patient.
+        :return: The identifier of this Patient.
         :rtype: str
         """
-        return self._id
+        return self._identifier
 
-    @id.setter
-    def id(self, id):
-        """Sets the id of this Patient.
+    @identifier.setter
+    def identifier(self, identifier):
+        """Sets the identifier of this Patient.
 
         The ID of the FHIR patient  # noqa: E501
 
-        :param id: The id of this Patient.
-        :type id: str
+        :param identifier: The identifier of this Patient.
+        :type identifier: str
         """
-        if id is not None and len(id) > 60:
-            raise ValueError("Invalid value for `id`, length must be less than or equal to `60`")  # noqa: E501
-        if id is not None and len(id) < 3:
-            raise ValueError("Invalid value for `id`, length must be greater than or equal to `3`")  # noqa: E501
-        if id is not None and not re.search(r'^[a-z0-9]+(?:-[a-z0-9]+)*$', id):  # noqa: E501
-            raise ValueError("Invalid value for `id`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
+        if identifier is not None and len(identifier) > 60:
+            raise ValueError("Invalid value for `identifier`, length must be less than or equal to `60`")  # noqa: E501
+        if identifier is not None and len(identifier) < 3:
+            raise ValueError("Invalid value for `identifier`, length must be greater than or equal to `3`")  # noqa: E501
+        if identifier is not None and not re.search(r'^[a-z0-9]+(?:-[a-z0-9]+)*$', identifier):  # noqa: E501
+            raise ValueError("Invalid value for `identifier`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
 
-        self._id = id
+        self._identifier = identifier
 
     @property
     def gender(self):

@@ -106,7 +106,7 @@ def delete_notes_by_patient(fhir_store_name, patientId):
     status = None
     try:
         DbNote.objects(
-            fhirStoreName=fhir_store_name & patientId=patientId).delete()
+            fhirStoreName=fhir_store_name, patientId=patientId).delete()
         res = {}
         status = 200
     except DoesNotExist:

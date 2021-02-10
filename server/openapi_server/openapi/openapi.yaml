@@ -1742,10 +1742,10 @@ components:
     Patient:
       description: A FHIR patient
       example:
+        identifier: awesome-patient
         gender: male
-        id: awesome-patient
       properties:
-        id:
+        identifier:
           description: The ID of the FHIR patient
           example: awesome-patient
           maxLength: 60
@@ -1811,12 +1811,12 @@ components:
     Note:
       description: A clinical note
       example:
+        identifier: awesome-note
         noteType: loinc:LP29684-5
         patientId: awesome-patient
-        id: awesome-note
         text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
       properties:
-        id:
+        identifier:
           description: The ID of the clinical note
           example: awesome-note
           maxLength: 60

@@ -79,6 +79,8 @@ class Note(Model):
         :param identifier: The identifier of this Note.
         :type identifier: str
         """
+        if identifier is None:
+            raise ValueError("Invalid value for `identifier`, must not be `None`")  # noqa: E501
         if identifier is not None and len(identifier) > 60:
             raise ValueError("Invalid value for `identifier`, length must be less than or equal to `60`")  # noqa: E501
         if identifier is not None and len(identifier) < 3:

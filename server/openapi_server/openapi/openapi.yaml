@@ -1770,12 +1770,8 @@ components:
     PatientCreateRequest:
       description: A FHIR patient
       example:
-        identifier: identifier
         gender: male
       properties:
-        identifier:
-          description: An identifier for this patient
-          type: string
         gender:
           description: Gender of the patient
           enum:

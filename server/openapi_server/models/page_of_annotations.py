@@ -7,13 +7,11 @@ from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
 from openapi_server.models.annotation import Annotation
-from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
 from openapi_server import util
 
 from openapi_server.models.annotation import Annotation  # noqa: E501
-from openapi_server.models.page_of_annotations_all_of import PageOfAnnotationsAllOf  # noqa: E501
 from openapi_server.models.response_page_metadata import ResponsePageMetadata  # noqa: E501
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks  # noqa: E501
 

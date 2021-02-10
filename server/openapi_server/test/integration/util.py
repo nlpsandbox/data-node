@@ -31,22 +31,27 @@ def create_test_fhir_store(dataset_id, fhir_store_id):
     ).save()
 
 
-def create_test_patient(dataset_id, fhir_store_id):
+def create_test_patient(dataset_id, fhir_store_id, patient_id):
+    store_name = 'datasets/%s/fhirStores/%s' % (dataset_id, fhir_store_id)
+    resource_name = '%s/fhir/Patient/%s' % (store_name, patient_id)
     return Patient(
-        fhirStoreName='/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
-        .format(dataset_id=dataset_id, fhir_store_id=fhir_store_id),
-        identifier='',
+        resourceName=resource_name,
+        fhirStoreName=store_name,
+        identifier=patient_id,
         gender='unknown'
     ).save()
 
 
-def create_test_note(dataset_id, fhir_store_id):
+def create_test_note(dataset_id, fhir_store_id, note_id):
+    store_name = 'datasets/%s/fhirStores/%s' % (dataset_id, fhir_store_id)
+    resource_name = '%s/fhir/Note/%s' % (store_name, note_id)
     return Note(
-        fhirStoreName='/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
-        .format(dataset_id=dataset_id, fhir_store_id=fhir_store_id),
+        resourceName=resource_name,
+        fhirStoreName=store_name,
+        identifier=note_id,
         text='This is the content of a clinical note.',
         noteType='loinc:LP29684-5',
-        patientId='507f1f77bcf86cd799439011'
+        patientId='awesome-patient'
     ).save()
 
 
@@ -57,12 +62,16 @@ def create_test_annotation_store(dataset_id, annotation_store_id):
     ).save()
 
 
-def create_test_annotation(dataset_id, annotation_store_id):
+def create_test_annotation(dataset_id, annotation_store_id, annotation_id):
+    store_name = 'datasets/%s/annotationStores/%s' % \
+        (dataset_id, annotation_store_id)
+    resource_name = '%s/annotations/%s' % (store_name, annotation_id)
     return Annotation(
+        name=resource_name,
         annotationSource=AnnotationSource(
             resourceSource=ResourceSource(name='full/path/to/resource')
         ),
-        annotationStoreName='',
+        annotationStoreName=store_name,
         textDateAnnotations=[],
         textPersonNameAnnotations=[],
         textPhysicalAddressAnnotations=[]

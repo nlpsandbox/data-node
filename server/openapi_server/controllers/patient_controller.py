@@ -41,15 +41,15 @@ def create_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
         try:
             patient_create_request = PatientCreateRequest.from_dict(
                 connexion.request.get_json())
-            resource_name = "%s/Patient/%s" % (store_name, patient_id)
-            db_patient = DbPatient(
+            resource_name = "%s/fhir/Patient/%s" % (store_name, patient_id)
+            DbPatient(
                 resourceName=resource_name,
                 fhirStoreName=store_name,
-                identifier=patient_create_request.identifier,
+                identifier=patient_id,
                 gender=patient_create_request.gender
             ).save()
-            patient = Patient.from_dict(db_patient.to_dict())
-            patient_resource_name = "%s/Patient/%s" % (store_name, patient.id)
+            patient_resource_name = "%s/fhir/Patient/%s" % \
+                (store_name, patient_id)
             res = PatientCreateResponse(name=patient_resource_name)
             status = 201
         except NotUniqueError as error:
@@ -80,7 +80,7 @@ def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     try:
         store_name = "datasets/%s/fhirStores/%s" % \
             (dataset_id, fhir_store_id)
-        resource_name = "%s/Patient/%s" % \
+        resource_name = "%s/fhir/Patient/%s" % \
             (store_name, patient_id)
         delete_notes_by_patient(store_name, patient_id)
         DbPatient.objects.get(resourceName=resource_name).delete()
@@ -112,7 +112,7 @@ def get_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     res = None
     status = None
     try:
-        resource_name = "datasets/%s/fhirStores/%s/Patient/%s" % \
+        resource_name = "datasets/%s/fhirStores/%s/fhir/Patient/%s" % \
             (dataset_id, fhir_store_id, patient_id)
         db_patient = DbPatient.objects.get(resourceName=resource_name)
         res = Patient.from_dict(db_patient.to_dict())

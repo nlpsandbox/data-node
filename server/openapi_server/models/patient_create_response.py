@@ -64,7 +64,7 @@ class PatientCreateResponse(Model):
         :param name: The name of this PatientCreateResponse.
         :type name: str
         """
-        if name is not None and not re.search(r'^datasets\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/fhirStores\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/Patient\\/[a-z0-9]+(?:-[a-z0-9]+)*$', name):  # noqa: E501
+        if name is not None and not re.search(r'^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/Patient\/[a-z0-9]+(?:-[a-z0-9]+)*$', name):  # noqa: E501
             raise ValueError("Invalid value for `name`, must be a follow pattern or equal to `/^datasets\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/fhirStores\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/Patient\\/[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
 
         self._name = name

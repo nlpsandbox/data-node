@@ -25,7 +25,9 @@ class TestNoteController(BaseTestCase):
         util.create_test_dataset('awesome-dataset')
         util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
         self.patient = util.create_test_patient(
-            'awesome-dataset', 'awesome-fhir-store').to_dict()
+            'awesome-dataset',
+            'awesome-fhir-store',
+            'awesome-patient').to_dict()
 
     def tearDown(self):
         util.disconnect_db()
@@ -35,11 +37,12 @@ class TestNoteController(BaseTestCase):
 
         Create a note
         """
-        note = {
+        note_create_request = {
             "noteType": "loinc:LP29684-5",
-            "patientId": self.patient['id'],
+            "patientId": self.patient['identifier'],
             "text": "This is the content of a clinical note."
         }
+        query_string = [('noteId', 'awesome-note')]
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -51,8 +54,9 @@ class TestNoteController(BaseTestCase):
                 fhir_store_id='awesome-fhir-store'),
             method='POST',
             headers=headers,
-            data=json.dumps(note),
-            content_type='application/json')
+            data=json.dumps(note_create_request),
+            content_type='application/json',
+            query_string=query_string)
         self.assert_status(
             response, 201,
             'Response body is : ' + response.data.decode('utf-8'))
@@ -63,7 +67,7 @@ class TestNoteController(BaseTestCase):
         Delete a note
         """
         note = util.create_test_note(
-            'awesome-dataset', 'awesome-fhir-store')
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-note')
         headers = {
             'Accept': 'application/json',
         }
@@ -72,7 +76,7 @@ class TestNoteController(BaseTestCase):
             '/fhir/Note/{note_id}'.format(
                 dataset_id='awesome-dataset',
                 fhir_store_id='awesome-fhir-store',
-                note_id=note.id),
+                note_id=note.identifier),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -84,7 +88,7 @@ class TestNoteController(BaseTestCase):
         Get a note
         """
         note = util.create_test_note(
-            'awesome-dataset', 'awesome-fhir-store')
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-note')
         headers = {
             'Accept': 'application/json',
         }
@@ -93,7 +97,7 @@ class TestNoteController(BaseTestCase):
             '/fhir/Note/{note_id}'.format(
                 dataset_id='awesome-dataset',
                 fhir_store_id='awesome-fhir-store',
-                note_id=note.id),
+                note_id=note.identifier),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -104,6 +108,8 @@ class TestNoteController(BaseTestCase):
 
         List notes
         """
+        util.create_test_note(
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-note')
         query_string = [('limit', 10),
                         ('offset', 0)]
         headers = {

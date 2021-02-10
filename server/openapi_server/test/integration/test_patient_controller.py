@@ -31,10 +31,10 @@ class TestPatientController(BaseTestCase):
 
         Create a FHIR Patient
         """
-        patient = {
-            "identifier": "identifier",
+        patient_create_request = {
             "gender": "male",
         }
+        query_string = [('patientId', 'awesome-patient')]
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -46,8 +46,9 @@ class TestPatientController(BaseTestCase):
                 fhir_store_id='awesome-fhir-store'),
             method='POST',
             headers=headers,
-            data=json.dumps(patient),
-            content_type='application/json')
+            data=json.dumps(patient_create_request),
+            content_type='application/json',
+            query_string=query_string)
         self.assert_status(
             response, 201,
             'Response body is : ' + response.data.decode('utf-8'))
@@ -58,7 +59,7 @@ class TestPatientController(BaseTestCase):
         Delete a FHIR Patient
         """
         patient = util.create_test_patient(
-            'awesome-dataset', 'awesome-fhir-store')
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-patient')
         headers = {
             'Accept': 'application/json',
         }
@@ -67,7 +68,7 @@ class TestPatientController(BaseTestCase):
             '/fhir/Patient/{patient_id}'.format(
                 dataset_id='awesome-dataset',
                 fhir_store_id='awesome-fhir-store',
-                patient_id=patient.id),
+                patient_id=patient.identifier),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -79,7 +80,7 @@ class TestPatientController(BaseTestCase):
         Get a FHIR Patient
         """
         patient = util.create_test_patient(
-            'awesome-dataset', 'awesome-fhir-store')
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-patient')
         headers = {
             'Accept': 'application/json',
         }
@@ -88,7 +89,7 @@ class TestPatientController(BaseTestCase):
             '/fhir/Patient/{patient_id}'.format(
                 dataset_id='awesome-dataset',
                 fhir_store_id='awesome-fhir-store',
-                patient_id=patient.id),
+                patient_id=patient.identifier),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -99,7 +100,8 @@ class TestPatientController(BaseTestCase):
 
         List the Patients in a FHIR store
         """
-        util.create_test_patient('awesome-dataset', 'awesome-fhir-store')
+        util.create_test_patient(
+            'awesome-dataset', 'awesome-fhir-store', 'awesome-patient')
         query_string = [('limit', 10),
                         ('offset', 0)]
         headers = {

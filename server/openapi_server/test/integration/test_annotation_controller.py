@@ -32,7 +32,7 @@ class TestAnnotationController(BaseTestCase):
 
         Create an annotation
         """
-        annotation = {
+        annotation_create_request = {
             "textDateAnnotations": [{
                 "start": 42,
                 "length": 10,
@@ -70,6 +70,7 @@ class TestAnnotationController(BaseTestCase):
                 }
             }
         }
+        query_string = [('annotationId', 'awesome-annotation')]
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -81,8 +82,9 @@ class TestAnnotationController(BaseTestCase):
                 annotation_store_id='awesome-annotation-store'),
             method='POST',
             headers=headers,
-            data=json.dumps(annotation),
-            content_type='application/json')
+            data=json.dumps(annotation_create_request),
+            content_type='application/json',
+            query_string=query_string)
         self.assert_status(
             response, 201,
             'Response body is : ' + response.data.decode('utf-8'))
@@ -92,8 +94,8 @@ class TestAnnotationController(BaseTestCase):
 
         Delete an annotation
         """
-        annotation = util.create_test_annotation(
-            'awesome-dataset', 'awesome-annotation-store')
+        util.create_test_annotation(
+            'awesome-dataset', 'awesome-annotation-store', 'awesome-annotation')
         headers = {
             'Accept': 'application/json',
         }
@@ -102,7 +104,7 @@ class TestAnnotationController(BaseTestCase):
             '/{annotation_store_id}/annotations/{annotation_id}'.format(
                 dataset_id='awesome-dataset',
                 annotation_store_id='awesome-annotation-store',
-                annotation_id=annotation.id),
+                annotation_id='awesome-annotation'),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -113,8 +115,8 @@ class TestAnnotationController(BaseTestCase):
 
         Get an annotation
         """
-        annotation = util.create_test_annotation(
-            'awesome-dataset', 'awesome-annotation-store')
+        util.create_test_annotation(
+            'awesome-dataset', 'awesome-annotation-store', 'awesome-annotation')
         headers = {
             'Accept': 'application/json',
         }
@@ -123,7 +125,7 @@ class TestAnnotationController(BaseTestCase):
             '/{annotation_store_id}/annotations/{annotation_id}'.format(
                 dataset_id='awesome-dataset',
                 annotation_store_id='awesome-annotation-store',
-                annotation_id=annotation.id),
+                annotation_id='awesome-annotation'),
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -135,7 +137,7 @@ class TestAnnotationController(BaseTestCase):
         List the annotations in an annotation store
         """
         util.create_test_annotation(
-            'awesome-dataset', 'awesome-annotation-store')
+            'awesome-dataset', 'awesome-annotation-store', 'awesome-annotation')
         query_string = [('limit', 10),
                         ('offset', 0)]
         headers = {

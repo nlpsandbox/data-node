@@ -1500,10 +1500,11 @@ components:
       example:
         resourceSource:
           name: name
-      minProperties: 1
       properties:
         resourceSource:
           $ref: '#/components/schemas/ResourceSource'
+      required:
+      - resourceSource
       type: object
     TextAnnotation:
       description: An annotation in a text

@@ -172,8 +172,9 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
     status = None
     try:
         store_name = "datasets/%s/fhirStores/%s" % (dataset_id, fhir_store_id)
-        db_notes = DbNote.objects(fhirStoreName=store_name) \
-            .skip(offset).limit(limit)
+        db_objects = DbNote.objects(fhirStoreName=store_name)
+        db_notes = db_objects.skip(offset).limit(limit)
+        total_results = db_objects.count()
         notes = [Note.from_dict(n.to_dict()) for n in db_notes]
         next_ = ""
         if len(notes) == limit:
@@ -190,6 +191,7 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
             links={
                 "next": next_
             },
+            total_results=total_results,
             notes=notes)
         status = 200
     except Exception as error:

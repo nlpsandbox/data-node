@@ -9,4 +9,10 @@ def get_health_check():  # noqa: E501
 
     :rtype: HealthCheck
     """
-    return HealthCheck(status="pass"), 200
+    try:
+        res = HealthCheck(status="pass")
+        status = 200
+    except Exception as error:
+        status = 500
+        res = Error("Internal error", status, str(error))
+    return res, status

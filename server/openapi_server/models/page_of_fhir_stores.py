@@ -21,7 +21,7 @@ class PageOfFhirStores(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, fhir_stores=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, fhir_stores=None):  # noqa: E501
         """PageOfFhirStores - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfFhirStores.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfFhirStores(Model):
         :type limit: int
         :param links: The links of this PageOfFhirStores.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfFhirStores.  # noqa: E501
+        :type total_results: int
         :param fhir_stores: The fhir_stores of this PageOfFhirStores.  # noqa: E501
         :type fhir_stores: List[FhirStore]
         """
@@ -37,6 +39,7 @@ class PageOfFhirStores(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'fhir_stores': List[FhirStore]
         }
 
@@ -44,12 +47,14 @@ class PageOfFhirStores(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'fhir_stores': 'fhirStores'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._fhir_stores = fhir_stores
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfFhirStores(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfFhirStores.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfFhirStores.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfFhirStores.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfFhirStores.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def fhir_stores(self):
         """Gets the fhir_stores of this PageOfFhirStores.
 
@@ -162,5 +192,7 @@ class PageOfFhirStores(Model):
         :param fhir_stores: The fhir_stores of this PageOfFhirStores.
         :type fhir_stores: List[FhirStore]
         """
+        if fhir_stores is None:
+            raise ValueError("Invalid value for `fhir_stores`, must not be `None`")  # noqa: E501
 
         self._fhir_stores = fhir_stores

@@ -21,7 +21,7 @@ class PageOfNotes(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, notes=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, notes=None):  # noqa: E501
         """PageOfNotes - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfNotes.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfNotes(Model):
         :type limit: int
         :param links: The links of this PageOfNotes.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfNotes.  # noqa: E501
+        :type total_results: int
         :param notes: The notes of this PageOfNotes.  # noqa: E501
         :type notes: List[Note]
         """
@@ -37,6 +39,7 @@ class PageOfNotes(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'notes': List[Note]
         }
 
@@ -44,12 +47,14 @@ class PageOfNotes(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'notes': 'notes'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._notes = notes
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfNotes(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfNotes.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfNotes.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfNotes.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfNotes.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def notes(self):
         """Gets the notes of this PageOfNotes.
 
@@ -162,5 +192,7 @@ class PageOfNotes(Model):
         :param notes: The notes of this PageOfNotes.
         :type notes: List[Note]
         """
+        if notes is None:
+            raise ValueError("Invalid value for `notes`, must not be `None`")  # noqa: E501
 
         self._notes = notes

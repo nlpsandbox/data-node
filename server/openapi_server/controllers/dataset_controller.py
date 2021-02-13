@@ -120,7 +120,9 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
     res = None
     status = None
     try:
-        db_datasets = DbDataset.objects.skip(offset).limit(limit)
+        db_objects = DbDataset.objects
+        db_datasets = db_objects.skip(offset).limit(limit)
+        total_results = db_objects.count()
         datasets = [Dataset.from_dict(d.to_dict()) for d in db_datasets]
         next_ = ""
         if len(datasets) == limit:
@@ -132,6 +134,7 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
             links={
                 "next": next_
             },
+            total_results=total_results,
             datasets=datasets)
         status = 200
     except Exception as error:

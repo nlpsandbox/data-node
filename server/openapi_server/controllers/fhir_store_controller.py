@@ -140,10 +140,12 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     res = None
     status = None
     try:
-        db_fhir_stores = DbFhirStore.objects(
+        db_objects = DbFhirStore.objects(
             name__startswith='datasets/{dataset_id}/'.format(
                 dataset_id=dataset_id
-            )).skip(offset).limit(limit)  # noqa: E501
+            ))
+        db_fhir_stores = db_objects.skip(offset).limit(limit)
+        total_results = db_objects.count()
         fhir_stores = [FhirStore.from_dict(s.to_dict()) for s in db_fhir_stores]  # noqa: E501
         next_ = ""
         if len(fhir_stores) == limit:
@@ -155,6 +157,7 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
             links={
                 "next": next_
             },
+            total_results=total_results,
             fhir_stores=fhir_stores)
         status = 200
     except Exception as error:

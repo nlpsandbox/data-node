@@ -69,12 +69,14 @@ class Patient(Model):
         :param identifier: The identifier of this Patient.
         :type identifier: str
         """
+        if identifier is None:
+            raise ValueError("Invalid value for `identifier`, must not be `None`")  # noqa: E501
         if identifier is not None and len(identifier) > 60:
             raise ValueError("Invalid value for `identifier`, length must be less than or equal to `60`")  # noqa: E501
         if identifier is not None and len(identifier) < 3:
             raise ValueError("Invalid value for `identifier`, length must be greater than or equal to `3`")  # noqa: E501
         if identifier is not None and not re.search(r'^[a-z0-9]+(?:-[a-z0-9]+)*$', identifier):  # noqa: E501
-            raise ValueError("Invalid value for `identifier`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
+            raise ValueError(r"Invalid value for `identifier`, must be a follow pattern or equal to `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
 
         self._identifier = identifier
 

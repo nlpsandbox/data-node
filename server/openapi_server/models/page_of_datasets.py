@@ -21,7 +21,7 @@ class PageOfDatasets(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, datasets=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, datasets=None):  # noqa: E501
         """PageOfDatasets - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfDatasets.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfDatasets(Model):
         :type limit: int
         :param links: The links of this PageOfDatasets.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfDatasets.  # noqa: E501
+        :type total_results: int
         :param datasets: The datasets of this PageOfDatasets.  # noqa: E501
         :type datasets: List[Dataset]
         """
@@ -37,6 +39,7 @@ class PageOfDatasets(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'datasets': List[Dataset]
         }
 
@@ -44,12 +47,14 @@ class PageOfDatasets(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'datasets': 'datasets'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._datasets = datasets
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfDatasets(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfDatasets.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfDatasets.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfDatasets.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfDatasets.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def datasets(self):
         """Gets the datasets of this PageOfDatasets.
 
@@ -162,5 +192,7 @@ class PageOfDatasets(Model):
         :param datasets: The datasets of this PageOfDatasets.
         :type datasets: List[Dataset]
         """
+        if datasets is None:
+            raise ValueError("Invalid value for `datasets`, must not be `None`")  # noqa: E501
 
         self._datasets = datasets

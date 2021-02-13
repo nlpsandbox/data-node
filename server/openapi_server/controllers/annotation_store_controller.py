@@ -130,10 +130,12 @@ def list_annotation_stores(dataset_id, limit=None, offset=None):  # noqa: E501
     res = None
     status = None
     try:
-        db_annotation_stores = DbAnnotationStore.objects(
+        db_objects = DbAnnotationStore.objects(
             name__startswith='datasets/{dataset_id}/'.format(
                 dataset_id=dataset_id
-            )).skip(offset).limit(limit)
+            ))
+        db_annotation_stores = db_objects.skip(offset).limit(limit)
+        total_results = db_objects.count()
         annotation_stores = [AnnotationStore.from_dict(s.to_dict()) for s in db_annotation_stores]  # noqa: E501
         next_ = ""
         if len(annotation_stores) == limit:
@@ -145,6 +147,7 @@ def list_annotation_stores(dataset_id, limit=None, offset=None):  # noqa: E501
             links={
                 "next": next_
             },
+            total_results=total_results,
             annotation_stores=annotation_stores)
         status = 200
     except Exception as error:

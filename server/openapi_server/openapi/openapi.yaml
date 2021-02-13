@@ -1,23 +1,22 @@
-openapi: 3.0.2
+openapi: 3.0.3
 info:
   contact:
     email: thomas.schaffter@sagebionetworks.org
     name: The NLP Sandbox Team
-    url: https://nlpsandbox.github.io/nlpsandbox-schemas
+    url: https://nlpsandbox.io
   description: |
     # Overview
-    The NLP Sandbox Data Node is a repository of data used to developed and benchmark NLP Tools like the Date Annotator and Person Name Annotator. The resources that can be stored in a Data Node are listed below:
-    - Datasets
-      - FHIR Stores
-        - Patients
-        - Clinical Notes
-      - Annotation Stores
-        - Annotations
+    The NLP Sandbox Data Node is a repository of data used to benchmark NLP Tools like the NLP Sandbox Date Annotator and Person Name Annotator. The resources that can be stored in this Data Node and the operations supported are listed below:
+    - Create and manage datasets - Create and manage FHIR stores
+      - Store and retrieve FHIR patient profiles
+      - Store and retrieve clinical notes
+    - Create and manage annotation stores
+      - Store and retrieve text annotations
   license:
     name: Apache 2.0
-    url: https://nlpsandbox.github.io/nlpsandbox-schemas/blob/develop/LICENSE
+    url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 0.3.1
+  version: 1.0.0
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
@@ -1367,15 +1366,17 @@ components:
           type: integer
         links:
           $ref: '#/components/schemas/ResponsePageMetadata_links'
+        totalResults:
+          description: Total number of results in the result set
+          type: integer
       required:
-      - limit
       - links
-      - offset
+      - totalResults
       type: object
     DatasetName:
       description: The name of the dataset
       example: datasets/awesome-dataset
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     Dataset:
       description: A dataset
@@ -1385,8 +1386,10 @@ components:
         name:
           description: The name of the dataset
           example: datasets/awesome-dataset
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     PageOfDatasets:
       allOf:
@@ -1432,8 +1435,10 @@ components:
         name:
           description: The name of the dataset
           example: datasets/awesome-dataset
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     EmptyObject:
       description: An empty object
@@ -1441,7 +1446,7 @@ components:
     AnnotationStoreName:
       description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
       example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     AnnotationStore:
       description: An annotation store
@@ -1451,8 +1456,10 @@ components:
         name:
           description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
           example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     PageOfAnnotationStores:
       allOf:
@@ -1478,13 +1485,15 @@ components:
         name:
           description: The resource name of the annotation store, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}
           example: datasets/awesome-dataset/annotationStores/awesome-annotation-store
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     AnnotationName:
       description: The resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
       example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/awesome-annotation
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotations\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*/annotations/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     ResourceSource:
       description: An API resource source
@@ -1494,12 +1503,15 @@ components:
         name:
           description: Full path of an API resource
           type: string
+      required:
+      - name
       type: object
     AnnotationSource:
       description: The source of an annotation record
       example:
         resourceSource:
           name: name
+      maxProperties: 1
       properties:
         resourceSource:
           $ref: '#/components/schemas/ResourceSource'
@@ -1508,21 +1520,23 @@ components:
       type: object
     TextAnnotation:
       description: An annotation in a text
+      example:
+        start: 42
+        length: 19
+        text: the annotation text
+        confidence: 95.5
       properties:
         start:
           description: The position of the first character
-          example: 42
           type: integer
         length:
           description: The length of the annotation
-          example: 10
           type: integer
         text:
           description: The string annotated
           type: string
         confidence:
           description: The confidence in the accuracy of the annotation
-          example: 95
           format: float
           maximum: 100
           minimum: 0
@@ -1542,6 +1556,7 @@ components:
         length: 10
         text: 10/26/2020
         dateFormat: MM/DD/YYYY
+        confidence: 95.5
       type: object
     TextPersonNameAnnotation:
       allOf:
@@ -1551,17 +1566,19 @@ components:
         start: 42
         length: 11
         text: Chloe Price
+        confidence: 95.5
       type: object
     TextPhysicalAddressAnnotation:
       allOf:
       - $ref: '#/components/schemas/TextAnnotation'
       - $ref: '#/components/schemas/TextPhysicalAddressAnnotation_allOf'
-      description: A person name annotation in a text
+      description: A physical address annotation in a text
       example:
         start: 42
-        length: 11
+        length: 7
         text: Seattle
         addressType: city
+        confidence: 95.5
       type: object
     Annotation:
       description: An annotation record
@@ -1571,26 +1588,32 @@ components:
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
         - start: 42
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
         textPersonNameAnnotations:
         - start: 42
           length: 11
           text: Chloe Price
+          confidence: 95.5
         - start: 42
           length: 11
           text: Chloe Price
+          confidence: 95.5
         textPhysicalAddressAnnotations:
         - start: 42
-          length: 11
+          length: 7
           text: Seattle
           addressType: city
+          confidence: 95.5
         - start: 42
-          length: 11
+          length: 7
           text: Seattle
           addressType: city
+          confidence: 95.5
         annotationSource:
           resourceSource:
             name: name
@@ -1599,7 +1622,7 @@ components:
         name:
           description: The resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
           example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/awesome-annotation
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotations\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*/annotations/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
         annotationSource:
           $ref: '#/components/schemas/AnnotationSource'
@@ -1618,6 +1641,9 @@ components:
           items:
             $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
           type: array
+      required:
+      - annotationSource
+      - name
       type: object
     PageOfAnnotations:
       allOf:
@@ -1640,26 +1666,32 @@ components:
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
         - start: 42
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
         textPersonNameAnnotations:
         - start: 42
           length: 11
           text: Chloe Price
+          confidence: 95.5
         - start: 42
           length: 11
           text: Chloe Price
+          confidence: 95.5
         textPhysicalAddressAnnotations:
         - start: 42
-          length: 11
+          length: 7
           text: Seattle
           addressType: city
+          confidence: 95.5
         - start: 42
-          length: 11
+          length: 7
           text: Seattle
           addressType: city
+          confidence: 95.5
         annotationSource:
           resourceSource:
             name: name
@@ -1692,8 +1724,10 @@ components:
         name:
           description: The resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
           example: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/awesome-annotation
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotations\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/annotationStores/[a-z0-9]+(?:-[a-z0-9]+)*/annotations/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     FhirStoreId:
       description: The ID of the FHIR store
@@ -1705,7 +1739,7 @@ components:
     FhirStoreName:
       description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
       example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     FhirStore:
       description: A FHIR store
@@ -1715,8 +1749,10 @@ components:
         name:
           description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
           example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     PageOfFhirStores:
       allOf:
@@ -1735,8 +1771,10 @@ components:
         name:
           description: The resource name of the FHIR store, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}
           example: datasets/awesome-dataset/fhirStores/awesome-fhir-store
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     PatientId:
       description: The ID of the FHIR patient
@@ -1766,6 +1804,8 @@ components:
           - other
           - unknown
           type: string
+      required:
+      - identifier
       type: object
     PageOfPatients:
       allOf:
@@ -1790,7 +1830,7 @@ components:
     PatientResourceName:
       description: The resource name of the FHIR patient, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Patient/{PatientId}
       example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Patient/507f1f77bcf86cd799439011
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/Patient\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*/Patient/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     PatientCreateResponse:
       description: The reference to the patient created
@@ -1800,8 +1840,10 @@ components:
         name:
           description: The resource name of the FHIR patient, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Patient/{PatientId}
           example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Patient/507f1f77bcf86cd799439011
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/Patient\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*/Patient/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     NoteId:
       description: The ID of the clinical note
@@ -1814,9 +1856,9 @@ components:
       description: A clinical note
       example:
         identifier: awesome-note
+        text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
         noteType: loinc:LP29684-5
         patientId: awesome-patient
-        text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
       properties:
         identifier:
           description: The ID of the clinical note
@@ -1827,11 +1869,9 @@ components:
           type: string
         text:
           description: The content of the clinical note
-          example: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
           type: string
         noteType:
           description: The note type (LOINC concept)
-          example: loinc:LP29684-5
           type: string
         patientId:
           description: The ID of the FHIR patient
@@ -1882,7 +1922,7 @@ components:
     NoteResourceName:
       description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}
       example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/awesome-note
-      pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/Note\/[a-z0-9]+(?:-[a-z0-9]+)*$
+      pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*/Note/[a-z0-9]+(?:-[a-z0-9]+)*$
       type: string
     NoteCreateResponse:
       description: The reference to the note created
@@ -1892,8 +1932,10 @@ components:
         name:
           description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}
           example: datasets/awesome-dataset/fhirStores/awesome-fhir-store/Note/awesome-note
-          pattern: ^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/fhirStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/Note\/[a-z0-9]+(?:-[a-z0-9]+)*$
+          pattern: ^datasets/[a-z0-9]+(?:-[a-z0-9]+)*/fhirStores/[a-z0-9]+(?:-[a-z0-9]+)*/Note/[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
+      required:
+      - name
       type: object
     HealthCheck:
       description: Represents the health of a service

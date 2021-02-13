@@ -21,7 +21,7 @@ class PageOfAnnotations(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, annotations=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, annotations=None):  # noqa: E501
         """PageOfAnnotations - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfAnnotations.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfAnnotations(Model):
         :type limit: int
         :param links: The links of this PageOfAnnotations.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfAnnotations.  # noqa: E501
+        :type total_results: int
         :param annotations: The annotations of this PageOfAnnotations.  # noqa: E501
         :type annotations: List[Annotation]
         """
@@ -37,6 +39,7 @@ class PageOfAnnotations(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'annotations': List[Annotation]
         }
 
@@ -44,12 +47,14 @@ class PageOfAnnotations(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'annotations': 'annotations'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._annotations = annotations
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfAnnotations(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfAnnotations.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfAnnotations.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfAnnotations.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfAnnotations.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def annotations(self):
         """Gets the annotations of this PageOfAnnotations.
 
@@ -162,5 +192,7 @@ class PageOfAnnotations(Model):
         :param annotations: The annotations of this PageOfAnnotations.
         :type annotations: List[Annotation]
         """
+        if annotations is None:
+            raise ValueError("Invalid value for `annotations`, must not be `None`")  # noqa: E501
 
         self._annotations = annotations

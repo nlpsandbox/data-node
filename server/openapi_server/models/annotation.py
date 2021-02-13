@@ -92,8 +92,10 @@ class Annotation(Model):
         :param name: The name of this Annotation.
         :type name: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
         if name is not None and not re.search(r'^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotations\/[a-z0-9]+(?:-[a-z0-9]+)*$', name):  # noqa: E501
-            raise ValueError("Invalid value for `name`, must be a follow pattern or equal to `/^datasets\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/annotationStores\\/[a-z0-9]+(?:-[a-z0-9]+)*\\/annotations\\/[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
+            raise ValueError(r"Invalid value for `name`, must be a follow pattern or equal to `/^datasets\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotationStores\/[a-z0-9]+(?:-[a-z0-9]+)*\/annotations\/[a-z0-9]+(?:-[a-z0-9]+)*$/`")  # noqa: E501
 
         self._name = name
 
@@ -115,6 +117,8 @@ class Annotation(Model):
         :param annotation_source: The annotation_source of this Annotation.
         :type annotation_source: AnnotationSource
         """
+        if annotation_source is None:
+            raise ValueError("Invalid value for `annotation_source`, must not be `None`")  # noqa: E501
 
         self._annotation_source = annotation_source
 

@@ -21,7 +21,7 @@ class PageOfPatients(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, patients=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, patients=None):  # noqa: E501
         """PageOfPatients - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfPatients.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfPatients(Model):
         :type limit: int
         :param links: The links of this PageOfPatients.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfPatients.  # noqa: E501
+        :type total_results: int
         :param patients: The patients of this PageOfPatients.  # noqa: E501
         :type patients: List[Patient]
         """
@@ -37,6 +39,7 @@ class PageOfPatients(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'patients': List[Patient]
         }
 
@@ -44,12 +47,14 @@ class PageOfPatients(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'patients': 'patients'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._patients = patients
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfPatients(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfPatients.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfPatients.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfPatients.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfPatients.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def patients(self):
         """Gets the patients of this PageOfPatients.
 
@@ -162,5 +192,7 @@ class PageOfPatients(Model):
         :param patients: The patients of this PageOfPatients.
         :type patients: List[Patient]
         """
+        if patients is None:
+            raise ValueError("Invalid value for `patients`, must not be `None`")  # noqa: E501
 
         self._patients = patients

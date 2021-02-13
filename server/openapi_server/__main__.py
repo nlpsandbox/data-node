@@ -18,6 +18,9 @@ connect(
     host=config().db_host
 )
 
+app.add_url_rule('/', 'root', lambda: flask.redirect('/api/v1/ui'))
+app.add_url_rule('/ui', 'ui', lambda: flask.redirect('/api/v1/ui'))
+
 
 def main():
     app.run(port=config().server_port, debug=False)

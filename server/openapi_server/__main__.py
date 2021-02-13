@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import connexion
+import flask
 from mongoengine import connect
 
 from openapi_server import encoder

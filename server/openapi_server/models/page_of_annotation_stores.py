@@ -21,7 +21,7 @@ class PageOfAnnotationStores(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None, annotation_stores=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None, annotation_stores=None):  # noqa: E501
         """PageOfAnnotationStores - a model defined in OpenAPI
 
         :param offset: The offset of this PageOfAnnotationStores.  # noqa: E501
@@ -30,6 +30,8 @@ class PageOfAnnotationStores(Model):
         :type limit: int
         :param links: The links of this PageOfAnnotationStores.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this PageOfAnnotationStores.  # noqa: E501
+        :type total_results: int
         :param annotation_stores: The annotation_stores of this PageOfAnnotationStores.  # noqa: E501
         :type annotation_stores: List[AnnotationStore]
         """
@@ -37,6 +39,7 @@ class PageOfAnnotationStores(Model):
             'offset': int,
             'limit': int,
             'links': ResponsePageMetadataLinks,
+            'total_results': int,
             'annotation_stores': List[AnnotationStore]
         }
 
@@ -44,12 +47,14 @@ class PageOfAnnotationStores(Model):
             'offset': 'offset',
             'limit': 'limit',
             'links': 'links',
+            'total_results': 'totalResults',
             'annotation_stores': 'annotationStores'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
         self._annotation_stores = annotation_stores
 
     @classmethod
@@ -143,6 +148,31 @@ class PageOfAnnotationStores(Model):
         self._links = links
 
     @property
+    def total_results(self):
+        """Gets the total_results of this PageOfAnnotationStores.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this PageOfAnnotationStores.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this PageOfAnnotationStores.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this PageOfAnnotationStores.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results
+
+    @property
     def annotation_stores(self):
         """Gets the annotation_stores of this PageOfAnnotationStores.
 
@@ -162,5 +192,7 @@ class PageOfAnnotationStores(Model):
         :param annotation_stores: The annotation_stores of this PageOfAnnotationStores.
         :type annotation_stores: List[AnnotationStore]
         """
+        if annotation_stores is None:
+            raise ValueError("Invalid value for `annotation_stores`, must not be `None`")  # noqa: E501
 
         self._annotation_stores = annotation_stores

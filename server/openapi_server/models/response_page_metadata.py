@@ -17,7 +17,7 @@ class ResponsePageMetadata(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, offset=0, limit=10, links=None):  # noqa: E501
+    def __init__(self, offset=0, limit=10, links=None, total_results=None):  # noqa: E501
         """ResponsePageMetadata - a model defined in OpenAPI
 
         :param offset: The offset of this ResponsePageMetadata.  # noqa: E501
@@ -26,22 +26,27 @@ class ResponsePageMetadata(Model):
         :type limit: int
         :param links: The links of this ResponsePageMetadata.  # noqa: E501
         :type links: ResponsePageMetadataLinks
+        :param total_results: The total_results of this ResponsePageMetadata.  # noqa: E501
+        :type total_results: int
         """
         self.openapi_types = {
             'offset': int,
             'limit': int,
-            'links': ResponsePageMetadataLinks
+            'links': ResponsePageMetadataLinks,
+            'total_results': int
         }
 
         self.attribute_map = {
             'offset': 'offset',
             'limit': 'limit',
-            'links': 'links'
+            'links': 'links',
+            'total_results': 'totalResults'
         }
 
         self._offset = offset
         self._limit = limit
         self._links = links
+        self._total_results = total_results
 
     @classmethod
     def from_dict(cls, dikt) -> 'ResponsePageMetadata':
@@ -74,8 +79,6 @@ class ResponsePageMetadata(Model):
         :param offset: The offset of this ResponsePageMetadata.
         :type offset: int
         """
-        if offset is None:
-            raise ValueError("Invalid value for `offset`, must not be `None`")  # noqa: E501
         if offset is not None and offset < 0:  # noqa: E501
             raise ValueError("Invalid value for `offset`, must be a value greater than or equal to `0`")  # noqa: E501
 
@@ -101,8 +104,6 @@ class ResponsePageMetadata(Model):
         :param limit: The limit of this ResponsePageMetadata.
         :type limit: int
         """
-        if limit is None:
-            raise ValueError("Invalid value for `limit`, must not be `None`")  # noqa: E501
         if limit is not None and limit > 100:  # noqa: E501
             raise ValueError("Invalid value for `limit`, must be a value less than or equal to `100`")  # noqa: E501
         if limit is not None and limit < 10:  # noqa: E501
@@ -132,3 +133,28 @@ class ResponsePageMetadata(Model):
             raise ValueError("Invalid value for `links`, must not be `None`")  # noqa: E501
 
         self._links = links
+
+    @property
+    def total_results(self):
+        """Gets the total_results of this ResponsePageMetadata.
+
+        Total number of results in the result set  # noqa: E501
+
+        :return: The total_results of this ResponsePageMetadata.
+        :rtype: int
+        """
+        return self._total_results
+
+    @total_results.setter
+    def total_results(self, total_results):
+        """Sets the total_results of this ResponsePageMetadata.
+
+        Total number of results in the result set  # noqa: E501
+
+        :param total_results: The total_results of this ResponsePageMetadata.
+        :type total_results: int
+        """
+        if total_results is None:
+            raise ValueError("Invalid value for `total_results`, must not be `None`")  # noqa: E501
+
+        self._total_results = total_results

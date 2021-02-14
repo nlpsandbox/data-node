@@ -59,7 +59,7 @@ def delete_annotation_store(dataset_id, annotation_store_id):  # noqa: E501
     :param annotation_store_id: The ID of the annotation store
     :type annotation_store_id: str
 
-    :rtype: object
+    :rtype: EmptyObject
     """
     store_name = "datasets/%s/annotationStores/%s" % (dataset_id, annotation_store_id)  # noqa: E501
     return delete_annotation_store_by_name(store_name)

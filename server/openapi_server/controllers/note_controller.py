@@ -85,7 +85,7 @@ def delete_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
     :param note_id: The ID of the note
     :type note_id: str
 
-    :rtype: object
+    :rtype: EmptyObject
     """
     res = None
     status = None

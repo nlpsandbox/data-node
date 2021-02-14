@@ -101,7 +101,7 @@ def delete_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
     :param annotation_id: The ID of the annotation
     :type annotation_id: str
 
-    :rtype: object
+    :rtype: EmptyObject
     """
     res = None
     status = None

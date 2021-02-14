@@ -8,13 +8,14 @@ info:
     # Overview
 
     The NLP Sandbox Data Node is a repository of data used to benchmark NLP
-    Tools like the NLP Sandbox Date Annotator and Person Name Annotator.
+    Tools.
 
     The resources that can be stored in this Data Node and the operations
     supported are listed below:
 
     - Create and manage datasets - Create and manage FHIR stores
-      - Store and retrieve FHIR patient profiles - Store and retrieve clinical
+      - Store and retrieve FHIR patient profiles
+      - Store and retrieve clinical
       notes
     - Create and manage annotation stores
       - Store and retrieve text annotations

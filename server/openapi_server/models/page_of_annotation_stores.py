@@ -7,11 +7,13 @@ from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
 from openapi_server.models.annotation_store import AnnotationStore
+from openapi_server.models.page_of_annotation_stores_all_of import PageOfAnnotationStoresAllOf
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
 from openapi_server import util
 
 from openapi_server.models.annotation_store import AnnotationStore  # noqa: E501
+from openapi_server.models.page_of_annotation_stores_all_of import PageOfAnnotationStoresAllOf  # noqa: E501
 from openapi_server.models.response_page_metadata import ResponsePageMetadata  # noqa: E501
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks  # noqa: E501
 
@@ -151,7 +153,7 @@ class PageOfAnnotationStores(Model):
     def total_results(self):
         """Gets the total_results of this PageOfAnnotationStores.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :return: The total_results of this PageOfAnnotationStores.
         :rtype: int
@@ -162,7 +164,7 @@ class PageOfAnnotationStores(Model):
     def total_results(self, total_results):
         """Sets the total_results of this PageOfAnnotationStores.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :param total_results: The total_results of this PageOfAnnotationStores.
         :type total_results: int

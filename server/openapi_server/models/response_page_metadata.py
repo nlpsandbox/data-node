@@ -138,7 +138,7 @@ class ResponsePageMetadata(Model):
     def total_results(self):
         """Gets the total_results of this ResponsePageMetadata.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :return: The total_results of this ResponsePageMetadata.
         :rtype: int
@@ -149,7 +149,7 @@ class ResponsePageMetadata(Model):
     def total_results(self, total_results):
         """Sets the total_results of this ResponsePageMetadata.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :param total_results: The total_results of this ResponsePageMetadata.
         :type total_results: int

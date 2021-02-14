@@ -7,11 +7,13 @@ from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
 from openapi_server.models.dataset import Dataset
+from openapi_server.models.page_of_datasets_all_of import PageOfDatasetsAllOf
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
 from openapi_server import util
 
 from openapi_server.models.dataset import Dataset  # noqa: E501
+from openapi_server.models.page_of_datasets_all_of import PageOfDatasetsAllOf  # noqa: E501
 from openapi_server.models.response_page_metadata import ResponsePageMetadata  # noqa: E501
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks  # noqa: E501
 
@@ -151,7 +153,7 @@ class PageOfDatasets(Model):
     def total_results(self):
         """Gets the total_results of this PageOfDatasets.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :return: The total_results of this PageOfDatasets.
         :rtype: int
@@ -162,7 +164,7 @@ class PageOfDatasets(Model):
     def total_results(self, total_results):
         """Sets the total_results of this PageOfDatasets.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :param total_results: The total_results of this PageOfDatasets.
         :type total_results: int

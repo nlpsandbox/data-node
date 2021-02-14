@@ -22,18 +22,15 @@
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
 
-.gitignore
+.openapi-generator/FILES
 .travis.yml
 git_push.sh
-openapi_server/models/*_all_of.py
 setup.py
 
 # this list has been defined after the generation of the initial codebase
 .dockerignore
+.gitignore
 Dockerfile
-openapi_server/__main__.py
-openapi_server/controllers/security_controller_.py
-openapi_server/test/__init__.py
 requirements.txt
 test-requirements.txt
 tox.ini

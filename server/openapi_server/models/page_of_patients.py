@@ -6,11 +6,13 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from openapi_server.models.base_model_ import Model
+from openapi_server.models.page_of_patients_all_of import PageOfPatientsAllOf
 from openapi_server.models.patient import Patient
 from openapi_server.models.response_page_metadata import ResponsePageMetadata
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks
 from openapi_server import util
 
+from openapi_server.models.page_of_patients_all_of import PageOfPatientsAllOf  # noqa: E501
 from openapi_server.models.patient import Patient  # noqa: E501
 from openapi_server.models.response_page_metadata import ResponsePageMetadata  # noqa: E501
 from openapi_server.models.response_page_metadata_links import ResponsePageMetadataLinks  # noqa: E501
@@ -151,7 +153,7 @@ class PageOfPatients(Model):
     def total_results(self):
         """Gets the total_results of this PageOfPatients.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :return: The total_results of this PageOfPatients.
         :rtype: int
@@ -162,7 +164,7 @@ class PageOfPatients(Model):
     def total_results(self, total_results):
         """Sets the total_results of this PageOfPatients.
 
-        Total number of results in the result set  # noqa: E501
+        The total number of results in the result set  # noqa: E501
 
         :param total_results: The total_results of this PageOfPatients.
         :type total_results: int

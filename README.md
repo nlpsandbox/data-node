@@ -67,7 +67,7 @@ Install and start the Data Node.
     pip install -r requirements.txt
     cd server && python -m openapi_server
 
-### Acessing the Data Node UI
+### Acessing the UI
 
 The Data Node provides a web interface that you can use to create and manage
 resources. The address of this interface depends on whether you run the Data

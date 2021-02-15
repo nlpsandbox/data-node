@@ -1,12 +1,3 @@
-# Project-specific files
-.openapi-generator-ignore
-.travis.yaml
-git_push.sh
-README.md
-setup.py
-test-requirements.txt
-tox.ini
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

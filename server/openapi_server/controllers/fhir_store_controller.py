@@ -68,7 +68,7 @@ def delete_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
     :param fhir_store_id: The ID of the FHIR store
     :type fhir_store_id: str
 
-    :rtype: object
+    :rtype: EmptyObject
     """
     store_name = 'datasets/%s/fhirStores/%s' % (dataset_id, fhir_store_id)
     return delete_fhir_store_by_name(store_name)

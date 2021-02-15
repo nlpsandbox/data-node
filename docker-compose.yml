@@ -17,7 +17,7 @@ services:
       - "${MONGO_PORT}:27017"
 
   data-node:
-    image: nlpsandbox/data-node:0.3.2
+    image: nlpsandbox/data-node:1.0.0
     build:
       context: server
       dockerfile: Dockerfile
@@ -32,11 +32,11 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-    healthcheck:
-      test: curl --fail http://localhost:8080/api/v1/healthCheck
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # healthcheck:
+    #   test: curl --fail http://localhost:8080/api/v1/healthCheck
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
     ports:
       - "${SERVER_PORT}:8080"
     depends_on:

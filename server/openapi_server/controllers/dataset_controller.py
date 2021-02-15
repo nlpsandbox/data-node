@@ -53,7 +53,7 @@ def delete_dataset(dataset_id):  # noqa: E501
     :param dataset_id: The ID of the dataset
     :type dataset_id: str
 
-    :rtype: DatasetCreateResponse
+    :rtype: EmptyObject
     """
     res = None
     status = None

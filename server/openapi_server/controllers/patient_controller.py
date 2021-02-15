@@ -73,7 +73,7 @@ def delete_patient(dataset_id, fhir_store_id, patient_id):  # noqa: E501
     :param patient_id: The ID of the FHIR patient
     :type patient_id: str
 
-    :rtype: object
+    :rtype: EmptyObject
     """
     res = None
     status = None

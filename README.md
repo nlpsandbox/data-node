@@ -57,7 +57,7 @@ variables.
     cp .env.example .env
     export $(grep -v '^#' .env | xargs -d '\n')
 
-Start the MongoDB instance
+Start the MongoDB instance.
 
     docker-compose up -d db
 

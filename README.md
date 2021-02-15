@@ -91,4 +91,4 @@ Thinking about contributing to this project? Get started by reading our
 [NLP Sandbox]: https://www.synapse.org/nlpsandbox
 [NLP Sandbox Data Node]: https://nlpsandbox.github.io/nlpsandbox-schemas/data-node/latest/docs/
 [nlpsandbox/data-node]: https://hub.docker.com/r/nlpsandbox/data-node
-[Apache License 2.0]: https://github.com/nlpsandbox/date-annotator-example/blob/develop/LICENSE
+[Apache License 2.0]: https://github.com/nlpsandbox/data-node/blob/develop/LICENSE

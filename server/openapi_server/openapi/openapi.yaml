@@ -1403,12 +1403,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfDatasets_allOf'
       description: A page of datasets
-      required:
-      - datasets
-      - limit
-      - links
-      - offset
-      - totalResults
+      # required:
+      # - datasets
+      # - limit
+      # - links
+      # - offset
+      # - totalResults
       type: object
     Error:
       description: Problem details (tools.ietf.org/html/rfc7807)
@@ -1479,12 +1479,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
-      required:
-      - annotationStores
-      - limit
-      - links
-      - offset
-      - totalResults
+      # required:
+      # - annotationStores
+      # - limit
+      # - links
+      # - offset
+      # - totalResults
       type: object
     AnnotationStoreId:
       description: The ID of the annotation store
@@ -1670,12 +1670,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotations_allOf'
       description: A page of annotations
-      required:
-      - annotations
-      - limit
-      - links
-      - offset
-      - totalResults
+      # required:
+      # - annotations
+      # - limit
+      # - links
+      # - offset
+      # - totalResults
       type: object
     AnnotationId:
       description: The ID of the annotation
@@ -1785,12 +1785,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfFhirStores_allOf'
       description: A page of FHIR stores
-      required:
-      - fhirStores
-      - limit
-      - links
-      - offset
-      - totalResults
+      # required:
+      # - fhirStores
+      # - limit
+      # - links
+      # - offset
+      # - totalResults
       type: object
     FhirStoreCreateRequest:
       description: An empty object
@@ -1844,12 +1844,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfPatients_allOf'
       description: A page of FHIR patients
-      required:
-      - limit
-      - links
-      - offset
-      - patients
-      - totalResults
+      # required:
+      # - limit
+      # - links
+      # - offset
+      # - patients
+      # - totalResults
       type: object
     PatientCreateRequest:
       description: A FHIR patient
@@ -1929,12 +1929,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfNotes_allOf'
       description: A page of notes
-      required:
-      - limit
-      - links
-      - notes
-      - offset
-      - totalResults
+      # required:
+      # - limit
+      # - links
+      # - notes
+      # - offset
+      # - totalResults
       type: object
     NoteCreateRequest:
       description: A clinical note

@@ -37,32 +37,38 @@ class TestAnnotationController(BaseTestCase):
                 "start": 42,
                 "length": 10,
                 "text": "10/26/2020",
-                "dateFormat": "MM/DD/YYYY"
+                "dateFormat": "MM/DD/YYYY",
+                "confidence": 95.5
             }, {
                 "start": 42,
                 "length": 10,
                 "text": "10/26/2020",
-                "dateFormat": "MM/DD/YYYY"
+                "dateFormat": "MM/DD/YYYY",
+                "confidence": 95.5
             }],
             "textPersonNameAnnotations": [{
                 "start": 42,
                 "length": 11,
-                "text": "Chloe Price"
+                "text": "Chloe Price",
+                "confidence": 95.5
             }, {
                 "start": 42,
                 "length": 11,
-                "text": "Chloe Price"
+                "text": "Chloe Price",
+                "confidence": 95.5
             }],
             "textPhysicalAddressAnnotations": [{
                 "start": 42,
                 "length": 11,
                 "text": "Seattle",
-                "addressType": "city"
+                "addressType": "city",
+                "confidence": 95.5
             }, {
                 "start": 42,
                 "length": 11,
                 "text": "Seattle",
-                "addressType": "city"
+                "addressType": "city",
+                "confidence": 95.5
             }],
             "annotationSource": {
                 "resourceSource": {

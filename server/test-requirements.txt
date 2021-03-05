@@ -1,4 +1,4 @@
-coverage==5.4
+coverage==5.5
 Flask-Testing==0.8.1
 mongomock==3.22.1
 pytest-cov>=2.8.1

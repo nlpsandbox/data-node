@@ -8,7 +8,7 @@ class Note(BaseDocument):
     resourceName = StringField(required=True, unique=True)
     fhirStoreName = StringField()
     text = StringField()
-    noteType = StringField()
+    type = StringField()
     patientId = StringField()
 
     def to_dict(self):

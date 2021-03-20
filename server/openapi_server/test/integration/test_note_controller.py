@@ -38,7 +38,7 @@ class TestNoteController(BaseTestCase):
         Create a note
         """
         note_create_request = {
-            "noteType": "loinc:LP29684-5",
+            "type": "loinc:LP29684-5",
             "patientId": self.patient['identifier'],
             "text": "This is the content of a clinical note."
         }

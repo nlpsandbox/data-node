@@ -23,7 +23,7 @@ info:
     name: Apache 2.0
     url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 1.0.1
+  version: 1.0.2
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
@@ -1403,12 +1403,6 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfDatasets_allOf'
       description: A page of datasets
-      # required:
-      # - datasets
-      # - limit
-      # - links
-      # - offset
-      # - totalResults
       type: object
     Error:
       description: Problem details (tools.ietf.org/html/rfc7807)
@@ -1479,12 +1473,6 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
-      # required:
-      # - annotationStores
-      # - limit
-      # - links
-      # - offset
-      # - totalResults
       type: object
     AnnotationStoreId:
       description: The ID of the annotation store
@@ -1670,12 +1658,6 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotations_allOf'
       description: A page of annotations
-      # required:
-      # - annotations
-      # - limit
-      # - links
-      # - offset
-      # - totalResults
       type: object
     AnnotationId:
       description: The ID of the annotation
@@ -1785,12 +1767,6 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfFhirStores_allOf'
       description: A page of FHIR stores
-      # required:
-      # - fhirStores
-      # - limit
-      # - links
-      # - offset
-      # - totalResults
       type: object
     FhirStoreCreateRequest:
       description: An empty object
@@ -1844,12 +1820,6 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfPatients_allOf'
       description: A page of FHIR patients
-      # required:
-      # - limit
-      # - links
-      # - offset
-      # - patients
-      # - totalResults
       type: object
     PatientCreateRequest:
       description: A FHIR patient
@@ -1895,7 +1865,7 @@ components:
       example:
         identifier: awesome-note
         text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
-        noteType: loinc:LP29684-5
+        type: loinc:LP29684-5
         patientId: awesome-patient
       properties:
         identifier:
@@ -1908,7 +1878,7 @@ components:
         text:
           description: The content of the clinical note
           type: string
-        noteType:
+        type:
           description: The note type (LOINC concept)
           type: string
         patientId:
@@ -1920,34 +1890,28 @@ components:
           type: string
       required:
       - identifier
-      - noteType
       - patientId
       - text
+      - type
       type: object
     PageOfNotes:
       allOf:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfNotes_allOf'
       description: A page of notes
-      # required:
-      # - limit
-      # - links
-      # - notes
-      # - offset
-      # - totalResults
       type: object
     NoteCreateRequest:
       description: A clinical note
       example:
-        noteType: loinc:LP29684-5
         patientId: awesome-patient
         text: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
+        type: loinc:LP29684-5
       properties:
         text:
           description: The content of the clinical note
           example: On 12/26/2020, Ms. Chloe Price met with Dr. Prescott in Seattle.
           type: string
-        noteType:
+        type:
           description: The note type (LOINC concept)
           example: loinc:LP29684-5
           type: string
@@ -1959,9 +1923,9 @@ components:
           pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
           type: string
       required:
-      - noteType
       - patientId
       - text
+      - type
       type: object
     NoteResourceName:
       description: The resource name of the clinical note, of the form datasets/{datasetId}/fhirStores/{fhirStoreId}/Note/{NoteId}

@@ -26,8 +26,8 @@ This Data Node can be used to:
 
 ### Specification
 
-- Data Node API version: 1.0.1
-- Data Node version: 1.0.1
+- Data Node API version: 1.0.2
+- Data Node version: 1.0.2
 - Docker image: [nlpsandbox/data-node]
 
 ## Usage

@@ -58,7 +58,7 @@ def create_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
                 resourceName=resource_name,
                 fhirStoreName=store_name,
                 text=note_create_request.text,
-                noteType=note_create_request.note_type,
+                type=note_create_request.type,
                 patientId=note_create_request.patient_id
             ).save()
             note_resource_name = "%s/fhir/Note/%s" % (store_name, note_id)

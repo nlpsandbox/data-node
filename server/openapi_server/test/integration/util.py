@@ -50,7 +50,7 @@ def create_test_note(dataset_id, fhir_store_id, note_id):
         fhirStoreName=store_name,
         identifier=note_id,
         text='This is the content of a clinical note.',
-        noteType='loinc:LP29684-5',
+        type='loinc:LP29684-5',
         patientId='awesome-patient'
     ).save()
 

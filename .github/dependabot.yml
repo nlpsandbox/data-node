@@ -14,6 +14,9 @@ updates:
     schedule:
       interval: "monthly"
     target-branch: "develop"
+    ignore:
+      - dependency-name: python
+        versions: ["3.9.x"]
     reviewers:
       - "nlpsandbox/maintainers"
 

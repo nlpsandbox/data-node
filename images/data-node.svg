@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="svg8" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 271 533.4"
+	 style="enable-background:new 0 0 271 533.4;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#343741;stroke:#00A9E5;stroke-width:3;stroke-miterlimit:10;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'Roboto-Regular';}
+	.st3{font-size:18px;}
+	.st4{fill:none;stroke:#00BFB3;stroke-width:2;stroke-miterlimit:10;}
+	.st5{font-size:16px;}
+	.st6{opacity:0.5;fill:#00BFB3;}
+	.st7{font-size:14px;}
+	.st8{fill:none;stroke:#F04E98;stroke-width:2;stroke-miterlimit:10;}
+	.st9{opacity:0.5;fill:#F04E98;}
+	.st10{opacity:0.5;}
+	.st11{fill:#F04E98;}
+</style>
+<rect x="1.5" y="1.5" class="st0" width="268" height="530.4"/>
+<text transform="matrix(1 0 0 1 14.0678 29.1106)" class="st1 st2 st3">Dataset</text>
+<g>
+	<rect x="18.3" y="219.4" class="st4" width="234.3" height="174.9"/>
+	<text transform="matrix(1 0 0 1 29.9049 248.345)" class="st1 st2 st5">AnnotationStore</text>
+	<g>
+		<rect x="29.9" y="262.3" class="st6" width="149.4" height="30"/>
+		<text transform="matrix(1 0 0 1 41.4679 281.4141)" class="st1 st2 st7">TextDateAnnotation</text>
+	</g>
+	<g>
+		<rect x="29.9" y="301.5" class="st6" width="195.7" height="30"/>
+		<text transform="matrix(1 0 0 1 39.2614 320.6349)" class="st1 st2 st7">TextPersonNameAnnotation</text>
+	</g>
+	<g>
+		<rect x="29.9" y="340.2" class="st6" width="209.2" height="30"/>
+		<text transform="matrix(1 0 0 1 38.86 359.3144)" class="st1 st2 st7">TextCovidSymptomAnnotation</text>
+	</g>
+</g>
+<g>
+	<rect x="18.3" y="53.1" class="st8" width="234.3" height="148.7"/>
+	<text transform="matrix(1 0 0 1 29.9048 79.262)" class="st1 st2 st5">FhirStore</text>
+	<g>
+		<g>
+			<rect x="98.7" y="94.2" class="st9" width="68.7" height="30"/>
+			<text transform="matrix(1 0 0 1 111.0144 113.2787)" class="st1 st2 st7">Patient</text>
+		</g>
+		<g>
+			<rect x="98.7" y="149.3" class="st9" width="68.7" height="30"/>
+			<text transform="matrix(1 0 0 1 118.0657 168.4041)" class="st1 st2 st7">Note</text>
+		</g>
+		<g class="st10">
+			<g>
+				<line class="st8" x1="133" y1="124.2" x2="133" y2="140.8"/>
+				<g>
+					<polygon class="st11" points="133,149.3 128.2,137.4 133,140.2 137.9,137.4 					"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="18.3" y="411.9" class="st4" width="234.3" height="97.6"/>
+	<text transform="matrix(1 0 0 1 29.9049 440.8121)" class="st1 st2 st5">AnnotationStore</text>
+	<g>
+		<rect x="29.9" y="454.8" class="st6" width="149.4" height="30"/>
+		<text transform="matrix(1 0 0 1 41.4679 473.8811)" class="st1 st2 st7">TextDateAnnotation</text>
+	</g>
+</g>
+</svg>

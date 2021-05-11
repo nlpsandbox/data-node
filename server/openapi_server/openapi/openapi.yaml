@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   contact:
-    email: thomas.schaffter@sagebionetworks.org
-    name: The NLP Sandbox Team
+    email: team@nlpsandbox.io
+    name: NLP Sandbox Team
     url: https://nlpsandbox.io
   description: |
     # Overview
@@ -23,7 +23,7 @@ info:
     name: Apache 2.0
     url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 1.0.2
+  version: 1.1.0
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:

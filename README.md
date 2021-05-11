@@ -26,8 +26,8 @@ This Data Node can be used to:
 
 ### Specification
 
-- Data Node API version: 1.0.2
-- Data Node version: 1.0.2
+- Data Node API version: 1.1.0
+- Data Node version: 1.1.0
 - Docker image: [nlpsandbox/data-node]
 
 ## Usage
@@ -48,7 +48,7 @@ You can stop the container run with `Ctrl+C`, followed by `docker-compose down`.
 
 We recommend using a Conda environment to install and run the Data Node.
 
-    conda create --name data-node python=3.9.1
+    conda create --name data-node python=3.9.4
     conda activate data-node
 
 Create the configuration file and export its parameters to environment

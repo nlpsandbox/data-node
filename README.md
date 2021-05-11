@@ -24,6 +24,8 @@ This Data Node can be used to:
 - Create and manage annotation stores
   - Store and retrieve text annotations
 
+<img src="images/data-node.png" width="300">
+
 ### Specification
 
 - Data Node API version: 1.1.0

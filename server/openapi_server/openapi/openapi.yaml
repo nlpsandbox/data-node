@@ -23,7 +23,7 @@ info:
     name: Apache 2.0
     url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 1.1.0
+  version: 1.1.1
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
@@ -1403,6 +1403,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfDatasets_allOf'
       description: A page of datasets
+      required:
+      - datasets
+      - limit
+      - links
+      - offset
+      - totalResults
       type: object
     Error:
       description: Problem details (tools.ietf.org/html/rfc7807)
@@ -1473,6 +1479,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotationStores_allOf'
       description: A page of annotation stores
+      required:
+      - annotationStores
+      - limit
+      - links
+      - offset
+      - totalResults
       type: object
     AnnotationStoreId:
       description: The ID of the annotation store
@@ -1588,6 +1600,43 @@ components:
         addressType: city
         confidence: 95.5
       type: object
+    TextIdAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      - $ref: '#/components/schemas/TextIdAnnotation_allOf'
+      description: An ID annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: 203-11-4535
+        idType: ssn
+        confidence: 95.5
+      type: object
+    TextContactAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      - $ref: '#/components/schemas/TextContactAnnotation_allOf'
+      description: A contact annotation in a text
+      example:
+        start: 42
+        length: 11
+        text: dave@uw.edu
+        contactType: email
+        confidence: 95.5
+      type: object
+    TextCovidSymptomAnnotation:
+      allOf:
+      - $ref: '#/components/schemas/TextAnnotation'
+      - $ref: '#/components/schemas/TextCovidSymptomAnnotation_allOf'
+      description: A COVID symptom annotation in a text
+      example:
+        start: 42
+        length: 9
+        text: dry cough
+        condition: cough
+        certainty: positive
+        confidence: 95.5
+      type: object
     Annotation:
       description: An annotation record
       example:
@@ -1601,6 +1650,19 @@ components:
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
+        textCovidSymptomAnnotations:
+        - start: 42
+          length: 9
+          text: dry cough
+          condition: cough
+          certainty: positive
+          confidence: 95.5
+        - start: 42
+          length: 9
+          text: dry cough
+          condition: cough
+          certainty: positive
           confidence: 95.5
         textPersonNameAnnotations:
         - start: 42
@@ -1626,6 +1688,28 @@ components:
           resourceSource:
             name: name
         name: datasets/awesome-dataset/annotationStores/awesome-annotation-store/annotations/awesome-annotation
+        textIdAnnotations:
+        - start: 42
+          length: 11
+          text: 203-11-4535
+          idType: ssn
+          confidence: 95.5
+        - start: 42
+          length: 11
+          text: 203-11-4535
+          idType: ssn
+          confidence: 95.5
+        textContactAnnotations:
+        - start: 42
+          length: 11
+          text: dave@uw.edu
+          contactType: email
+          confidence: 95.5
+        - start: 42
+          length: 11
+          text: dave@uw.edu
+          contactType: email
+          confidence: 95.5
       properties:
         name:
           description: The resource name of the annotation record, of the form datasets/{datasetId}/annotationStores/{annotationStoreId}/annotations/{annotationId}
@@ -1649,6 +1733,21 @@ components:
           items:
             $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
           type: array
+        textIdAnnotations:
+          description: ID annotations in a text
+          items:
+            $ref: '#/components/schemas/TextIdAnnotation'
+          type: array
+        textContactAnnotations:
+          description: Contact annotations in a text
+          items:
+            $ref: '#/components/schemas/TextContactAnnotation'
+          type: array
+        textCovidSymptomAnnotations:
+          description: COVID symptom annotations in a text
+          items:
+            $ref: '#/components/schemas/TextCovidSymptomAnnotation'
+          type: array
       required:
       - annotationSource
       - name
@@ -1658,6 +1757,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfAnnotations_allOf'
       description: A page of annotations
+      required:
+      - annotations
+      - limit
+      - links
+      - offset
+      - totalResults
       type: object
     AnnotationId:
       description: The ID of the annotation
@@ -1679,6 +1784,19 @@ components:
           length: 10
           text: 10/26/2020
           dateFormat: MM/DD/YYYY
+          confidence: 95.5
+        textCovidSymptomAnnotations:
+        - start: 42
+          length: 9
+          text: dry cough
+          condition: cough
+          certainty: positive
+          confidence: 95.5
+        - start: 42
+          length: 9
+          text: dry cough
+          condition: cough
+          certainty: positive
           confidence: 95.5
         textPersonNameAnnotations:
         - start: 42
@@ -1703,6 +1821,28 @@ components:
         annotationSource:
           resourceSource:
             name: name
+        textIdAnnotations:
+        - start: 42
+          length: 11
+          text: 203-11-4535
+          idType: ssn
+          confidence: 95.5
+        - start: 42
+          length: 11
+          text: 203-11-4535
+          idType: ssn
+          confidence: 95.5
+        textContactAnnotations:
+        - start: 42
+          length: 11
+          text: dave@uw.edu
+          contactType: email
+          confidence: 95.5
+        - start: 42
+          length: 11
+          text: dave@uw.edu
+          contactType: email
+          confidence: 95.5
       properties:
         annotationSource:
           $ref: '#/components/schemas/AnnotationSource'
@@ -1720,6 +1860,21 @@ components:
           description: Physical address annotations in a text
           items:
             $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+          type: array
+        textIdAnnotations:
+          description: ID annotations in a text
+          items:
+            $ref: '#/components/schemas/TextIdAnnotation'
+          type: array
+        textContactAnnotations:
+          description: Contact annotations in a text
+          items:
+            $ref: '#/components/schemas/TextContactAnnotation'
+          type: array
+        textCovidSymptomAnnotations:
+          description: COVID symptom annotations in a text
+          items:
+            $ref: '#/components/schemas/TextCovidSymptomAnnotation'
           type: array
       required:
       - annotationSource
@@ -1767,6 +1922,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfFhirStores_allOf'
       description: A page of FHIR stores
+      required:
+      - fhirStores
+      - limit
+      - links
+      - offset
+      - totalResults
       type: object
     FhirStoreCreateRequest:
       description: An empty object
@@ -1820,6 +1981,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfPatients_allOf'
       description: A page of FHIR patients
+      required:
+      - limit
+      - links
+      - offset
+      - patients
+      - totalResults
       type: object
     PatientCreateRequest:
       description: A FHIR patient
@@ -1899,6 +2066,12 @@ components:
       - $ref: '#/components/schemas/ResponsePageMetadata'
       - $ref: '#/components/schemas/PageOfNotes_allOf'
       description: A page of notes
+      required:
+      - limit
+      - links
+      - notes
+      - offset
+      - totalResults
       type: object
     NoteCreateRequest:
       description: A clinical note
@@ -2007,6 +2180,79 @@ components:
           - street
           - zip
           type: string
+      required:
+      - addressType
+      type: object
+    TextIdAnnotation_allOf:
+      properties:
+        idType:
+          description: Type of ID information
+          enum:
+          - account
+          - bio_id
+          - device
+          - health_plan
+          - id_num
+          - license
+          - medical_record
+          - ssn
+          - vehicle
+          type: string
+      required:
+      - idType
+      type: object
+    TextContactAnnotation_allOf:
+      properties:
+        contactType:
+          description: Type of contact information
+          enum:
+          - email
+          - fax
+          - phone
+          - url
+          - other
+          type: string
+      required:
+      - contactType
+      type: object
+    TextCovidSymptomAnnotation_allOf:
+      properties:
+        condition:
+          description: |
+            The sign/symptom type according to CDC definition
+          enum:
+          - fever
+          - chill
+          - cough
+          - fatigue
+          - nasal_obstruction
+          - loss_of_appetite
+          - diarrhea
+          - abdominal_pain
+          - nausea
+          - vomiting
+          - sore_throat
+          - headache
+          - myalgia
+          - loss_of_taste
+          - loss_of_smell
+          - dyspnea
+          - chest_pain
+          - delirium
+          - hypersomnia
+          - cyanosis
+          type: string
+        certainty:
+          description: |
+            Whether the annotation is positively or negatively correlated with the presence of COVID
+          enum:
+          - positive
+          - negated
+          - possible
+          type: string
+      required:
+      - certainty
+      - condition
       type: object
     PageOfAnnotations_allOf:
       properties:

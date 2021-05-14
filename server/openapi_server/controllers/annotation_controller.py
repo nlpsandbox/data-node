@@ -44,6 +44,9 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
             text_date_annotations = None
             text_person_name_annotations = None
             text_physical_address_annotations = None
+            text_id_annotations = None
+            text_contact_annotations = None
+            text_covid_symptom_annotations = None
 
             if annotation_create_request.text_date_annotations is not None:
                 text_date_annotations = [
@@ -63,6 +66,24 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
                         a.to_dict(), util.underscore_to_camel)
                     for a in annotation_create_request.text_physical_address_annotations]  # noqa: E501
 
+            if annotation_create_request.text_id_annotations is not None:  # noqa: E501
+                text_id_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation_create_request.text_id_annotations]  # noqa: E501
+
+            if annotation_create_request.text_contact_annotations is not None:  # noqa: E501
+                text_contact_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation_create_request.text_contact_annotations]  # noqa: E501
+
+            if annotation_create_request.text_covid_symptom_annotations is not None:  # noqa: E501
+                text_covid_symptom_annotations = [
+                    util.change_dict_naming_convention(
+                        a.to_dict(), util.underscore_to_camel)
+                    for a in annotation_create_request.text_covid_symptom_annotations]  # noqa: E501
+
             annotation_source = util.change_dict_naming_convention(
                 annotation_create_request.annotation_source.to_dict(),
                 util.underscore_to_camel)
@@ -75,7 +96,10 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
                 annotationStoreName=store_name,
                 textDateAnnotations=text_date_annotations,
                 textPersonNameAnnotations=text_person_name_annotations,
-                textPhysicalAddressAnnotations=text_physical_address_annotations  # noqa: E501
+                textPhysicalAddressAnnotations=text_physical_address_annotations,  # noqa: E501
+                textIdAnnotations=text_id_annotations,
+                textContactAnnotations=text_contact_annotations,
+                textCovidSymptomAnnotations=text_covid_symptom_annotations
             ).save()
             annotation = Annotation.from_dict(db_annotation.to_dict())
             res = AnnotationCreateResponse(name=annotation.name)

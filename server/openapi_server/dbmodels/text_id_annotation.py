@@ -2,25 +2,24 @@ from mongoengine import FloatField, IntField, StringField, EmbeddedDocument, Enu
 from enum import Enum
 
 
-class AddressType(Enum):
-    CITY = 'city'
-    COUNTRY = 'country'
-    DEPARTMENT = 'department'
-    HOSPITAL = 'hospital'
-    ORGANIZATION = 'organization'
-    OTHER = 'other'
-    ROOM = 'room'
-    STATE = 'state'
-    STREET = 'street'
-    ZIP = 'zip'
+class IdType(Enum):
+    ACCOUNT = 'account'
+    BIO_ID = 'bio_id'
+    DEVICE = 'device'
+    HEALTH_PLAN = 'health_plan'
+    ID_NUM = 'id_num'
+    LICENSE = 'license'
+    MEDICAL_RECORD = 'medical_record'
+    SSN = 'ssn'
+    VEHICLE = 'vehicle'
 
 
-class TextPhysicalAddressAnnotation(EmbeddedDocument):
+class TextIdAnnotation(EmbeddedDocument):
     start = IntField(required=True)
     length = IntField(required=True)
     text = StringField(required=True)
     confidence = FloatField(required=True)
-    addressType = EnumField(AddressType, required=True)
+    idType = EnumField(IdType, required=True)
 
     def to_dict(self):
         doc = self.to_mongo().to_dict()

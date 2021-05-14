@@ -74,5 +74,8 @@ def create_test_annotation(dataset_id, annotation_store_id, annotation_id):
         annotationStoreName=store_name,
         textDateAnnotations=[],
         textPersonNameAnnotations=[],
-        textPhysicalAddressAnnotations=[]
+        textPhysicalAddressAnnotations=[],
+        textIdAnnotations=[],
+        textContactAnnotations=[],
+        textCovidSymptomAnnotations=[]
     ).save()

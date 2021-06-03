@@ -39,7 +39,7 @@ jobs:
           VERSION=pr-${{ github.event.number }}
         fi
         TAGS="${DOCKER_IMAGE}:${VERSION}"
-        if [[ $VERSION == "${{ env.default_branch }}" ]]; then
+        if [[ $VERSION == "edge" ]]; then
           TAGS="$TAGS,${DOCKER_IMAGE}:edge-${GITHUB_SHA::8}"
         elif [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
           TAGS="$TAGS,${DOCKER_IMAGE}:latest"

@@ -65,9 +65,9 @@ jobs:
         entrypoint: hadolint
         args: server/Dockerfile
 
-    - name: Validate docker-compose.yml
-      run: |
-        docker-compose -f docker-compose.yml config >/dev/null
+    # - name: Validate docker-compose.yml
+    #   run: |
+    #     docker-compose -f docker-compose.yml config >/dev/null
 
     - name: Check that packages in requirements.txt files are in asc order
       run: |

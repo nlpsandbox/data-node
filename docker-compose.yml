@@ -38,7 +38,7 @@ services:
     #   timeout: 5s
     #   retries: 5
     ports:
-      - "80:${SERVER_PORT}"
+      - "${SERVER_PORT}:8080"
     depends_on:
       - db
 

@@ -62,7 +62,7 @@ class TextIdAnnotationAllOf(Model):
         :param id_type: The id_type of this TextIdAnnotationAllOf.
         :type id_type: str
         """
-        allowed_values = ["account", "bio_id", "device", "health_plan", "id_num", "license", "medical_record", "ssn", "vehicle"]  # noqa: E501
+        allowed_values = ["account", "bio_id", "device", "health_plan", "id_number", "license", "medical_record", "ssn", "vehicle", "other"]  # noqa: E501
         if id_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `id_type` ({0}), must be one of {1}"

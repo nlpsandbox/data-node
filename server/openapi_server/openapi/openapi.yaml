@@ -23,7 +23,7 @@ info:
     name: Apache 2.0
     url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
   title: NLP Sandbox Data Node API
-  version: 1.1.1
+  version: 1.1.2
   x-logo:
     url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
 servers:
@@ -2156,11 +2156,12 @@ components:
           - bio_id
           - device
           - health_plan
-          - id_num
+          - id_number
           - license
           - medical_record
           - ssn
           - vehicle
+          - other
           type: string
       required:
       - idType
@@ -2172,6 +2173,7 @@ components:
           enum:
           - email
           - fax
+          - ip_address
           - phone
           - url
           - other

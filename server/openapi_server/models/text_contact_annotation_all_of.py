@@ -62,7 +62,7 @@ class TextContactAnnotationAllOf(Model):
         :param contact_type: The contact_type of this TextContactAnnotationAllOf.
         :type contact_type: str
         """
-        allowed_values = ["email", "fax", "phone", "url", "other"]  # noqa: E501
+        allowed_values = ["email", "fax", "ip_address", "phone", "url", "other"]  # noqa: E501
         if contact_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `contact_type` ({0}), must be one of {1}"

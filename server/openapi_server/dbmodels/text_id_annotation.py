@@ -7,7 +7,7 @@ class IdType(Enum):
     BIO_ID = 'bio_id'
     DEVICE = 'device'
     HEALTH_PLAN = 'health_plan'
-    ID_NUM = 'id_num'
+    ID_NUMBER = 'id_number'
     LICENSE = 'license'
     MEDICAL_RECORD = 'medical_record'
     SSN = 'ssn'

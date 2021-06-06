@@ -5,6 +5,7 @@ from enum import Enum
 class ContactType(Enum):
     EMAIL = 'email'
     FAX = 'fax'
+    IP_ADDRESS = 'ip_address'
     PHONE = 'phone'
     URL = 'url'
     OTHER = 'other'

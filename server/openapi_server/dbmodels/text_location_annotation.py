@@ -2,7 +2,7 @@ from mongoengine import FloatField, IntField, StringField, EmbeddedDocument, Enu
 from enum import Enum
 
 
-class AddressType(Enum):
+class LocationType(Enum):
     CITY = 'city'
     COUNTRY = 'country'
     DEPARTMENT = 'department'
@@ -15,12 +15,12 @@ class AddressType(Enum):
     ZIP = 'zip'
 
 
-class TextPhysicalAddressAnnotation(EmbeddedDocument):
+class TextLocationAnnotation(EmbeddedDocument):
     start = IntField(required=True)
     length = IntField(required=True)
     text = StringField(required=True)
     confidence = FloatField(required=True)
-    addressType = EnumField(AddressType, required=True)
+    locationType = EnumField(LocationType, required=True)
 
     def to_dict(self):
         doc = self.to_mongo().to_dict()

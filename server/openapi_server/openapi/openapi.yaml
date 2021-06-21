@@ -21,11 +21,11 @@ info:
       - Store and retrieve text annotations
   license:
     name: Apache 2.0
-    url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/develop/LICENSE
+    url: https://github.com/nlpsandbox/nlpsandbox-schemas/blob/main/LICENSE
   title: NLP Sandbox Data Node API
-  version: 1.1.2
+  version: 1.2.0
   x-logo:
-    url: https://nlpsandbox.github.io/nlpsandbox-schemas/logo.png
+    url: https://github.com/nlpsandbox/nlpsandbox-schemas/raw/main/docs/logo.png
 servers:
 - url: http://example.com/api/v1
 - url: https://example.com/api/v1
@@ -1576,16 +1576,16 @@ components:
         text: Chloe Price
         confidence: 95.5
       type: object
-    TextPhysicalAddressAnnotation:
+    TextLocationAnnotation:
       allOf:
       - $ref: '#/components/schemas/TextAnnotation'
-      - $ref: '#/components/schemas/TextPhysicalAddressAnnotation_allOf'
-      description: A physical address annotation in a text
+      - $ref: '#/components/schemas/TextLocationAnnotation_allOf'
+      description: A location annotation in a text
       example:
         start: 42
         length: 7
         text: Seattle
-        addressType: city
+        locationType: city
         confidence: 95.5
       type: object
     TextIdAnnotation:
@@ -1661,16 +1661,16 @@ components:
           length: 11
           text: Chloe Price
           confidence: 95.5
-        textPhysicalAddressAnnotations:
+        textLocationAnnotations:
         - start: 42
           length: 7
           text: Seattle
-          addressType: city
+          locationType: city
           confidence: 95.5
         - start: 42
           length: 7
           text: Seattle
-          addressType: city
+          locationType: city
           confidence: 95.5
         annotationSource:
           resourceSource:
@@ -1716,10 +1716,10 @@ components:
           items:
             $ref: '#/components/schemas/TextPersonNameAnnotation'
           type: array
-        textPhysicalAddressAnnotations:
-          description: Physical address annotations in a text
+        textLocationAnnotations:
+          description: Location annotations in a text
           items:
-            $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+            $ref: '#/components/schemas/TextLocationAnnotation'
           type: array
         textIdAnnotations:
           description: ID annotations in a text
@@ -1789,16 +1789,16 @@ components:
           length: 11
           text: Chloe Price
           confidence: 95.5
-        textPhysicalAddressAnnotations:
+        textLocationAnnotations:
         - start: 42
           length: 7
           text: Seattle
-          addressType: city
+          locationType: city
           confidence: 95.5
         - start: 42
           length: 7
           text: Seattle
-          addressType: city
+          locationType: city
           confidence: 95.5
         annotationSource:
           resourceSource:
@@ -1838,10 +1838,10 @@ components:
           items:
             $ref: '#/components/schemas/TextPersonNameAnnotation'
           type: array
-        textPhysicalAddressAnnotations:
-          description: Physical address annotations in a text
+        textLocationAnnotations:
+          description: Location annotations in a text
           items:
-            $ref: '#/components/schemas/TextPhysicalAddressAnnotation'
+            $ref: '#/components/schemas/TextLocationAnnotation'
           type: array
         textIdAnnotations:
           description: ID annotations in a text
@@ -2128,10 +2128,10 @@ components:
           example: MM/DD/YYYY
           type: string
       type: object
-    TextPhysicalAddressAnnotation_allOf:
+    TextLocationAnnotation_allOf:
       properties:
-        addressType:
-          description: Type of address information
+        locationType:
+          description: Type of location
           enum:
           - city
           - country
@@ -2145,7 +2145,7 @@ components:
           - zip
           type: string
       required:
-      - addressType
+      - locationType
       type: object
     TextIdAnnotation_allOf:
       properties:

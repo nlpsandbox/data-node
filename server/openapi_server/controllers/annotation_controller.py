@@ -43,7 +43,7 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
             annotation_create_request = AnnotationCreateRequest.from_dict(connexion.request.get_json())  # noqa: E501
             text_date_annotations = None
             text_person_name_annotations = None
-            text_physical_address_annotations = None
+            text_location_annotations = None
             text_id_annotations = None
             text_contact_annotations = None
             text_covid_symptom_annotations = None
@@ -60,11 +60,11 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
                         a.to_dict(), util.underscore_to_camel)
                     for a in annotation_create_request.text_person_name_annotations]  # noqa: E501
 
-            if annotation_create_request.text_physical_address_annotations is not None:  # noqa: E501
-                text_physical_address_annotations = [
+            if annotation_create_request.text_location_annotations is not None:  # noqa: E501
+                text_location_annotations = [
                     util.change_dict_naming_convention(
                         a.to_dict(), util.underscore_to_camel)
-                    for a in annotation_create_request.text_physical_address_annotations]  # noqa: E501
+                    for a in annotation_create_request.text_location_annotations]  # noqa: E501
 
             if annotation_create_request.text_id_annotations is not None:  # noqa: E501
                 text_id_annotations = [
@@ -96,7 +96,7 @@ def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: 
                 annotationStoreName=store_name,
                 textDateAnnotations=text_date_annotations,
                 textPersonNameAnnotations=text_person_name_annotations,
-                textPhysicalAddressAnnotations=text_physical_address_annotations,  # noqa: E501
+                textLocationAnnotations=text_location_annotations,  # noqa: E501
                 textIdAnnotations=text_id_annotations,
                 textContactAnnotations=text_contact_annotations,
                 textCovidSymptomAnnotations=text_covid_symptom_annotations

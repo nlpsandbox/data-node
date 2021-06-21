@@ -57,7 +57,7 @@ class TestAnnotationController(BaseTestCase):
                 "text": "Chloe Price",
                 "confidence": 95.5
             }],
-            "textPhysicalAddressAnnotations": [{
+            "textLocationAnnotations": [{
                 "start": 42,
                 "length": 11,
                 "text": "Seattle",

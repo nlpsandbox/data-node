@@ -61,13 +61,13 @@ class TestAnnotationController(BaseTestCase):
                 "start": 42,
                 "length": 11,
                 "text": "Seattle",
-                "addressType": "city",
+                "locationType": "city",
                 "confidence": 95.5
             }, {
                 "start": 42,
                 "length": 11,
                 "text": "Seattle",
-                "addressType": "city",
+                "locationType": "city",
                 "confidence": 95.5
             }],
             "annotationSource": {

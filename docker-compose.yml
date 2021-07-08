@@ -22,6 +22,7 @@ services:
       context: server
       dockerfile: Dockerfile
     container_name: data-node
+    # command: uwsgi --ini uwsgi.ini --lazy --http :8080 --processes 4
     environment:
       - SERVER_PROTOCOL=${SERVER_PROTOCOL}
       - SERVER_DOMAIN=${SERVER_DOMAIN}

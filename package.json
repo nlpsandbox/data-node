@@ -14,5 +14,6 @@
         "start:dev": "cd server && python -m openapi_server",
         "start:prod": "docker compose up --build",
         "release": "release-it"
-    }
+    },
+    "version": "1.2.0"
 }

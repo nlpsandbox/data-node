@@ -1,4 +1,4 @@
-connexion==2.7.0
+connexion==2.9.0
 mongoengine==0.23.1
 psycopg2-binary==2.9.1
 requests==2.26.0

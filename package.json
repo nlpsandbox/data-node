@@ -1,6 +1,7 @@
 {
     "devDependencies": {
-        "@openapitools/openapi-generator-cli": "2.3.9"
+        "@openapitools/openapi-generator-cli": "2.3.9",
+        "release-it": "^14.10.1"
     },
     "private": true,
     "scripts": {
@@ -11,6 +12,7 @@
         "test": "cd server && tox",
         "install:dependencies": "npm ci && cd server && pip install -r requirements.txt",
         "start:dev": "cd server && python -m openapi_server",
-        "start:prod": "docker compose up --build"
+        "start:prod": "docker compose up --build",
+        "release": "release-it"
     }
 }

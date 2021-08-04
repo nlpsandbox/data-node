@@ -17,7 +17,7 @@ services:
       - "${MONGO_PORT}:27017"
 
   data-node:
-    image: nlpsandbox/data-node:1.2.0
+    image: nlpsandbox/data-node:1.2.1
     build:
       context: server
       dockerfile: Dockerfile

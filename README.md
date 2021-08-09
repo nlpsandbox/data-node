@@ -52,6 +52,9 @@ The command below starts the Data Node locally.
 
 You can stop the container run with `Ctrl+C`, followed by `docker compose down`.
 
+> Note: `docker compose` is not yet available on Linux. Use `docker-compose`
+> instead.
+
 ### Running with Python
 
 We recommend using a Conda environment to install and run the Data Node.

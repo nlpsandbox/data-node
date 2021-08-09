@@ -48,9 +48,9 @@ Create the configuration file.
 
 The command below starts the Data Node locally.
 
-    docker-compose up --build
+    docker compose up
 
-You can stop the container run with `Ctrl+C`, followed by `docker-compose down`.
+You can stop the container run with `Ctrl+C`, followed by `docker compose down`.
 
 ### Running with Python
 
@@ -67,7 +67,7 @@ variables.
 
 Start the MongoDB instance.
 
-    docker-compose up -d db
+    docker compose up -d db
 
 Install and start the Data Node.
 
@@ -81,8 +81,8 @@ The Data Node provides a web interface that you can use to create and manage
 resources. The address of this interface depends on whether you run the Data
 Node using Docker (production mode) or the Python development server.
 
-- Using Docker: http://localhost/ui
-- Using Python: http://localhost:8080/ui
+- Using Docker: http://localhost:8080/ui
+- Using Python: `http://localhost:{SERVER_PORT}/ui`
 
 ## Contributing
 

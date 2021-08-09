@@ -22,7 +22,11 @@ services:
       context: server
       dockerfile: Dockerfile
     container_name: data-node
-    # command: uwsgi --ini uwsgi.ini --lazy --http :8080 --processes 8
+    # Uncomment the line `command` if you want to customize any of its
+    # parameters. Replace the following values:
+    # - {processes}: min(2 * max number of concurrent processes that the data
+    #   node should support, 6 * number of CPU cores)
+    #command: uwsgi --ini uwsgi.ini --lazy --http :8080 --processes {processes}
     environment:
       - SERVER_PROTOCOL
       - SERVER_DOMAIN

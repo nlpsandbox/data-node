@@ -17,6 +17,10 @@ services:
       - nlpsandbox-data-node-internal
     ports:
       - "27017:27017"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
   data-node:
     image: nlpsandbox/data-node:1.2.1
@@ -51,6 +55,12 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          # The amount of memory required depends on the number of uwsgi
+          # processes used. Default: number of processes * 100M
+          memory: 2G
 
 volumes:
     database-data:

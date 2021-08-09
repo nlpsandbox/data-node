@@ -6,11 +6,11 @@ services:
     container_name: data-node-db
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_USERNAME=${MONGO_USERNAME}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_USERNAME
+      - MONGO_PASSWORD
     volumes:
       - database-data:/data/db
     ports:
@@ -22,17 +22,17 @@ services:
       context: server
       dockerfile: Dockerfile
     container_name: data-node
-    # command: uwsgi --ini uwsgi.ini --lazy --http :8080 --processes 4
+    # command: uwsgi --ini uwsgi.ini --lazy --http :8080 --processes 8
     environment:
-      - SERVER_PROTOCOL=${SERVER_PROTOCOL}
-      - SERVER_DOMAIN=${SERVER_DOMAIN}
-      - SERVER_PORT=${SERVER_PORT}
-      - DB_PROTOCOL=${DB_PROTOCOL}
+      - SERVER_PROTOCOL
+      - SERVER_DOMAIN
+      - SERVER_PORT
+      - DB_PROTOCOL
       - DB_DOMAIN=db
-      - DB_PORT=${DB_PORT}
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
     # healthcheck:
     #   test: curl --fail http://localhost:8080/api/v1/healthCheck
     #   interval: 10s

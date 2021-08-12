@@ -52,7 +52,7 @@ services:
       - nlpsandbox-data-node
       - nlpsandbox-data-node-internal
     ports:
-      - "8080:8080"
+      - "${SERVER_PORT}:8080"
     depends_on:
       - db
     deploy:

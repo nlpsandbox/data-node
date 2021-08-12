@@ -84,8 +84,8 @@ The Data Node provides a web interface that you can use to create and manage
 resources. The address of this interface depends on whether you run the Data
 Node using Docker (production mode) or the Python development server.
 
-- Using Docker: http://localhost:8080/ui
-- Using Python: `http://localhost:{SERVER_PORT}/ui`
+- Default: HTTP://localhost:8080/ui
+- Format: `http://localhost:{SERVER_PORT}/ui`
 
 ## Contributing
 

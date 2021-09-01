@@ -1,4 +1,4 @@
-FROM python:3.9.4-slim-buster
+FROM python:3.9.7-slim-buster
 
 ENV APP_DIR=/opt/app
 

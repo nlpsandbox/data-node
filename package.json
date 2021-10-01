@@ -1,6 +1,6 @@
 {
     "devDependencies": {
-        "@openapitools/openapi-generator-cli": "2.3.9",
+        "@openapitools/openapi-generator-cli": "2.4.8",
         "release-it": "^14.10.1"
     },
     "private": true,

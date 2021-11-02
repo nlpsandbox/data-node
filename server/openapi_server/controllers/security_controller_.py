@@ -16,6 +16,8 @@ def info_from_ApiKeyAuth(api_key, required_scopes):
     """
     try:
         # disable authentication if secret key is empty
+        # TODO the time required to evaluate the key value must be independent
+        # of the content of the api key defined by the server.
         if not config.secret_key or api_key == config.secret_key:
             return {'uid': 'user_id'}
     except Exception as error:

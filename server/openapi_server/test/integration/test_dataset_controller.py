@@ -30,7 +30,7 @@ class TestDatasetController(BaseTestCase):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'ApiKeyAuth': 'special-key',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets',
@@ -51,7 +51,7 @@ class TestDatasetController(BaseTestCase):
         util.create_test_dataset("awesome-dataset")
         headers = {
             'Accept': 'application/json',
-            'ApiKeyAuth': 'special-key',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}'.format(
@@ -70,7 +70,7 @@ class TestDatasetController(BaseTestCase):
         util.create_test_dataset("awesome-dataset")
         headers = {
             'Accept': 'application/json',
-            'ApiKeyAuth': 'special-key',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}'.format(
@@ -91,7 +91,7 @@ class TestDatasetController(BaseTestCase):
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
-            'ApiKeyAuth': 'special-key',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets',

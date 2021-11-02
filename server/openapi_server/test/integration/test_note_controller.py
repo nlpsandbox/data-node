@@ -46,6 +46,7 @@ class TestNoteController(BaseTestCase):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -70,6 +71,7 @@ class TestNoteController(BaseTestCase):
             'awesome-dataset', 'awesome-fhir-store', 'awesome-note')
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -91,6 +93,7 @@ class TestNoteController(BaseTestCase):
             'awesome-dataset', 'awesome-fhir-store', 'awesome-note')
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -114,6 +117,7 @@ class TestNoteController(BaseTestCase):
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'

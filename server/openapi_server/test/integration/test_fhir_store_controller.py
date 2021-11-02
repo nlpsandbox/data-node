@@ -33,6 +33,7 @@ class TestFhirStoreController(BaseTestCase):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores'
@@ -54,6 +55,7 @@ class TestFhirStoreController(BaseTestCase):
         util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -73,6 +75,7 @@ class TestFhirStoreController(BaseTestCase):
         util.create_test_fhir_store('awesome-dataset', 'awesome-fhir-store')
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -94,6 +97,7 @@ class TestFhirStoreController(BaseTestCase):
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
+            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores'.format(

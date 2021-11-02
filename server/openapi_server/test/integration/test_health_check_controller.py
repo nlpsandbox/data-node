@@ -16,7 +16,6 @@ class TestHealthCheckController(BaseTestCase):
         """
         headers = {
             'Accept': 'application/json',
-            'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
             '/api/v1/healthCheck',

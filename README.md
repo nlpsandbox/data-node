@@ -84,6 +84,20 @@ Node using Docker (production mode) or the Python development server.
 - Using Docker: http://localhost/ui
 - Using Python: http://localhost:8080/ui
 
+### Authentication
+
+A user who send requests to a data node instance must authenticate itself with
+an API key. Below is an example on how to specify the API key in a `curl`
+request:
+
+```console
+curl -X GET "http://localhost:8080/api/v1/datasets?limit=10" -H  "accept: application/json" -H  "X-API-Key: changeme"
+```
+
+The API key used by the data node must be set at startup as the environment
+variable `SERVER_SECRET_KEY`. The value of this environment variable can be set
+in the configuration file `.env`.
+
 ## Contributing
 
 Thinking about contributing to this project? Get started by reading our

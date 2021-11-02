@@ -9,7 +9,7 @@ from openapi_server.models.page_of_notes import PageOfNotes  # noqa: E501
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.dbmodels.note import Note as DbNote
 from openapi_server.dbmodels.patient import Patient as DbPatient
-from openapi_server.config import Config
+from openapi_server.config import config
 
 
 def create_note(dataset_id, fhir_store_id, note_id):  # noqa: E501
@@ -180,7 +180,7 @@ def list_notes(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: E50
         if len(notes) == limit:
             next_ = '{api_url}/{fhir_store_name}/fhir/Note?limit={limit}' \
                 '&offset={offset}'.format(
-                    api_url=Config().server_api_url,
+                    api_url=config.server_api_url,
                     fhir_store_name=store_name,
                     limit=limit,
                     offset=offset + limit

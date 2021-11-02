@@ -9,7 +9,7 @@ from openapi_server.models.page_of_annotations import PageOfAnnotations  # noqa:
 from openapi_server.dbmodels.annotation_store import AnnotationStore as DbAnnotationStore  # noqa: E501
 from openapi_server.dbmodels.annotation import Annotation as DbAnnotation
 from openapi_server import util
-from openapi_server.config import Config
+from openapi_server.config import config
 
 
 def create_annotation(dataset_id, annotation_store_id, annotation_id):  # noqa: E501
@@ -205,7 +205,7 @@ def list_annotations(dataset_id, annotation_store_id, limit=None, offset=None): 
             next_ = (
                 "%s/datasets/%s/annotationStores/%s/annotations"
                 "?limit=%s&offset=%s") % \
-                (Config().server_api_url, dataset_id, annotation_store_id, limit,  # noqa: E501
+                (config.server_api_url, dataset_id, annotation_store_id, limit,  # noqa: E501
                     offset + limit)
         res = PageOfAnnotations(
             offset=offset,

@@ -8,7 +8,7 @@ from openapi_server.dbmodels.dataset import Dataset as DbDataset
 from openapi_server.dbmodels.fhir_store import FhirStore as DbFhirStore
 from openapi_server.dbmodels.note import Note as DbNote
 from openapi_server.dbmodels.patient import Patient as DbPatient
-from openapi_server.config import Config
+from openapi_server.config import config
 
 
 def create_fhir_store(dataset_id, fhir_store_id):  # noqa: E501
@@ -150,7 +150,7 @@ def list_fhir_stores(dataset_id, limit=None, offset=None):  # noqa: E501
         next_ = ""
         if len(fhir_stores) == limit:
             next_ = "%s/datasets/%s/FhirStores?limit=%s&offset=%s" % \
-                (Config().server_api_url, dataset_id, limit, offset + limit)
+                (config.server_api_url, dataset_id, limit, offset + limit)
         res = PageOfFhirStores(
             offset=offset,
             limit=limit,

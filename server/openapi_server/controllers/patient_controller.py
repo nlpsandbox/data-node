@@ -8,7 +8,7 @@ from openapi_server.models.page_of_patients import PageOfPatients  # noqa: E501
 from openapi_server.models.patient import Patient  # noqa: E501
 from openapi_server.models.patient_create_request import PatientCreateRequest  # noqa: E501
 from openapi_server.models.patient_create_response import PatientCreateResponse  # noqa: E501
-from openapi_server.config import Config
+from openapi_server.config import config
 from openapi_server.controllers.note_controller import delete_notes_by_patient  # noqa: E501
 
 
@@ -154,7 +154,7 @@ def list_patients(dataset_id, fhir_store_id, limit=None, offset=None):  # noqa: 
         if len(patients) == limit:
             next_ = '{api_url}/{fhir_store_name}/fhir/Patient?limit={limit}' \
                 '&offset={offset}'.format(
-                    api_url=Config().server_api_url,
+                    api_url=config.server_api_url,
                     fhir_store_name=store_name,
                     limit=limit,
                     offset=offset + limit

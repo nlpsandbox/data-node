@@ -12,8 +12,6 @@ app = connexion.App(__name__, specification_dir='./openapi/')
 app.app.json_encoder = encoder.JSONEncoder
 app.add_api('openapi.yaml', pythonic_params=True)
 
-print(f'Server secret key: {config.secret_key}')
-
 connect(
     db=config.db_database,
     username=config.db_username,

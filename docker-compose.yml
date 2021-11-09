@@ -13,8 +13,10 @@ services:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
     volumes:
       - database-data:/data/db
-    ports:
-      - "${MONGO_PORT}:27017"
+    networks:
+      - nlpsandbox-internal
+    # ports:
+    #   - "${MONGO_PORT}:27017"
 
   data-node:
     image: nlpsandbox/data-node:1.2.1
@@ -39,10 +41,37 @@ services:
     #   interval: 10s
     #   timeout: 5s
     #   retries: 5
-    ports:
-      - "${SERVER_PORT}:8080"
+    networks:
+      - nlpsandbox-internal
+    # ports:
+    #   - "${SERVER_PORT}:8080"
     depends_on:
       - db
 
+  data-node-nginx:
+    image: nginx:1.19.6-alpine
+    container_name: data-node-nginx
+    restart: always
+    environment:
+      - SERVER_HOST=data-node
+      - SERVER_PORT=${SERVER_PORT}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/templates:/etc/nginx/templates:ro
+    networks:
+      - nlpsandbox
+      - nlpsandbox-internal
+    ports:
+      - "8080:80"
+    depends_on:
+      - data-node
+
 volumes:
     database-data:
+
+networks:
+  nlpsandbox:
+    name: nlpsandbox
+  nlpsandbox-internal:
+    name: nlpsandbox-internal
+    internal: true

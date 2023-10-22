@@ -80,6 +80,7 @@ class TestAnnotationController(BaseTestCase):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/annotationStores'
@@ -104,6 +105,7 @@ class TestAnnotationController(BaseTestCase):
             'awesome-dataset', 'awesome-annotation-store', 'awesome-annotation')
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/annotationStores'
@@ -125,6 +127,7 @@ class TestAnnotationController(BaseTestCase):
             'awesome-dataset', 'awesome-annotation-store', 'awesome-annotation')
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/annotationStores'
@@ -148,6 +151,7 @@ class TestAnnotationController(BaseTestCase):
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/annotationStores'

@@ -38,6 +38,7 @@ class TestPatientController(BaseTestCase):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -62,6 +63,7 @@ class TestPatientController(BaseTestCase):
             'awesome-dataset', 'awesome-fhir-store', 'awesome-patient')
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -83,6 +85,7 @@ class TestPatientController(BaseTestCase):
             'awesome-dataset', 'awesome-fhir-store', 'awesome-patient')
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'
@@ -106,6 +109,7 @@ class TestPatientController(BaseTestCase):
                         ('offset', 0)]
         headers = {
             'Accept': 'application/json',
+            'X-API-Key': 'special-key',
         }
         response = self.client.open(
             '/api/v1/datasets/{dataset_id}/fhirStores/{fhir_store_id}'

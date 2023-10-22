@@ -5,7 +5,7 @@ from openapi_server.models.dataset import Dataset  # noqa: E501
 from openapi_server.models.dataset_create_response import DatasetCreateResponse  # noqa: E501
 from openapi_server.models.error import Error  # noqa: E501
 from openapi_server.models.page_of_datasets import PageOfDatasets  # noqa: E501
-from openapi_server.config import Config
+from openapi_server.config import config
 from openapi_server.controllers.annotation_store_controller import delete_annotation_store_by_name, list_annotation_stores  # noqa: E501
 from openapi_server.controllers.fhir_store_controller import delete_fhir_store_by_name, list_fhir_stores  # noqa: E501
 
@@ -127,7 +127,7 @@ def list_datasets(limit=None, offset=None):  # noqa: E501
         next_ = ""
         if len(datasets) == limit:
             next_ = "%s/datasets?limit=%s&offset=%s" % \
-                (Config().server_api_url, limit, offset + limit)
+                (config.server_api_url, limit, offset + limit)
         res = PageOfDatasets(
             offset=offset,
             limit=limit,
